@@ -1,0 +1,20 @@
+package com.springboot.demo.exception;
+
+/**
+ * @author 程序猿DD
+ * @version 1.0.0
+ * @date 16/5/2 上午10:50.
+ * @blog http://blog.didispace.com
+ */
+public class JsonException extends Exception {
+
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 962694786640024741L;
+
+	public JsonException(String message) {
+        super(message);
+    }
+
+}

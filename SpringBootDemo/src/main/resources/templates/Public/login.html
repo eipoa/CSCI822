@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Bug Tracker System</title>
+    <link rel="stylesheet" type="text/css" href="/scripts/themes/material/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="/scripts/themes/icon.css" />
+    <link rel="stylesheet" type="text/css" href="/css/backend.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    <script type="text/javascript" src="/scripts/jquery.min.js"></script>
+    <script type="text/javascript" src="/scripts/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/scripts/backend.js"></script>
+</head>
+<body>
+<div class="login-warp">
+	<div class="login-content">
+		<form id="loginForm" action="/j_spring_security_check" method="post">
+		<div class="login-box-top" style="border-width: 1px 1px 0px; border-style: solid;border-color: #D4D4D4;">
+			<h2 style="padding-top: 7px;">Staff Login...</h2>
+		</div>
+		<div class="easyui-panel" style="width:300px; padding:20px 20px" data-options="loadingMessage:''">
+			<div style="margin-bottom:20px">
+				<input name="username" class="easyui-textbox" prompt="Username" iconWidth="28" style="width:258px;height:34px;padding:10px;" />
+			</div>
+			<div style="margin-bottom:20px">
+				<input name="password" id="pass" class="easyui-passwordbox" prompt="Password" iconWidth="28" style="width:258px;height:34px;padding:10px" />
+			</div>
+			<div>
+				<div style="float:right;">
+					<a id="btn-login" href="javascript:void(0)" class="easyui-linkbutton c1" data-options="iconCls:'icon-login'" style="width:100px;height:35px;">Login</a>
+				</div>
+				<div style="float: left; width: auto; height: 35px; padding-top: 19px;">
+					<a id="btn-forget" href="#" style="bottom:0px;">Forgetton Password ?</a>
+				</div>
+			</div>
+		</div>
+		<div id="viewer"></div>
+		</form>
+	</div>
+ </div>
+ 
+ 	<!-- mask windows -->
+	<div id="w" class="easyui-window" title="Modal Window" 
+		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false" 
+		style="width:300px;height:80px;padding:10px;">
+        loading...
+    </div>
+</body>
+
+<script type="text/javascript">
+	$('#pass').passwordbox({
+		inputEvents: $.extend({}, $.fn.passwordbox.defaults.inputEvents, {
+			keypress: function(e){
+				var char = String.fromCharCode(e.which);
+				$('#viewer').html(char).fadeIn(200, function(){
+					$(this).fadeOut();
+				});
+			}
+		})
+	})
+	$(function(){
+		$('#btn-login').bind('click', function(){
+			$('#loginForm').form().submit();
+			//$.messager.alert("xx","click sunmit","info");
+			/*$('#loginForm').form('submit',{
+				url: '/j_spring_security_check',
+				onSubmit: function(){
+					//return $(this).form('validate');
+				},
+				success: function(result){
+					var result = eval('('+result+')');					
+					if (result.status){
+						$.messager.alert("","click forget","info");
+					} else {
+						$.messager.show({
+							title: 'Error',
+							msg: result.info
+						});
+					}
+				}
+			})*/
+		});
+		$('#btn-forget').bind('click', function(){
+			$.messager.alert("","click forget","info");
+		});
+	});
+</script>
+<style>
+	#viewer{
+		position: relative;
+		padding: 0 25px;
+		top: -105px;
+		font-size: 40px;
+		line-height: 60px;
+	}
+</style>
+
+</html>
