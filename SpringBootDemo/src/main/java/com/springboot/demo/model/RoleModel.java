@@ -22,7 +22,7 @@ public class RoleModel {
 	private int id;
 	
 	@NotNull
-	private String roleName;
+	private String rolename;
 
 	private String description;
 
@@ -35,11 +35,11 @@ public class RoleModel {
 	}
 
 	public String getRoleName() {
-		return roleName;
+		return rolename;
 	}
 
 	public void setRoleName(String roleName) {
-		this.roleName = roleName;
+		this.rolename = roleName;
 	}
 
 	public String getDescription() {

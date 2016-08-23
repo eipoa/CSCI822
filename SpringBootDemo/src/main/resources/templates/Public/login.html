@@ -60,9 +60,9 @@
 	})
 	$(function(){
 		$('#btn-login').bind('click', function(){
-			$('#loginForm').form().submit();
+			//$('#loginForm').form().submit();
 			//$.messager.alert("xx","click sunmit","info");
-			/*$('#loginForm').form('submit',{
+			$('#loginForm').form('submit',{
 				url: '/j_spring_security_check',
 				onSubmit: function(){
 					//return $(this).form('validate');
@@ -78,7 +78,7 @@
 						});
 					}
 				}
-			})*/
+			})
 		});
 		$('#btn-forget').bind('click', function(){
 			$.messager.alert("","click forget","info");

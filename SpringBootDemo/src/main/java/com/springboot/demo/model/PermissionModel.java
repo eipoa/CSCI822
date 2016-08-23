@@ -49,6 +49,7 @@ public class PermissionModel {
 
 	public void setResid(int resid) {
 		this.resid = resid;
-	}	
+	}
+	
 	
 }
