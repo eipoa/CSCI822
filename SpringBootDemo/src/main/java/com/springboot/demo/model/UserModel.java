@@ -22,6 +22,17 @@ public class UserModel {
 	private int id;
 	
 	@NotNull
+	private String username;
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	@NotNull
 	private String password;
 	
 	@NotNull

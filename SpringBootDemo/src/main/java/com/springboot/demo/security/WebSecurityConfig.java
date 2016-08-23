@@ -5,7 +5,7 @@ package com.springboot.demo.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+//import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -29,20 +29,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		// 自定义accessDecisionManager访问控制器,并开启表达式语言
+		// define accessDecisionManager, Specify that URLs are allowed by any authenticated user
 		http.authorizeRequests().anyRequest().authenticated();
 		
-		// 
-		//http.authorizeRequests().antMatchers("/Public/**").permitAll();
+		// the resources under the Public do not need permission
+		http.authorizeRequests().antMatchers("/Public/**").permitAll();
 		
-		// 自定义登录页面
+		// define login pages
 		http.csrf().disable().formLogin().loginPage("/Public/login").loginProcessingUrl("/j_spring_security_check")
 				.usernameParameter("username").passwordParameter("password").defaultSuccessUrl("/").permitAll();
 
-		// 自定义注销
+		// define logout pages
 		http.logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login").invalidateHttpSession(true);
 
-		// session管理
+		// session manage
 		http.sessionManagement().sessionFixation().changeSessionId().maximumSessions(1).expiredUrl("/");
 	}
 
@@ -51,7 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	// the next step is to check the role (accessDecisionManager)
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		//auth.userDetailsService(new ProjectUserDetailService());// .passwordEncoder(new Md5PasswordEncoder());
+		//auth.userDetailsService(new CoustomUserDetailService());// .passwordEncoder(new Md5PasswordEncoder());
 		auth.inMemoryAuthentication().withUser("123").password("123").roles("USER");
 	}
 }

@@ -12,5 +12,7 @@ import com.springboot.demo.model.UserModel;
  * @reference http://docs.spring.io/spring-data/jpa/docs/1.11.0.M1/reference/html/#repositories
  */
 public interface UserRepository extends JpaRepository<UserModel, Integer>{
+	
+	UserModel findByUsername(String username);
 
 }
