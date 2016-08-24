@@ -4,8 +4,6 @@
 package com.springboot.demo.security;
 
 import java.util.Collection;
-import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +39,6 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 			return;
 		}
 
-		/*
-		 * Iterator<ConfigAttribute> cons = configAttributes.iterator();
-		 * 
-		 * while(cons.hasNext()){ ConfigAttribute ca = cons.next(); // String
-		 * needRole = ((SecurityConfig) ca).getAttribute(); //gra
-		 * 为用户所被赋予的权限，needRole为访问相应的资源应具有的权限 for (GrantedAuthority gra :
-		 * authentication.getAuthorities()) { if
-		 * (needRole.trim().equals(gra.getAuthority().trim())) { return; } } }
-		 */
 		// 根据object取得资源所需的角色，进行判断
 		String url = ((FilterInvocation) object).getRequestUrl();
 		// String url1 = ((FilterInvocation) object).getFullRequestUrl();//

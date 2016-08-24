@@ -20,7 +20,7 @@ import com.springboot.demo.ajax.AjaxAuthenticationSuccessHandler;
 
 /**
  * @author Administrator
- * http://satishab.blogspot.com.au/2012/10/part-4-securing-web-application-with.html
+ *         http://satishab.blogspot.com.au/2012/10/part-4-securing-web-application-with.html
  */
 @Configuration
 @EnableWebSecurity
@@ -32,10 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Autowired
-    private AjaxAuthenticationSuccessHandler authSuccessHandler;
-    @Autowired
-    private AjaxAuthenticationFailureHandler authFailureHandler;
-	
+	private AjaxAuthenticationSuccessHandler authSuccessHandler;
+	@Autowired
+	private AjaxAuthenticationFailureHandler authFailureHandler;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -46,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().sameOrigin();
+
 		// define accessDecisionManager, Specify that URLs are allowed by any
 		// authenticated user
 		http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(customAccessDecisionManager());
@@ -61,7 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin().failureHandler(authFailureHandler);
 
 		// define logout pages
-		http.logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/login").invalidateHttpSession(true);
+		http.logout().logoutUrl("/j_spring_security_logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
+				.invalidateHttpSession(true);
 
 		// session manage
 		http.sessionManagement().sessionFixation().changeSessionId().maximumSessions(1).expiredUrl("/");

@@ -3,18 +3,13 @@
  */
 package com.springboot.demo.controller;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.springboot.demo.dao.UserRepository;
-import com.springboot.demo.model.UserModel;
-
 
 /**
  * @author Administrator
@@ -24,10 +19,20 @@ import com.springboot.demo.model.UserModel;
 @RequestMapping("/Public")
 public class PublicController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
-	@RequestMapping(value="login", method=RequestMethod.GET)
-	public ModelAndView login(){	
-		ModelAndView mv = new ModelAndView("Public/login");    
+
+	public String getCurrentUsername() {
+		if (SecurityContextHolder.getContext().getAuthentication() == null) {
+			return "";
+		} else {
+			logger.info("+++++++++++++++++++++++" + SecurityContextHolder.getContext().getAuthentication().getName());
+			return SecurityContextHolder.getContext().getAuthentication().getName();
+		}
+	}
+
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public ModelAndView login() {
+		//this.getCurrentUsername();
+		ModelAndView mv = new ModelAndView("Public/login");
 		return mv;
 	}
 
