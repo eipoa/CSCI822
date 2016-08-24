@@ -52,10 +52,11 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
 			map.put("data", "");
 			ObjectMapper om = new ObjectMapper();
 			String jsonString = om.writeValueAsString(map);
-			logger.info("------------------com.BugTracker Login Failure!   " + jsonString);
+			logger.info("------------------AjaxAuthenticationFailureHandler Login Failure!   " + jsonString);
 			OutputStream out = response.getOutputStream();
 			out.write(jsonString.getBytes());
 		}else{
+			logger.info("------------------AuthenticationFailureHandler Login Failure!");
 			super.onAuthenticationFailure(request, response, exception);
 		}
 	}

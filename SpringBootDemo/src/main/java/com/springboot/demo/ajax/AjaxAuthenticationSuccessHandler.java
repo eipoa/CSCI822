@@ -53,17 +53,15 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 			headermap.put(key, value);
 		}
 		logger.info(headermap.toString());*/
-		logger.info("---------------------isAjax------- "+request.getParameter("isAjax"));
 		
 		if (request.getParameter("isAjax").equals("1")) {
-			//logger.info("------------------com.BugTracker Login Success!");
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", true);
 			map.put("info", "login successfully.");
 			map.put("data", getReturnUrl(request, response));
 			ObjectMapper om = new ObjectMapper();
 			String jsonString = om.writeValueAsString(map);
-			logger.info("------------------com.BugTracker Login Success!   " + jsonString);
+			logger.info("------------------AjaxAuthenticationSuccessHandler Login Success!   " + jsonString);
 			//OutputStream out = response.getOutputStream();
 			//out.write(jsonString.getBytes());
 			response.setContentType("application/json"); 
@@ -71,6 +69,7 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
             response.getWriter().print(jsonString);  
             response.getWriter().flush(); 
 		} else {
+			logger.info("------------------AuthenticationSuccessHandler Login Success!");
 			super.onAuthenticationSuccess(request, response, authentication);
 		}
 	}

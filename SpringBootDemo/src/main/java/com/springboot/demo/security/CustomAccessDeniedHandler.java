@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
+import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * @author Administrator
  *
  */
+@Component
 public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -38,10 +40,11 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 			map.put("data", "");
 			ObjectMapper om = new ObjectMapper();
 			String jsonString = om.writeValueAsString(map);
-			logger.info("------------------com.BugTracker 403!   " + jsonString);
+			logger.info("------------------Ajax CustomAccessDeniedHandler!   " + jsonString);
 			OutputStream out = response.getOutputStream();
 			out.write(jsonString.getBytes());
 		}else{
+			logger.info("------------------AccessDeniedHandler   ");
 			super.handle(request, response, accessDeniedException);
 		}
 	}

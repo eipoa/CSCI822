@@ -1,6 +1,6 @@
 package com.springboot.demo.exception;
 
-public class ErrorInfo<T> {
+public class CoustomErrorInfo<T> {
 
     public static final Integer OK = 0;
     public static final Integer ERROR = 100;

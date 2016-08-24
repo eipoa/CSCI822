@@ -24,7 +24,7 @@ public class PublicController {
 		if (SecurityContextHolder.getContext().getAuthentication() == null) {
 			return "";
 		} else {
-			logger.info("+++++++++++++++++++++++" + SecurityContextHolder.getContext().getAuthentication().getName());
+			logger.info("---------------------- " + SecurityContextHolder.getContext().getAuthentication().getName());
 			return SecurityContextHolder.getContext().getAuthentication().getName();
 		}
 	}
@@ -36,4 +36,10 @@ public class PublicController {
 		return mv;
 	}
 
+	@RequestMapping(value = "error", method = RequestMethod.GET)
+	public ModelAndView error() {
+		//this.getCurrentUsername();
+		ModelAndView mv = new ModelAndView("Public/error");
+		return mv;
+	}
 }

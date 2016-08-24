@@ -8,6 +8,8 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -24,7 +26,8 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 @RestController
 public class GlobalExceptionHandler {
-	public static final String DEFAULT_ERROR_VIEW = "error";
+	public static final String DEFAULT_ERROR_VIEW = "/error";
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@ExceptionHandler(value = Exception.class)
 	public ModelAndView defaultErrorHandler(HttpServletRequest req, HttpServletResponse rep, Exception e)
@@ -35,11 +38,10 @@ public class GlobalExceptionHandler {
 		// AnnotationUtils is a Spring Framework utility class.
 		if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
 			throw e;
-
+		logger.info("----------- GlobalExceptionHandler, common Exceptions!");
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("exception", e);
-		mav.addObject("path", req.getRequestURI());// getRequestURL includes
-													// host
+		mav.addObject("path", req.getRequestURI());
 		mav.addObject("timestamp", new Date().toString());
 		mav.addObject("status", rep.getStatus());
 		mav.setViewName(DEFAULT_ERROR_VIEW);
@@ -47,12 +49,13 @@ public class GlobalExceptionHandler {
 	}
 
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(value = JsonException.class)
+	@ExceptionHandler(value = CoustomJsonException.class)
 	@ResponseBody
-	public ErrorInfo<String> jsonErrorHandler(HttpServletRequest req, JsonException e) throws Exception {
-		ErrorInfo<String> r = new ErrorInfo<>();
+	public CoustomErrorInfo<String> jsonErrorHandler(HttpServletRequest req, CoustomJsonException e) throws Exception {
+		logger.info("----------- GlobalExceptionHandler, Ajax Exceptions!");
+		CoustomErrorInfo<String> r = new CoustomErrorInfo<>();
 		r.setMessage(e.getMessage());
-		r.setCode(ErrorInfo.ERROR);
+		r.setCode(CoustomErrorInfo.ERROR);
 		r.setData("Some Data");
 		r.setUrl(req.getRequestURL().toString());
 		return r;
