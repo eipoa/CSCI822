@@ -32,7 +32,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException,
 			ServletException {
-		if (request.getParameter("isAjax").equals("1")) {
+		if (request.getParameter("isAjax")!=null && request.getParameter("isAjax").equals("1")) {
 			//logger.info("------------------com.BugTracker Login Failure!");
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", false);

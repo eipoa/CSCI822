@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.ajax;
+package com.springboot.demo.security;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -26,7 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Component
-public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	/* (non-Javadoc)
 	 * @see org.springframework.security.web.authentication.AuthenticationFailureHandler#onAuthenticationFailure(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.springframework.security.core.AuthenticationException)
@@ -44,7 +44,7 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
 		}
 		logger.info(headermap.toString());*/
 		
-		if (request.getParameter("isAjax").equals("1")) {
+		if (request.getParameter("isAjax")!=null && request.getParameter("isAjax").equals("1")) {
 			//logger.info("------------------com.BugTracker Login Failure!");
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", false);

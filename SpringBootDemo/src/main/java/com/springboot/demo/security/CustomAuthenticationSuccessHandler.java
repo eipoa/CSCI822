@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.ajax;
+package com.springboot.demo.security;
 
 import java.io.IOException;
 //import java.io.OutputStream;
@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @Component
-public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/*
@@ -54,7 +54,7 @@ public class AjaxAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuc
 		}
 		logger.info(headermap.toString());*/
 		
-		if (request.getParameter("isAjax").equals("1")) {
+		if (request.getParameter("isAjax")!=null && request.getParameter("isAjax").equals("1")) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", true);
 			map.put("info", "login successfully.");

@@ -15,9 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.springboot.demo.ajax.AjaxAuthenticationFailureHandler;
-import com.springboot.demo.ajax.AjaxAuthenticationSuccessHandler;
-
 /**
  * @author Administrator
  *         http://satishab.blogspot.com.au/2012/10/part-4-securing-web-application-with.html
@@ -32,9 +29,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
 	@Autowired
-	private AjaxAuthenticationSuccessHandler authSuccessHandler;
+	private CustomAuthenticationSuccessHandler authSuccessHandler;
 	@Autowired
-	private AjaxAuthenticationFailureHandler authFailureHandler;
+	private CustomAuthenticationFailureHandler authFailureHandler;
+	@Autowired
+	private CustomAccessDeniedHandler accessDeniedHandler;
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
@@ -50,7 +49,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// define accessDecisionManager, Specify that URLs are allowed by any
 		// authenticated user
 		http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(customAccessDecisionManager());
-
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
+		 
 		// the resources under the Public do not need permission
 		http.authorizeRequests().antMatchers("/Public/**").permitAll();
 
