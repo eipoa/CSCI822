@@ -5,11 +5,13 @@ package com.springboot.demo.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.springboot.demo.util.PublicFunction;
 
 /**
  * @author Administrator
@@ -19,26 +21,25 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/Public")
 public class PublicController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
-	public String getCurrentUsername() {
-		if (SecurityContextHolder.getContext().getAuthentication() == null) {
-			return "";
-		} else {
-			logger.info("---------------------- " + SecurityContextHolder.getContext().getAuthentication().getName());
-			return SecurityContextHolder.getContext().getAuthentication().getName();
-		}
-	}
-
+	
+	@Autowired  
+	private PublicFunction pf;// = new PublicFunction();
+	
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public ModelAndView login() {
-		//this.getCurrentUsername();
-		ModelAndView mv = new ModelAndView("Public/login");
-		return mv;
+		if (!pf.isLogin()) {
+			logger.info("--------------- null null null ------------");
+			ModelAndView mv = new ModelAndView("Public/login");
+			return mv;
+		} else {
+			logger.info("--------------- ok ok ok ------------");
+			ModelAndView mv = new ModelAndView("index");
+			return mv;
+		}
 	}
 
 	@RequestMapping(value = "error", method = RequestMethod.GET)
 	public ModelAndView error() {
-		//this.getCurrentUsername();
 		ModelAndView mv = new ModelAndView("Public/error");
 		return mv;
 	}

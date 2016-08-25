@@ -12,10 +12,13 @@ import java.util.Map;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
@@ -23,6 +26,7 @@ import org.springframework.security.web.savedrequest.SavedRequest;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.demo.util.PublicFunction;
 
 /**
  * @author Administrator
@@ -31,7 +35,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
+	
+	@Autowired  
+	private PublicFunction pf;// = new PublicFunction();
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -53,8 +59,12 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			headermap.put(key, value);
 		}
 		logger.info(headermap.toString());*/
+
+		UserDetails userDetails = (UserDetails) authentication.getPrincipal(); 
+		HttpSession session = request.getSession(true);  
+		session.setAttribute("USER_STATE", userDetails);
 		
-		if (request.getParameter("isAjax")!=null && request.getParameter("isAjax").equals("1")) {
+		if (this.pf.isAjax()) {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", true);
 			map.put("info", "login successfully.");
@@ -68,7 +78,8 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			response.setCharacterEncoding("UTF-8");
             response.getWriter().print(jsonString);  
             response.getWriter().flush(); 
-		} else {
+            super.clearAuthenticationAttributes(request);
+		//} else {
 			logger.info("------------------AuthenticationSuccessHandler Login Success!");
 			super.onAuthenticationSuccess(request, response, authentication);
 		}

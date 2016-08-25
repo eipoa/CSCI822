@@ -35,26 +35,28 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 			throws AccessDeniedException, InsufficientAuthenticationException {
 		// TODO Auto-generated method stub
 		logger.info("------------------com.BugTracker AccessDecisionManager");
-		if (null == configAttributes) {
+		/*if (null == configAttributes) {
 			return;
-		}
+		}*/
 
 		// 根据object取得资源所需的角色，进行判断
-		String url = ((FilterInvocation) object).getRequestUrl();
+		logger.info("------------------"+object.toString());
+		String url = ((FilterInvocation) object).getHttpRequest().getRequestURI();
+		logger.info("------------------"+((FilterInvocation) object).getHttpRequest().getRequestURI());
 		// String url1 = ((FilterInvocation) object).getFullRequestUrl();//
 		// Url=/ fullUrl=http://localhost:8080/
 		Collection<String> needRoles = permissionRepo.findAllRolename(url);
 		for (GrantedAuthority gra : authentication.getAuthorities()) {
+			// admin is always ok
+			if(gra.getAuthority().trim().equals("ROLE_ADMIN")) return;
 			for (String needRole : needRoles) {
+				logger.info(needRole + "====" + gra.getAuthority());
 				if (needRole.trim().equals(gra.getAuthority().trim())) {
 					return;
 				}
 			}
 		}
-		// String method = ((FilterInvocation)
-		// object).getHttpRequest().getMethod();
-		if (url == "ROLE_USER")
-			return;
+		
 		throw new AccessDeniedException("Access Denied");
 	}
 

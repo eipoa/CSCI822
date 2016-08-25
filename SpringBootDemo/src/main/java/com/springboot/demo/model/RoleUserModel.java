@@ -20,13 +20,11 @@ public class RoleUserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
 	@NotNull
 	private int roleid;
-	
 	@NotNull
 	private int userid;
-
+	
 	public int getId() {
 		return id;
 	}
@@ -50,5 +48,4 @@ public class RoleUserModel {
 	public void setUserid(int userid) {
 		this.userid = userid;
 	}
-	
 }

@@ -7,8 +7,7 @@ package com.springboot.demo.exception;
  * @blog http://blog.didispace.com
  */
 public class CoustomJsonException extends Exception {
-
-    /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 962694786640024741L;

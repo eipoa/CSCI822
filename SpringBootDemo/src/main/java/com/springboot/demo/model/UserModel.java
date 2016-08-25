@@ -20,10 +20,24 @@ public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
 	@NotNull
 	private String username;
-	
+	@NotNull
+	private String password;
+	@NotNull
+	private String first_name;
+	@NotNull
+	private String last_name;
+	private int age;
+	private String email;
+	@NotNull
+	private int status = 1;
+
+	/**
+	 * 1: active
+	 * 0: frozen
+	 */
+
 	public String getUsername() {
 		return username;
 	}
@@ -31,26 +45,6 @@ public class UserModel {
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
-	@NotNull
-	private String password;
-	
-	@NotNull
-	private String first_name;
-
-	@NotNull
-	private String last_name;
-
-	private int age;
-	
-	private String email;
-	
-	/**
-	 * 1: active
-	 * 0: frozen
-	 */
-	@NotNull
-	private int status = 1;
 
 	public String getPassword() {
 		return password;

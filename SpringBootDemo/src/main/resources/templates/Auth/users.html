@@ -1,34 +1,60 @@
-<table id="dg" class="easyui-datagrid" title="users list" style="width:auto;height:335px"
-		data-options="
+<table id="dg" class="easyui-datagrid" title="users list"
+	style="width: auto; height: 335px"
+	data-options="
 			rownumbers:true,
 			singleSelect:true,
 			pagination:true,
-			url:'/data/data_user.json',
+			url:'/Auth/userlist?sort=username&order=asc',
 			method:'get',
 			idField:'id',
 			rowStyler:rowStatus,
-			toolbar:'#tb'"><!-- dg_toolbar //backend.js-->
+			toolbar:'#tb'">
+	<!-- dg_toolbar //backend.js-->
 	<thead>
 		<tr>
-			<th data-options="field:'id',width:100">User ID</th>				
-			<th data-options="field:'firstname',width:100">First Name</th>	
-			<th data-options="field:'lastname',width:300">Last Name</th>
+			<th data-options="field:'username',width:100">User ID</th>
+			<th data-options="field:'first_name',width:100">First Name</th>
+			<th data-options="field:'last_name',width:300">Last Name</th>
+			<th data-options="field:'age',width:150">Age</th>
 			<th data-options="field:'email',width:150">E-mail</th>
-			<th data-options="field:'group',width:150">Group Info</th>
-			<th data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
+			<th
+				data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
 		</tr>
 	</thead>
 </table>
 
 <!-- tool bar-->
-<div id="tb" style="padding:2px 5px;">
-	<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true">Add</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true">Edit</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true">Remove</a>
-	<input class="easyui-textbox" data-options="buttonText:'Search',buttonIcon:'icon-search',prompt:'User ID...',width:300" />
+<div id="tb" style="padding: 2px 5px;">
+	<a href="javascript:void(0)" class="easyui-linkbutton"
+		data-options="iconCls:'icon-add', plain:true">Add</a> <a
+		href="javascript:void(0)" class="easyui-linkbutton"
+		data-options="iconCls:'icon-edit', plain:true">Edit</a> <a
+		href="javascript:void(0)" class="easyui-linkbutton"
+		data-options="iconCls:'icon-remove', plain:true">Remove</a>
+	<div style="float: right">
+		<input id="role" class="easyui-combobox" name="role"
+			data-options="
+	                    valueField: 'id',
+	                    textField: 'roleName',
+	                    label:'Select Role',
+	                    labelAlign: 'right',
+	                    method: 'get',
+	                    width: 250,
+	                    url:'/Auth/listrolename',
+	                    panelHeight:150"></input>
+		<input id="username" class="easyui-textbox" name="username"
+			data-options="
+						buttonText:'Search',
+						buttonIcon:'icon-search',
+						label:'Username',
+						labelAlign: 'right',
+						prompt:'User ID...',
+						width:320,
+						onClickButton:search"></input>
+	</div>
 </div>
 
-<!-- edit window-->
+<!-- edit window
 <div id="editw" class="easyui-dialog" style="padding:10px"
 		data-options="
 			width:416,
@@ -37,7 +63,7 @@
 			closed:true,
 			buttons:ew_buttons">
 	<form id="fm" method="post">
-		<table class="" align="center" valign="middle" cellspacing="0px"><!--  -->
+		<table class="" align="center" valign="middle" cellspacing="0px">
 			<tr>
 				<th class="tRight">xxxx</th>
 				<td>
@@ -59,20 +85,55 @@
 			</tr>
 		</table>
 	</form>
-</div>
+</div>-->
 
 <script type="text/javascript">
-	$(function(){
+	function test() {
+		alert($('#username').textbox('getValue'));
+	}
+	
+	function formatStatus(value, row, index) {
+		ret = '<input class="easyui-switchbutton" ';
+		ret += 'data-options="width:50, height: 22, ';
+		ret += 'onChange:function(checked){reverseStatus(' + row.id + ');}"';
+		switch (value) {
+		case 1:
+			//return 	'<span style="color:green;"><a herf="javascript:void(0)" onclick="switchStatus('+row.id+')">(Ok)</a></span>';
+			return ret + ' checked>';
+			break;
+		case 0:
+			//return 	'<span style="color:red;"><a herf="javascript:void(0)" onclick="switchStatus('+row.id+')">(Stop)</a></span>';
+			return ret + '>';
+			break;
+		default:
+			return value;
+		}
+	}
+
+	function search(){
+		var query = {
+				role: $('#role').combobox('getValue'),
+				username : $('#username').textbox('getValue')
+			};
+		$("#dg").datagrid('load',query);			
+	}
+	
+	$(function() {
+
 		// dynamic bind datagrid
 		$('#dg').datagrid({
-			onLoadSuccess:function(){
+			onLoadSuccess : function() {
 				// Get this datagrid's panel object
 				$(this).datagrid('getPanel')
-					// for all easyui-linkbutton <a>'s make them a linkbutton
-					.find('input.easyui-switchbutton').switchbutton();
+				// for all easyui-linkbutton <a>'s make them a linkbutton
+				.find('input.easyui-switchbutton').switchbutton();
+			},
+			onLoadError :function(XMLHttpRequest){
+				console.log(XMLHttpRequest);
+				ajaxerror(XMLHttpRequest.responseJSON);
 			}
 		});
-		
+
 		// dynamic bind edit window--
 		//$('#editw').dialog();
 	});

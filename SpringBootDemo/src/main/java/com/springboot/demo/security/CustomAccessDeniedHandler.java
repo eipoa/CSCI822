@@ -14,11 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.springboot.demo.util.PublicFunction;
 
 /**
  * @author Administrator
@@ -27,13 +29,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Component
 public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
+	@Autowired  
+	private PublicFunction pf;// = new PublicFunction();
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
-			AccessDeniedException accessDeniedException) throws IOException,
-			ServletException {
-		if (request.getParameter("isAjax")!=null && request.getParameter("isAjax").equals("1")) {
-			//logger.info("------------------com.BugTracker Login Failure!");
+			AccessDeniedException accessDeniedException) throws IOException, ServletException {
+		if (this.pf.isAjax()) {
+			// logger.info("------------------com.BugTracker Login Failure!");
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", false);
 			map.put("info", accessDeniedException.getMessage());
@@ -43,7 +47,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 			logger.info("------------------Ajax CustomAccessDeniedHandler!   " + jsonString);
 			OutputStream out = response.getOutputStream();
 			out.write(jsonString.getBytes());
-		}else{
+		} else {
 			logger.info("------------------AccessDeniedHandler   ");
 			super.handle(request, response, accessDeniedException);
 		}

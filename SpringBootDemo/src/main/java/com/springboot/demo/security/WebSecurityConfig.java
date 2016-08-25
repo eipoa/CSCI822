@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// authenticated user
 		http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(customAccessDecisionManager());
 		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);
-		 
+
 		// the resources under the Public do not need permission
 		http.authorizeRequests().antMatchers("/Public/**").permitAll();
 
@@ -62,8 +62,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.formLogin().failureHandler(authFailureHandler);
 
 		// define logout pages
-		http.logout().logoutUrl("/j_spring_security_logout").deleteCookies("JSESSIONID").logoutSuccessUrl("/login")
-				.invalidateHttpSession(true);
+		http.logout().logoutUrl("/j_spring_security_logout")
+				.deleteCookies("JSESSIONID").logoutSuccessUrl("/login").invalidateHttpSession(true);
 
 		// session manage
 		http.sessionManagement().sessionFixation().changeSessionId().maximumSessions(1).expiredUrl("/");

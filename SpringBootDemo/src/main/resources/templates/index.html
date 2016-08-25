@@ -20,9 +20,9 @@
 			<!--#6c6c6c-->
 			<span style="float: right; padding-right: 20px;"> <a
 				href="javascript:void(0)" class="easyui-linkbutton"
-				data-options="plain:true, iconCls:'icon-edit'" style="">Change
+				data-options="plain:true, iconCls:'icon-edit'" style="color:#fff">Change
 					Password</a> <a id="btn-logout" href="/j_spring_security_logout" class="easyui-linkbutton"
-				data-options="plain:true, iconCls:'icon-logout'" style="">logout</a>
+				data-options="plain:true, iconCls:'icon-logout'" style="color:#fff">logout</a>
 			</span>
 		</div>
 	</div>
@@ -71,7 +71,10 @@
 	<div data-options="region:'center',title:''" style="padding: 0px;">
 		<!-- background:#eee; -->
 		<div id="Main_p" class="easyui-panel" title="Wellcome!"
-			data-options="fit:true,border:false, loadingMessage:''"
+			data-options="fit:true,border:false, 
+				loadingMessage:'',
+				onBeforeLoad:checkUrl,
+				onLoad:checkContent"
 			style="padding: 5px;">
 			<!--
 		data-options="
@@ -113,8 +116,8 @@
 			});
 		}
 		// bind logout
-		/*$('#btn-logout').bind('click', function(){
-			location.href ="/j_spring_security_logout";
+		$('#btn-logout').bind('click', function(){
+			location.href ="/j_spring_security_logout?isAjax=1";
 			$.ajax({
 			    //提交数据的类型 POST GET
 			    type:"GET",
@@ -127,9 +130,17 @@
 			    //在请求之前调用的函数
 			    //beforeSend:function(){$("#msg").html("logining");},
 			    //成功返回之后调用的函数            
-			    success:function(data){
-			   		//$("#msg").html(decodeURI(data));           
-			    },
+			    success:function(result){
+					var result = eval('('+result+')');					
+					if (result.status){
+						location.href="/";
+					} else {
+						$.messager.show({
+							title: 'Error',
+							msg: result.info
+						});
+					}
+				},
 			    //调用执行后调用的函数
 			    complete: function(XMLHttpRequest, textStatus){
 			       //alert(XMLHttpRequest.responseText);
@@ -141,7 +152,7 @@
 			        //请求出错处理
 			    }        
 			 });
-		});*/
+		});
 	});
 	function navClick(obj) {
 		// show mask window
@@ -162,7 +173,7 @@
 			$('#Main_p').panel('refresh', 'Public/login.html');
 			break;
 		case "m0201":
-			$('#Main_p').panel('refresh', 'Auth/users');
+			$('#Main_p').panel('refresh', 'Auth/users.html');
 			break;
 		case "m0202":
 			$('#Main_p').panel('refresh', 'Auth/resources');

@@ -20,16 +20,23 @@ public class RoleModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
-	
 	@NotNull
 	private String rolename;
-
 	private String description;
-
+	
 	public int getId() {
 		return id;
 	}
 
+	public RoleModel(){
+		
+	}
+	public RoleModel(int _id, String _rolename, String _desc){
+		this.id= _id;
+		this.rolename= _rolename;
+		this.description= _desc;
+	}
+	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -49,6 +56,5 @@ public class RoleModel {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
 }

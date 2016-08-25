@@ -10,6 +10,21 @@ function show(title, msg){
 function alert_(msg){
 	$.messager.alert('Error',msg);
 }
+function ajaxerror(obj){
+	// 用来保存所有的属性名称和值
+	var props = "";
+	// 开始遍历
+	for(var p in obj){ 
+		// 方法
+		if(typeof(obj[p])=="function"){ 
+		    //obj[p]();
+		}else{ 
+			// p 为属性名称，obj[p]为对应属性的值
+		   props+= p + ": " + obj[p] + "\t";
+		} 
+	}
+	alert_(props);
+}
 function confirm1(){
 	$.messager.confirm('Confirm', 'Are you confirm this?', function(r){
 		if (r){
@@ -84,23 +99,23 @@ var ew_buttons=[{
 	}];
 
 // to convert status field to switchbutton
-function formatStatus(value,row,index){
+/*function formatStatus(value,row,index){
 	ret='<input class="easyui-switchbutton" ';
 	ret+='data-options="width:50, height: 22, ';
 	ret+='onChange:function(checked){reverseStatus('+row.id+');}"';
 	switch(value){
-		case "1":
+		case 1:
 			//return 	'<span style="color:green;"><a herf="javascript:void(0)" onclick="switchStatus('+row.id+')">(Ok)</a></span>';
 			return ret + ' checked>';
 			break;
-		case "0":
+		case 0:
 			//return 	'<span style="color:red;"><a herf="javascript:void(0)" onclick="switchStatus('+row.id+')">(Stop)</a></span>';
 			return ret + '>';
 			break;
 		default:
 			return value;
 	}
-}
+}*/
 // make the row with false status gray & italic
 function rowStatus(index,row){
 	if (row.status != 1){
@@ -112,7 +127,19 @@ function reverseStatus(rowid){
 	show("change status",rowid);
 }
 
+// check url of main panel
+function checkUrl(){
+	console.log($(this).panel("options").href);
+	console.log($(this).panel("options").href=="Public/login.html");
+	if($(this).panel("options").href == "/" || $(this).panel("options").href=="Public/login.html"){
+		location.href= $(this).panel("options").href;
+		return false;
+	};
+}
 
+function checkContent(){
+	console.log($(this).panel("options").content);
+}
 
 function clockon() {
     var now = new Date();
