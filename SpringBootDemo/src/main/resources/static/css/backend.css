@@ -131,16 +131,7 @@ a:active {
 .icon-tool{
 	background:url('../scripts/themes/icons/tool.png') no-repeat center center;
 }
-/*.icon-add{
-	background:url('../scripts/themes/icons/add1.png') no-repeat center center;
+.panel-header {
+    //background-color: rgb(0, 129, 194);
 }
-.icon-edit{
-	background:url('../scripts/themes/icons/edit1.png') no-repeat center center;
-}
-.icon-remove{
-	background:url('../scripts/themes/icons/remove1.png') no-repeat center center;
-}
-.icon-refresh{
-	background:url('../scripts/themes/icons/refresh1.png') no-repeat center center;
-}*/
 

@@ -29,7 +29,7 @@ import com.springboot.demo.util.PublicFunction;
 @ControllerAdvice
 @RestController
 public class GlobalControllerExceptionHandler {
-	public static final String DEFAULT_ERROR_VIEW = "/error";
+	public static final String DEFAULT_ERROR_VIEW = "/Public/error";
 
 	@Autowired  
 	private PublicFunction pf;// = new PublicFunction();

@@ -1,3 +1,12 @@
+// fullscreen mask
+function fullScreenMask(action){
+	if(action=='open'){
+		$('#w').window('center');
+		$('#w').window('open');
+	}else{
+		$('#w').window('close');
+	}
+}
 // popup message
 function show(title, msg){
 	if(title=="") title="Messages";
@@ -99,38 +108,55 @@ var ew_buttons=[{
 	}];
 
 // to convert status field to switchbutton
-/*function formatStatus(value,row,index){
+function formatStatus(value,row,index){
 	ret='<input class="easyui-switchbutton" ';
 	ret+='data-options="width:50, height: 22, ';
-	ret+='onChange:function(checked){reverseStatus('+row.id+');}"';
+	ret+='onChange:function(checked){reverseStatus(event,'+row.id+','+ index+');}"';
 	switch(value){
 		case 1:
-			//return 	'<span style="color:green;"><a herf="javascript:void(0)" onclick="switchStatus('+row.id+')">(Ok)</a></span>';
 			return ret + ' checked>';
 			break;
 		case 0:
-			//return 	'<span style="color:red;"><a herf="javascript:void(0)" onclick="switchStatus('+row.id+')">(Stop)</a></span>';
 			return ret + '>';
 			break;
 		default:
 			return value;
 	}
-}*/
+}
 // make the row with false status gray & italic
 function rowStatus(index,row){
 	if (row.status != 1){
 		return 'color:#7b7b7b; font-style: italic';
 	}
 }
+// select a row of datagrid, and fill data into fm
+function dgselect(index,row){
+	$('#fm').form('clear');
+	$('#fm').form('load', row);
+	if(row.status==1){
+		$('#status').switchbutton('check');
+	}else{
+		$('#status').switchbutton('uncheck');
+	}
+}
 // a fast way to modify status value
-function reverseStatus(rowid){
-	show("change status",rowid);
+function reverseStatus(event_obj, id, index){
+	$.ajax({
+        type: "PUT",
+        url: MODEL+"/status",
+        data: {id:id},
+        dataType: "json",
+        success: function(result){
+        	// lazy way
+        	$('#dg').datagrid('reload');
+         }
+    });
 }
 
 // check url of main panel
 function checkUrl(){
-	console.log($(this).panel("options").href);
-	console.log($(this).panel("options").href=="Public/login.html");
+	//console.log($(this).panel("options").href);
+	//console.log($(this).panel("options").href=="Public/login.html");
 	if($(this).panel("options").href == "/" || $(this).panel("options").href=="Public/login.html"){
 		location.href= $(this).panel("options").href;
 		return false;
@@ -138,7 +164,7 @@ function checkUrl(){
 }
 
 function checkContent(){
-	console.log($(this).panel("options").content);
+	//console.log($(this).panel("options").content);
 }
 
 function clockon() {

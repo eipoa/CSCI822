@@ -40,7 +40,7 @@ public class RoleController {
 	 * 
 	 * @return json data of role name list for listbox or combox
 	 */
-	@RequestMapping(value = "listrolename", method = RequestMethod.GET)
+	@RequestMapping(value = "role/listname", method = RequestMethod.GET)
 	public List<RoleModel> listRoleName() {
 		List<RoleModel> result= repo.findAll();
 		result.add(0, new RoleModel(-1, "All", ""));

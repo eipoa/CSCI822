@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
-//import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -67,6 +67,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		// session manage
 		http.sessionManagement().sessionFixation().changeSessionId().maximumSessions(1).expiredUrl("/");
+		
 	}
 
 	// register CoustomUserDetailService as a bean
@@ -80,7 +81,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	// the next step is to check the role (accessDecisionManager)
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(coustomUserDetailService());// .passwordEncoder(new
-															// Md5PasswordEncoder());
+		auth.userDetailsService(coustomUserDetailService()).passwordEncoder(new Md5PasswordEncoder());
 	}
 }

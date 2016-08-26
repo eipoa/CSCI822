@@ -4,7 +4,6 @@
 package com.springboot.demo.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -35,7 +35,7 @@ import com.springboot.demo.util.PageContent;
  */
 @RestController
 @RequestMapping("/Auth")
-public class UserController {
+public class UserController extends CommonController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
@@ -46,7 +46,7 @@ public class UserController {
 	 * 
 	 * @return view of all user
 	 */
-	@RequestMapping(value = "users", method = RequestMethod.GET)
+	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public ModelAndView userIndex() {
 		ModelAndView mv = new ModelAndView("Auth/users");
 		return mv;
@@ -60,15 +60,15 @@ public class UserController {
 	 * @return
 	 * @throws JsonProcessingException
 	 */
-	@RequestMapping(value = "userlist", method = RequestMethod.GET)
+	@RequestMapping(value = "user/list", method = RequestMethod.GET)
 	public Map<String, Object> userList(HttpServletRequest request, PageContent page,
 			@RequestParam(value = "role", required = false) String role,
 			@RequestParam(value = "username", required = false) String username) throws JsonProcessingException {
 		// keyword
 		Map<String, String> keywords = new HashMap<String, String>();
-		if (role!=null && !role.trim().equals(""))
+		if (role != null && !role.trim().equals(""))
 			keywords.put("role", role);
-		if (username!=null && !username.trim().equals(""))
+		if (username != null && !username.trim().equals(""))
 			keywords.put("username", username);
 
 		// page
@@ -92,7 +92,7 @@ public class UserController {
 		Map<String, Object> map = repo.findAll(keywords, pageable);
 
 		// debug
-		logger.debug("------------------ /Auth/userlist");
+		logger.debug("------------------ /Auth/user/list");
 		ObjectMapper om = new ObjectMapper();
 		String jsonString = om.writeValueAsString(map);
 		logger.debug(jsonString);
@@ -100,19 +100,24 @@ public class UserController {
 		return map;
 	}
 
-	@RequestMapping(value = "rights", method = RequestMethod.GET)
-	public ModelAndView rightIndex() {
-		ModelAndView mv = new ModelAndView("Auth/rights");
-		return mv;
-	}
-
-	/**
-	 * 
-	 * @return json data of user list
-	 */
-	@RequestMapping(value = "user", method = RequestMethod.GET)
-	public List<UserModel> listUsers() {
-		return repo.findAll();
+	@Transactional
+	@RequestMapping(value = "user/status", method = RequestMethod.PUT)
+	public String userSwitchStatus(HttpServletRequest request, @RequestParam(value = "id", required = true) int id)
+			throws JsonProcessingException {
+		try {
+			UserModel user = repo.findById(id);
+			if (user == null)
+				return ajaxReturn(false, "", "can not find the user!");
+			if (user.getStatus() == 1)
+				user.setStatus(0);
+			else
+				user.setStatus(1);
+			user= repo.saveAndFlush(user);
+			logger.info("-----------------------"+Integer.toString(user.getStatus()));
+			return ajaxReturn(true, Integer.toString(user.getStatus()), "");
+		} catch (Exception e) {
+			return ajaxReturn(false, "", e.getMessage());
+		}
 	}
 
 	/**
