@@ -10,11 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.demo.dao.UserRepository;
 import com.springboot.demo.model.UserModel;
 import com.springboot.demo.util.PageContent;
 
@@ -38,9 +37,6 @@ import com.springboot.demo.util.PageContent;
 public class UserController extends CommonController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	@Autowired
-	UserRepository repo;
-
 	/**
 	 * the main view of users
 	 * 
@@ -49,6 +45,7 @@ public class UserController extends CommonController {
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public ModelAndView userIndex() {
 		ModelAndView mv = new ModelAndView("Auth/users");
+		mv.addObject("fullname", this.getFullname());
 		return mv;
 	}
 
@@ -89,7 +86,7 @@ public class UserController extends CommonController {
 		 * Object>(); map.put("total", list.getTotalElements());// count of data
 		 * map.put("rows", list.getContent());// data of this page
 		 */
-		Map<String, Object> map = repo.findAll(keywords, pageable);
+		Map<String, Object> map = userRepo.findAll(keywords, pageable);
 
 		// debug
 		logger.debug("------------------ /Auth/user/list");
@@ -101,19 +98,51 @@ public class UserController extends CommonController {
 	}
 
 	@Transactional
-	@RequestMapping(value = "user/status", method = RequestMethod.PUT)
-	public String userSwitchStatus(HttpServletRequest request, @RequestParam(value = "id", required = true) int id)
-			throws JsonProcessingException {
+	@RequestMapping(value = "user/save", method = RequestMethod.POST)
+	public String addUser(HttpServletRequest request, UserModel user) throws Exception {
 		try {
-			UserModel user = repo.findById(id);
+			user.setPassword(new Md5PasswordEncoder().encodePassword("1", null));
+			logger.info("-----------------------add " + user.toString());
+			user = userRepo.saveAndFlush(user);
+
+			return ajaxReturn(true, Integer.toString(user.getId()), "OK");
+		} catch (Exception e) {
+			return ajaxReturn(false, "", e.getMessage());
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "user/delete", method = RequestMethod.DELETE)
+	public String addUser(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
+			throws Exception {
+		try {
+			//Integer id= Integer.parseInt(request.getParameter("id"));
+			logger.info("----------------------- delete " + id.toString());
+			UserModel user = userRepo.findById(id);
+			if (user == null)
+				return ajaxReturn(false, "", "can not find the user!");
+			logger.info("----------------------- delete " + user.toString());
+			userRepo.delete(user);
+			return ajaxReturn(true, "", "OK");
+		} catch (Exception e) {
+			return ajaxReturn(false, "", e.getMessage());
+		}
+	}
+
+	@Transactional
+	@RequestMapping(value = "user/status", method = RequestMethod.PUT)
+	public String userSwitchStatus(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
+			throws Exception {
+		try {
+			UserModel user = userRepo.findById(id);
 			if (user == null)
 				return ajaxReturn(false, "", "can not find the user!");
 			if (user.getStatus() == 1)
 				user.setStatus(0);
 			else
 				user.setStatus(1);
-			user= repo.saveAndFlush(user);
-			logger.info("-----------------------"+Integer.toString(user.getStatus()));
+			user = userRepo.saveAndFlush(user);
+			logger.info("-----------------------status " + Integer.toString(user.getStatus()));
 			return ajaxReturn(true, Integer.toString(user.getStatus()), "");
 		} catch (Exception e) {
 			return ajaxReturn(false, "", e.getMessage());
@@ -127,6 +156,6 @@ public class UserController extends CommonController {
 	 */
 	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
 	public UserModel getByID(@PathVariable int id) {
-		return repo.findOne(id);
+		return userRepo.findOne(id);
 	}
 }

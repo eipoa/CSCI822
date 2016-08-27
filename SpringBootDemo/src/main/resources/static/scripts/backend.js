@@ -1,3 +1,19 @@
+// index.html
+function addTab(title, url){
+    if ($('#tt').tabs('exists', title)){
+        $('#tt').tabs('select', title);
+    } else {
+        var content = '<iframe scrolling="auto" frameborder="0"  src="'+url+'" style="width:100%;height:100%;"></iframe>';
+        $('#tt').tabs('add',{
+            title:title,
+            content:content,
+            closable:true,
+            height: '100%'
+        });
+    }
+}
+
+
 // fullscreen mask
 function fullScreenMask(action){
 	if(action=='open'){
@@ -22,15 +38,22 @@ function alert_(msg){
 function ajaxerror(obj){
 	// 用来保存所有的属性名称和值
 	var props = "";
+	try{
+		obj= JSON.parse(obj);
+	}catch(e){
+		obj=null;
+	}
 	// 开始遍历
-	for(var p in obj){ 
-		// 方法
-		if(typeof(obj[p])=="function"){ 
-		    //obj[p]();
-		}else{ 
-			// p 为属性名称，obj[p]为对应属性的值
-		   props+= p + ": " + obj[p] + "\t";
-		} 
+	if(obj!=null){
+		for(var p in obj){ 
+			// 方法
+			if(typeof(obj[p])=="function"){ 
+			    //obj[p]();
+			}else{ 
+				// p 为属性名称，obj[p]为对应属性的值
+			   props+= p + ": " + obj[p] + "<br />";
+			} 
+		}
 	}
 	alert_(props);
 }
@@ -123,12 +146,14 @@ function formatStatus(value,row,index){
 			return value;
 	}
 }
+
 // make the row with false status gray & italic
 function rowStatus(index,row){
 	if (row.status != 1){
 		return 'color:#7b7b7b; font-style: italic';
 	}
 }
+
 // select a row of datagrid, and fill data into fm
 function dgselect(index,row){
 	$('#fm').form('clear');
@@ -139,6 +164,7 @@ function dgselect(index,row){
 		$('#status').switchbutton('uncheck');
 	}
 }
+
 // a fast way to modify status value
 function reverseStatus(event_obj, id, index){
 	$.ajax({
@@ -155,7 +181,7 @@ function reverseStatus(event_obj, id, index){
 
 // check url of main panel
 function checkUrl(){
-	//console.log($(this).panel("options").href);
+	console.log($(this).panel("options").href);
 	//console.log($(this).panel("options").href=="Public/login.html");
 	if($(this).panel("options").href == "/" || $(this).panel("options").href=="Public/login.html"){
 		location.href= $(this).panel("options").href;
@@ -163,8 +189,51 @@ function checkUrl(){
 	};
 }
 
-function checkContent(){
-	//console.log($(this).panel("options").content);
+// editing form operation
+function action(url, data, dg, method){
+	$.ajax({
+	    //提交数据的类型 POST GET
+	    type:method,
+	    //提交的网址
+	    url:url,
+	    //提交的数据
+	    data:data,//{Name:"sanmao",Password:"sanmaoword"},
+	    //返回数据的格式
+	    datatype: "json",//html",//"xml", "html", "script", "json", "jsonp", "text".
+	    //在请求之前调用的函数
+	    //beforeSend:function(){$("#msg").html("logining");},
+	    //成功返回之后调用的函数            
+	    success:function(result){
+			var result = eval('('+result+')');					
+			if (result.status){
+				dg.datagrid('reload');
+			} else {
+				$.messager.show({
+					title: 'Error',
+					msg: result.info
+				});
+			}
+		},
+	    //调用执行后调用的函数
+	    complete: function(XMLHttpRequest, textStatus){
+	       //alert(XMLHttpRequest.responseText);
+	       //alert(textStatus);
+	       //HideLoading();
+	    },
+	    //调用出错执行的函数
+	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+	    error: function(result){
+	    	//var result = eval('('+result+')');	
+	    	$.messager.show({
+				title: 'Error',
+				msg: result.responseJSON.message
+			});
+	    }        
+	 });
+}
+
+function checkContent(XMLHttpRequest){
+	console.log(XMLHttpRequest);
 }
 
 function clockon() {

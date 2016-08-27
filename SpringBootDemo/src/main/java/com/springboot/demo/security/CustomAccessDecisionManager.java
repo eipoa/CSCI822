@@ -56,7 +56,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 				}
 			}
 		}
-		
+		logger.info("------------------ throw AccessDeniedException");
 		throw new AccessDeniedException("Access Denied");
 	}
 

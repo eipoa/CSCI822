@@ -48,6 +48,7 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 			OutputStream out = response.getOutputStream();
 			out.write(jsonString.getBytes());
 		} else {
+			//????? 为什么走不到这里
 			logger.info("------------------AccessDeniedHandler   ");
 			super.handle(request, response, accessDeniedException);
 		}

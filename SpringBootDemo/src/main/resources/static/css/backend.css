@@ -1,4 +1,4 @@
-body {
+/*body {
     font-family:verdana,helvetica,arial,sans-serif;
     padding:20px;
     font-size:12px;
@@ -9,7 +9,7 @@ h2 {
     font-weight:bold;
     margin:0;
     margin-bottom:15px;
-}
+}*/
 /*a:link {
  color: #134da5;
  text-decoration: none
@@ -114,6 +114,15 @@ a:active {
  	background: #6c6c6c;
  	color: #FFF;
  }
+ .edittable {
+ 	margin:10px;
+ }
+ .edittable tr {
+ 	//height:40px;
+ }
+ .edittable tr td{
+ 	padding:5px;
+ }
 
 /* hack easyui*/
 .accordion .accordion-header-selected {
@@ -132,6 +141,6 @@ a:active {
 	background:url('../scripts/themes/icons/tool.png') no-repeat center center;
 }
 .panel-header {
-    //background-color: rgb(0, 129, 194);
+    /*background-color: rgb(0, 129, 194);*/
 }
 

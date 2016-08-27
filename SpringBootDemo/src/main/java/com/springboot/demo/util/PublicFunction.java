@@ -46,10 +46,10 @@ public class PublicFunction {
 		}
 		logger.info(headermap.toString());
 
-		/*if ((request.getParameter("isAjax") != null && request.getParameter("isAjax").equals("1"))
+		if ((request.getParameter("isAjax") != null && request.getParameter("isAjax").equals("1"))
 				|| (request.getHeader("x-requested-with") != null
-						&& request.getHeader("x-requested-with").toLowerCase().equals("xmlhttprequest"))) {*/
-		if (request.getParameter("isAjax") != null && request.getParameter("isAjax").equals("1")){
+						&& request.getHeader("x-requested-with").toLowerCase().equals("xmlhttprequest"))) {
+		//if (request.getParameter("isAjax") != null && request.getParameter("isAjax").equals("1")){
 			return true;
 		} else {
 			return false;

@@ -43,15 +43,17 @@ public class GlobalControllerExceptionHandler {
 		// the framework handle it - like the OrderNotFoundException example
 		// at the start of this post.
 		// AnnotationUtils is a Spring Framework utility class.
-		
-		if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null)
+		if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null){
+			logger.info("----------- GlobalExceptionHandler, throw ResponseStatus Exceptions!");
 			throw e;
+		}
 		if (this.pf.isAjax()) {
+			logger.info("----------- GlobalExceptionHandler, throw Ajax Exceptions!");
 			throw new CoustomJsonException(e.getMessage());
 		}
 		logger.info("----------- GlobalExceptionHandler, common Exceptions!");
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("exception", e);
+		mav.addObject("exception", e.getMessage());
 		mav.addObject("path", req.getRequestURI());
 		mav.addObject("timestamp", new Date().toString());
 		mav.addObject("status", rep.getStatus());
@@ -64,7 +66,7 @@ public class GlobalControllerExceptionHandler {
 	@ResponseBody
 	public CoustomErrorInfo<String> jsonErrorHandler(HttpServletRequest req, HttpServletResponse rep,
 			CoustomJsonException e) throws Exception {
-		logger.info("----------- GlobalExceptionHandler, Ajax Exceptions!");
+		logger.info("----------- GlobalExceptionHandler, catch Ajax Exceptions!");
 		CoustomErrorInfo<String> r = new CoustomErrorInfo<>();
 		r.setMessage(e.getMessage());
 		r.setCode(CoustomErrorInfo.ERROR);

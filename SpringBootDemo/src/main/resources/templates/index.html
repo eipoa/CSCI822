@@ -1,200 +1,167 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-<meta charset="UTF-8" />
-<title>Bug Tracker System</title>
-<!-- <link rel="stylesheet" type="text/css" href="/scripts/themes/metro/easyui.css" /> -->
-<!-- <link rel="stylesheet" type="text/css" href="/scripts/themes/bootstrap-1/jquery.ui.theme.css" /> -->
-<link rel="stylesheet" type="text/css" href="/scripts/themes/bootstrap/easyui.css" />
-<link rel="stylesheet" type="text/css" href="/scripts/themes/icon.css" />
-<link rel="stylesheet" type="text/css" href="/css/backend.css" />
-<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
-<script type="text/javascript" src="/scripts/jquery.min.js"></script>
-<script type="text/javascript" src="/scripts/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="/scripts/backend.js"></script>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SB Admin - Bootstrap Admin Template</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="/cssv1.0/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="/cssv1.0/sb-admin.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
-<body class="easyui-layout">
-	<!-- top bar 2016/0813 -->
-	<div data-options="region:'north'"
-		style="height: 30px; line-height: 20px;">
-		<div class="easyui-panel" style="background: #0081c2">
-			<!--#6c6c6c-->
-			<span style="float: right; padding-right: 20px;"> <a
-				href="javascript:void(0)" class="easyui-linkbutton"
-				data-options="plain:true, iconCls:'icon-edit'" style="color:#fff">Change
-					Password</a> <a id="btn-logout" href="/j_spring_security_logout" class="easyui-linkbutton"
-				data-options="plain:true, iconCls:'icon-logout'" style="color:#fff">logout</a>
-			</span>
-		</div>
-	</div>
-	<!-- footer bar 2016/0813 -->
-	<div data-options="region:'south'" style="height: 30px;">
-		<div class="footer">2016 By Group 15</div>
-	</div>
-	<!-- navigater bar 2016/0813 -->
-	<div data-options="region:'west',title:'Navigater',split:true"
-		style="width: 230px;">
-		<div class="easyui-accordion" fit="true" border="false">
-			<!-- for staffs to deal with bugs -->
-			<div title="Bug Management" data-options="iconCls:'icon-tool'"
-				style="overflow: auto; padding: 0px;">
-				<ul class="submenu">
-					<li><a id="m0101" href="javascript:void(0)">Assign Bug</a></li>
-					<li><a id="m0102" href="javascript:void(0)">Process Bug</a></li>
-					<li><a id="m0103" href="javascript:void(0)">Solution Check</a></li>
-					<li><a id="m0104" href="javascript:void(0)">Bug Report</a></li>
-				</ul>
-			</div>
-			<!-- to manage RBAC -->
-			<div title="User management" data-options="iconCls:'icon-tool'"
-				style="padding: 0px;">
-				<ul class="submenu">
-					<li><a id="m0201" href="javascript:void(0)">User</a></li>
-					<li><a id="m0202" href="javascript:void(0)">Resource</a></li>
-					<li><a id="m0203" href="javascript:void(0)">Group and
-							Permission</a></li>
-					<li><a id="m0204" href="javascript:void(0)">Assign Group</a></li>
-				</ul>
-			</div>
-			<!-- to manage sysytem parameter -->
-			<div title="Parameter Management" data-options="iconCls:'icon-tool'"
-				style="padding: 0px;">
-				<ul class="submenu">
-					<li><a id="m0301" href="javascript:void(0)">Product Admin</a></li>
-					<!-- what products should be maintained -->
-					<li><a id="m0302" href="javascript:void(0)">Bug Catalog</a></li>
-					<!-- interface, function ...-->
-				</ul>
-			</div>
-		</div>
-	</div>
-	<!-- main window 2016/0813 -->
-	<div data-options="region:'center',title:''" style="padding: 0px;">
-		<!-- background:#eee; -->
-		<div id="Main_p" class="easyui-panel" title="Wellcome!"
-			data-options="fit:true,border:false, 
-				loadingMessage:'',
-				onBeforeLoad:checkUrl,
-				onLoad:checkContent"
-			style="padding: 5px;">
-			<!--
-		data-options="
-                tools:[{
-                    iconCls:'icon-reload',
-                    handler:function(){
-                        $('#Main_p').panel('refresh', '_content.html');
-                    }
-                }]
-            "
-		-->
-		</div>
-	</div>
 
+<body>
 
-	<!-- mask windows -->
-	<div id="w" class="easyui-window" title="Modal Window"
-		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
-		style="width: 300px; height: 80px; padding: 10px;">Processing, please wait …</div>
+    <div id="wrapper">
+
+        <!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+			</div>
+			<!-- Top Menu Items -->
+			<ul class="nav navbar-right top-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
+						class="caret"></b></a>
+					<ul class="dropdown-menu message-dropdown">
+						<li class="message-preview"><a href="#">
+								<div class="media">
+									<span class="pull-left"> <img class="media-object" src="http://placehold.it/50x50" alt=""> </span>
+									<div class="media-body">
+										<h5 class="media-heading">
+											<strong>John Smith</strong>
+										</h5>
+										<p class="small text-muted">
+											<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
+										</p>
+										<p>Lorem ipsum dolor sit amet, consectetur...</p>
+									</div>
+								</div>
+						</a></li>
+						<li class="message-footer"><a href="#">Read All New
+								Messages</a></li>
+					</ul></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown"><i class="fa fa-bell"></i> <b
+						class="caret"></b></a>
+					<ul class="dropdown-menu alert-dropdown">
+						<li><a href="#">Alert Name <span
+								class="label label-danger">Alert Badge</span></a></li>
+						<li class="divider"></li>
+						<li><a href="#">View All</a></li>
+					</ul></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" th:if="${fullname}"><i
+						class="fa fa-user"></i> <span th:text="${fullname}">Fullname</span>
+						<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+						</li>
+						<li><a href="#"><i class="fa fa-fw fa-envelope"></i>
+								Inbox</a></li>
+						<li class="divider"></li>
+						<li><a href="/j_spring_security_logout"><i
+								class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+					</ul></li>
+			</ul>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav side-nav">
+					<li><a href="/"><i class="glyphicon glyphicon-dashboard active"></i>
+							Dashboard</a></li>
+					<li><a href="/"><i
+							class="glyphicon glyphicon-tasks"></i> Assign Bug</a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-flash"></i>
+							Process Bug</a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-refresh"></i>
+							Solution Check</a></li>
+					<li><a href="/"><i
+							class="glyphicon glyphicon-list-alt"></i> Bug Report</a></li>
+					<li>
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
+							<i class="glyphicon glyphicon-menu-hamburger"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
+						</a>
+						<ul id="demo0" class="collapse">
+							<li class=""><a href="/Auth/user">User Admin</a></li>
+							<li><a href="#">Resource</a></li>
+							<li><a href="#">Group and Permission</a></li>
+							<li><a href="#">Assign Group</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
+							<i class="glyphicon glyphicon-menu-hamburger"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
+						</a>
+						<ul id="demo1" class="collapse">
+							<li><a href="#">Product Admin</a></li>
+							<li><a href="#">Bug Catalog</a></li>
+							<li><a href="#">Mail system</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h1 class="page-header">
+                            Wellcome <small>Have a nice day!</small>
+                        </h1>
+                        <ol class="breadcrumb">
+                            <li class="active">
+                                <i class="fa fa-dashboard"></i> Dashboard
+                            </li>
+                        </ol>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+    <!-- jQuery -->
+    <script src="/js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/js/bootstrap.min.js"></script>
+
 </body>
-<script type="text/javascript">
-	$(function() {
-		// bind click for bug management
-		for (var i = 1; i < 5; i++) {
-			$('#m010' + i).bind('click', function() {
-				navClick(this);
-			});
-		}
-		// bind click for user management
-		for (var i = 1; i < 5; i++) {
-			$('#m020' + i).bind('click', function() {
-				navClick(this);
-			});
-		}
-		// bind click for parameter management
-		for (var i = 1; i < 3; i++) {
-			$('#m030' + i).bind('click', function() {
-				navClick(this);
-			});
-		}
-		// bind logout
-		$('#btn-logout').bind('click', function(){
-			location.href ="/j_spring_security_logout?isAjax=1";
-			$.ajax({
-			    //提交数据的类型 POST GET
-			    type:"GET",
-			    //提交的网址
-			    url:"/j_spring_security_logout",
-			    //提交的数据
-			    //data:{};//{Name:"sanmao",Password:"sanmaoword"},
-			    //返回数据的格式
-			    //datatype: "html",//"xml", "html", "script", "json", "jsonp", "text".
-			    //在请求之前调用的函数
-			    //beforeSend:function(){$("#msg").html("logining");},
-			    //成功返回之后调用的函数            
-			    success:function(result){
-					var result = eval('('+result+')');					
-					if (result.status){
-						location.href="/";
-					} else {
-						$.messager.show({
-							title: 'Error',
-							msg: result.info
-						});
-					}
-				},
-			    //调用执行后调用的函数
-			    complete: function(XMLHttpRequest, textStatus){
-			       //alert(XMLHttpRequest.responseText);
-			       //alert(textStatus);
-			       //HideLoading();
-			    },
-			    //调用出错执行的函数
-			    error: function(){
-			        //请求出错处理
-			    }        
-			 });
-		});
-	});
-	function navClick(obj) {
-		// show mask window
-		$('#w').window('center');
-		$('#w').window('open');
-		// according to mID to load pages respectively
-		$("#Main_p").panel('setTitle', obj.innerHTML);
-		switch (obj.id) {
-		case "m0101":
-			$('#Main_p').panel('refresh', 'Public/login.html');
-			break;
-		case "m0102":
-			$('#Main_p').panel('refresh', 'Public/login.html');
-			break;
-		case "m0103":
-			$('#Main_p').panel('refresh', 'Public/login.html');
-			break;
-		case "m0104":
-			$('#Main_p').panel('refresh', 'Public/login.html');
-			break;
-		case "m0201":
-			$('#Main_p').panel('refresh', 'Auth/user');
-			break;
-		case "m0202":
-			$('#Main_p').panel('refresh', 'Auth/resources');
-			break;
-		case "m0203":
-			$('#Main_p').panel('refresh', 'Auth/groups');
-			break;
-		case "m0204":
-			$('#Main_p').panel('refresh', 'Auth/permissions');
-			break;
-		case "m0301":
-			$('#Main_p').panel('refresh', 'Public/login.html');
-			break;
-		case "m0302":
-			$('#Main_p').panel('refresh', 'Public/login.html');
-			break;
-		}
-		// close mask window
-		$('#w').window('close', true);
-	}
-</script>
+
 </html>

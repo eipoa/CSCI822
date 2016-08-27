@@ -1,126 +1,378 @@
-<table id="dg" class="easyui-datagrid" title="users list"
-	style="width: auto; height: 335px"
-	data-options="
-			rownumbers:true,
-			singleSelect:true,
-			pagination:true,
-			url:'/Auth/user/list?sort=username&order=asc',
-			method:'get',
-			idField:'id',
-			rowStyler:rowStatus,
-			onSelect: dgselect,
-			loadMsg:'',
-			toolbar:'#tb'">
-	<!-- dg_toolbar //backend.js-->
-	<thead>
-		<tr>
-			<th data-options="field:'username',width:100">User ID</th>
-			<th data-options="field:'first_name',width:100">First Name</th>
-			<th data-options="field:'last_name',width:300">Last Name</th>
-			<th data-options="field:'age',width:150">Age</th>
-			<th data-options="field:'email',width:150">E-mail</th>
-			<th
-				data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
-		</tr>
-	</thead>
-</table>
+<!DOCTYPE html>
+<html lang="en">
 
-<!-- tool bar-->
-<div id="tb" style="padding: 2px 5px;">
-	<a href="javascript:void(0)" class="easyui-linkbutton"
-		data-options="iconCls:'icon-add', plain:true">Add</a> <a
-		href="javascript:void(0)" class="easyui-linkbutton"
-		data-options="iconCls:'icon-edit', plain:true">Edit</a> <a
-		href="javascript:void(0)" class="easyui-linkbutton"
-		data-options="iconCls:'icon-remove', plain:true">Remove</a>
-	<div style="float: right">
-		<input id="s-role" class="easyui-combobox"
-			data-options="
-	                    valueField: 'id',
-	                    textField: 'roleName',
-	                    label:'Select Role',
-	                    labelAlign: 'right',
-	                    method: 'get',
-	                    width: 250,
-	                    url:'/Auth/role/listname',
-	                    panelHeight:150"></input>
-		<input id="s-username" class="easyui-textbox"
-			data-options="
-						buttonText:'Search',
-						buttonIcon:'icon-search',
-						label:'Username',
-						labelAlign: 'right',
-						prompt:'User ID...',
-						width:320,
-						onClickButton:search"></input>
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<title>SB Admin - Bootstrap Admin Template</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="/cssv1.0/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="/cssv1.0/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css"
+	href="/scripts/themes/metro/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/scripts/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="/css/backend.css" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet"
+	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+
+<!-- Custom Fonts -->
+<link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet"
+	type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+			</div>
+			<!-- Top Menu Items -->
+			<ul class="nav navbar-right top-nav">
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
+						class="caret"></b></a>
+					<ul class="dropdown-menu message-dropdown">
+						<li class="message-preview"><a href="#">
+								<div class="media">
+									<span class="pull-left"> <img class="media-object" src="http://placehold.it/50x50" alt=""> </span>
+									<div class="media-body">
+										<h5 class="media-heading">
+											<strong>John Smith</strong>
+										</h5>
+										<p class="small text-muted">
+											<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
+										</p>
+										<p>Lorem ipsum dolor sit amet, consectetur...</p>
+									</div>
+								</div>
+						</a></li>
+						<li class="message-footer"><a href="#">Read All New
+								Messages</a></li>
+					</ul></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown"><i class="fa fa-bell"></i> <b
+						class="caret"></b></a>
+					<ul class="dropdown-menu alert-dropdown">
+						<li><a href="#">Alert Name <span
+								class="label label-danger">Alert Badge</span></a></li>
+						<li class="divider"></li>
+						<li><a href="#">View All</a></li>
+					</ul></li>
+				<li class="dropdown"><a href="#" class="dropdown-toggle"
+					data-toggle="dropdown" th:if="${fullname}"><i
+						class="fa fa-user"></i> <span th:text="${fullname}">Fullname</span>
+						<b class="caret"></b></a>
+					<ul class="dropdown-menu">
+						<li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+						</li>
+						<li><a href="#"><i class="fa fa-fw fa-envelope"></i>
+								Inbox</a></li>
+						<li class="divider"></li>
+						<li><a href="/j_spring_security_logout"><i
+								class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+					</ul></li>
+			</ul>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav side-nav">
+					<li><a href="/"><i class="fa fa-fw fa-dashboard"></i>
+							Dashboard</a></li>
+					<li><a href="/"><i
+							class="glyphicon glyphicon-tasks"></i> Assign Bug</a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-flash"></i>
+							Process Bug</a></li>
+					<li><a href="/"><i class="glyphicon glyphicon-refresh"></i>
+							Solution Check</a></li>
+					<li><a href="/"><i
+							class="glyphicon glyphicon-list-alt"></i> Bug Report</a></li>
+					<li>
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
+							<i class="glyphicon glyphicon-menu-hamburger"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
+						</a>
+						<ul id="demo0" class="collapse">
+							<li class="active"><a href="/Auth/user">User Admin</a></li>
+							<li><a href="#">Resource</a></li>
+							<li><a href="#">Group and Permission</a></li>
+							<li><a href="#">Assign Group</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
+							<i class="glyphicon glyphicon-menu-hamburger"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
+						</a>
+						<ul id="demo1" class="collapse">
+							<li><a href="#">Product Admin</a></li>
+							<li><a href="#">Bug Catalog</a></li>
+							<li><a href="#">Mail system</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+
+		<div id="page-wrapper">
+
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row"  style="margin-top: 10px;padding-top: 15px;">
+					<div class="col-lg-12">
+						<!-- <h1 class="page-header">
+							User list
+						</h1> -->
+						<ol class="breadcrumb">
+							<li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
+							<li class="active"><i class="glyphicon glyphicon-user"></i> User list</li>
+						</ol>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<!-- user list row -->
+				<div class="row">
+					<div class="col-lg-12">
+						<!-- easyui table for user list-->
+						<table id="dg" class="easyui-datagrid" title="users list"
+							style="width: auto; height: 335px"
+							data-options="
+									rownumbers:true,
+									singleSelect:true,
+									pagination:true,
+									url:'/Auth/user/list?sort=username&order=asc',
+									method:'get',
+									idField:'id',
+									rowStyler:rowStatus,
+									onSelect: dgselect,
+									loadMsg:'',
+									toolbar:'#tb'">
+							<thead>
+								<tr>
+									<th data-options="field:'username',width:100">User ID</th>
+									<th data-options="field:'first_name',width:100">First Name</th>
+									<th data-options="field:'last_name',width:300">Last Name</th>
+									<th data-options="field:'age',width:150">Age</th>
+									<th data-options="field:'email',width:150">E-mail</th>
+									<th
+										data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
+								</tr>
+							</thead>
+						</table>
+
+						<!-- table tool bar-->
+						<div id="tb" style="padding: 2px 5px;">
+							<a href="javascript:void(0)" class="easyui-linkbutton"
+								data-options="iconCls:'icon-add', plain:true, onClick:add">New</a><a
+								href="javascript:void(0)" class="easyui-linkbutton"
+								data-options="iconCls:'icon-remove', plain:true, onClick:remove">Remove</a>
+							<div style="float: right">
+								<input id="s-role" class="easyui-combobox"
+									data-options="
+							                    valueField: 'id',
+							                    textField: 'roleName',
+							                    label:'Select Role',
+							                    labelAlign: 'right',
+							                    method: 'get',
+							                    width: 250,
+							                    url:'/Auth/role/listname',
+							                    panelHeight:150"></input>
+								<input id="s-username" class="easyui-textbox"
+									data-options="
+												buttonText:'Search',
+												buttonIcon:'icon-search',
+												label:'User name',
+												labelAlign: 'right',
+												prompt:'User ID...',
+												width:320,
+												onClickButton:search"></input>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<!-- detail row -->
+				<div class="row" style="margin-top: 10px;">
+					<div class="col-lg-12">
+						<form id="fm" method="post">
+							<div id="edit-panel" class="easyui-panel" data-options="title:'User Detail', collapsible:true">
+								<input id="id" name="id" type="hidden" />
+								<table align="left" valign="middle" class="edittable">
+									<tr>
+										<th class="tRight">Username</th>
+										<td colspan="5"><input id="username" name="username"
+											class="easyui-textbox" data-options="width:170, readonly: 'true'" /></td>
+									</tr>
+									<tr>
+										<th class="tRight">First name</th>
+										<td class="tRight"><input id="first_name"
+											name="first_name" class="easyui-textbox"
+											data-options="width:170" /></td>
+										<th class="tRight">Last name</th>
+										<td class="tRight"><input id="last_name" name="last_name"
+											class="easyui-textbox" data-options="width:170" /></td>
+										<th class="tRight">Age</th>
+										<td class="tRight"><input id="age" name="age"
+											class="easyui-numberspinner" data-options="width:50" /></td>
+									</tr>
+									<tr>
+										<th class="tRight">E-mail</th>
+										<td><input id="email" name="email" class="easyui-textbox"
+											data-options="width:170" /></td>
+										<th class="tRight">Status</th>
+										<td colspan="3"><input id="status" name="status"
+											class="easyui-switchbutton"
+											data-options="width:50, height: 22, onChange: setdgRow" /></td>
+									</tr>
+									<tr>
+										<td colspan="6">
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:save">Save</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:cancel">Cancel</a>
+										</td>
+<!-- 										<td colspan="5"></td> -->
+									</tr>
+								</table>								
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<!-- new row -->
+				<!-- <div class="row">
+                    <div class="col-lg-12">
+						<div class="easyui-panel" style="padding:5px;">
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:save">Save</a>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:cancel">Cancel</a>
+						</div>
+                    </div>
+                </div> -->
+				<!-- /.row -->
+
+			</div>
+			<!-- /.container-fluid -->
+
+		</div>
+		<!-- /#page-wrapper -->
+
 	</div>
-</div>
-<div style="margin-top: 20px;">
-	<div id="edit-panel" class="easyui-panel"  style="padding: 5px"
-			data-options="
-				title:'User Detail'
-						">
-		<form id="fm" method="post">
-			<input id="id" name="id" type="hidden" />
-			<table class="" align="left" valign="middle" cellspacing="0px">
-				<tr>
-					<th class="tRight">Username:</th>
-					<td colspan="5">
-						<input id="username" name="username" class="easyui-textbox"  data-options="width:170"/>
-					</td>
-				</tr>
-				<tr>
-					<th class="tRight">First name:</th>
-					<td  class="tRight">
-						<input id="first_name" name="first_name" class="easyui-textbox"  data-options="width:170"/>
-					</td>
-					<th class="tRight">Last name:</th>
-					<td  class="tRight">
-						<input id="last_name" name="last_name" class="easyui-textbox"  data-options="width:170"/>
-					</td>
-					<th class="tRight">Age:</th>
-					<td  class="tRight">
-						<input id="age" name="age" class="easyui-numberspinner" data-options="width:50" />
-					</td>
-				</tr>			
-				<tr>
-					<th class="tRight">E-mail:</th>
-					<td>
-						<input id="email" name="email" class="easyui-textbox" data-options="width:170"/>
-					</td>
-					<th class="tRight">Status:</th>
-					<td colspan="3">
-						<input id="status" name="status" class="easyui-switchbutton" data-options="width:50, height: 22"/>
-					</td>
-				</tr>
-			</table>
-		</form>
-	</div>
-</div>
-<!-- edit window
-<div id="editw" class="easyui-dialog" style="padding:10px"
-		data-options="
-			width:416,
-			height:215,
-			modal:true,
-			closed:true,
-			buttons:ew_buttons">
-</div>-->
+	<!-- /#wrapper -->
+	
+	<!-- mask windows -->
+	<div id="w" class="easyui-window" title="Modal Window"
+		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 300px; height: 80px; padding: 10px;">Processing, please wait …</div>
+
+	<!-- jQuery -->
+	<script src="/js/jquery.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="/js/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/scripts/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/scripts/backend.js"></script>
+
+</body>
 
 <script type="text/javascript">
-	var MODEL= '/Auth/user';
-	function search(){
+	var MODEL = '/Auth/user';
+	//clicks earch btn 
+	function search() {
 		var query = {
-				role: $('#s-role').combobox('getValue'),
-				username : $('#s-username').textbox('getValue')
-			};
-		$("#dg").datagrid('load',query);			
+			role : $('#s-role').combobox('getValue'),
+			username : $('#s-username').textbox('getValue')
+		};
+		$("#dg").datagrid('load', query);
+	}
+	// click switchbutton of editing form
+	function setdgRow(checked){
+		console.log(checked);
+		// do nothing, save will update the data
+	}
+	
+	// click new button
+	function add(){
+		$('#fm').form('clear');
+		$('#username').textbox('readonly',false);
+		$('#username').focus();
+		console.log('call user add');
+	}
+	
+	// click remove
+	function remove(){
+		var row = $('#dg').datagrid('getSelected',{});
+		if(row==null || row==undefined){
+			alert_('Please select a row to delete.');
+			return;
+		}
+		$.messager.confirm('Confirm', 'Are you confirm this?', function(r){
+			if (r){
+				var url= MODEL + '/delete';
+				var data= {"id":Number(row.id), "_method": 'DELETE'};
+				var dg= $('#dg');
+				console.log(data);
+				action(url, data, dg, "POST");
+			}
+		});
+	}
+	
+	// click save
+	function save(){
+		var url= MODEL + '/save';
+		var data= $('#fm').serializeArray();
+		$(data).each(function(){
+			// initial value of id
+			if(this.name=='status'){
+				if(this.value=='on'){
+					this.value=1;
+				}else{
+					this.value=0;
+				}
+			}
+		});
+		var dg= $('#dg');
+		console.log(data);
+		action(url, data, dg, "POST");
+	}
+	
+	// click cancel
+	function cancel(){
+		$('#fm').form('clear');
+		$('#username').textbox('readonly',true);
+		console.log('cancel user add');
 	}
 	
 	$(function() {
 		// dynamic bind datagrid
 		$('#dg').datagrid({
-			onBeforeLoad : function(){
+			onBeforeLoad : function() {
 				// show fullscreen modal windows
 				fullScreenMask('open');
 			},
@@ -130,16 +382,19 @@
 				// for all easyui-linkbutton <a>'s make them a switchbutton
 				.find('input.easyui-switchbutton').switchbutton();
 				// bug!! to refreash the value of edit window 
-				var row= $('#dg').datagrid('getSelected');
-				if(row!=null || row!=undefined)
-					$('#dg').datagrid('selectRecord',row.id);
+				var row = $('#dg').datagrid('getSelected');
+				if (row != null || row != undefined)
+					$('#dg').datagrid('selectRecord', row.id);
 				$('#w').window('close', true);
 			},
-			onLoadError :function(XMLHttpRequest){
+			onLoadError : function(XMLHttpRequest) {
 				fullScreenMask('close');
 				console.log(XMLHttpRequest);
-				ajaxerror(XMLHttpRequest.responseJSON);
+				ajaxerror(XMLHttpRequest.responseText);
 			}
 		});
 	});
 </script>
+
+
+</html>

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -15,11 +16,11 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "user")
+@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
+	private Integer id;
 	@NotNull
 	private String username;
 	@NotNull
@@ -70,11 +71,11 @@ public class UserModel {
 		this.status = status;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -101,5 +102,10 @@ public class UserModel {
 	public void setAge(int age) {
 		this.age = age;
 	}
-
+	
+	@Override
+	public String toString(){
+		return this.username + " - " + this.first_name + " - " + this.last_name 
+				+ " - " + this.email + " - " +Integer.toString(this.age) + " - " +Integer.toString(this.status);
+	}
 }
