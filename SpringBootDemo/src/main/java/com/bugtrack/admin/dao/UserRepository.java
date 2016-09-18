@@ -1,12 +1,13 @@
 /**
  * 
  */
-package com.springboot.demo.dao;
+package com.bugtrack.admin.dao;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import com.springboot.demo.model.UserModel;
+
+import com.bugtrack.admin.model.UserModel;
 
 /**
  * @author Administrator

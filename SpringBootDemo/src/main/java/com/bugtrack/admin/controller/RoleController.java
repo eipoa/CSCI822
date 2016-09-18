@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.controller;
+package com.bugtrack.admin.controller;
 
 import java.util.List;
 
@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.springboot.demo.dao.RoleRepository;
-import com.springboot.demo.model.RoleModel;
+import com.bugtrack.admin.dao.RoleRepository;
+import com.bugtrack.admin.model.RoleModel;
 
 /**
  * @author Administrator

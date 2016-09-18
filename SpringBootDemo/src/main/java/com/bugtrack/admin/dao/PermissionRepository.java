@@ -1,9 +1,10 @@
-package com.springboot.demo.dao;
+package com.bugtrack.admin.dao;
 
 import java.util.ArrayList;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import com.springboot.demo.model.PermissionModel;
+
+import com.bugtrack.admin.model.PermissionModel;
 
 public interface PermissionRepository extends JpaRepository<PermissionModel, Integer> {
 

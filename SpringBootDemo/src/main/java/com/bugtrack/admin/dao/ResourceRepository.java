@@ -1,8 +1,8 @@
-package com.springboot.demo.dao;
+package com.bugtrack.admin.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.springboot.demo.model.ResourceModel;
+import com.bugtrack.admin.model.ResourceModel;
 
 public interface ResourceRepository extends JpaRepository<ResourceModel, Integer> {
 

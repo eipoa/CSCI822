@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.dao;
+package com.bugtrack.admin.dao;
 
 import java.util.Map;
 

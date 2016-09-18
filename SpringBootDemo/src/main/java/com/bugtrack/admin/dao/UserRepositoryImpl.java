@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.dao;
+package com.bugtrack.admin.dao;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.data.domain.Pageable;
 
-import com.springboot.demo.model.UserModel;
+import com.bugtrack.admin.model.UserModel;
 
 /**
  * @author Administrator

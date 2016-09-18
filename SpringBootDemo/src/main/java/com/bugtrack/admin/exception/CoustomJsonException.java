@@ -1,4 +1,4 @@
-package com.springboot.demo.exception;
+package com.bugtrack.admin.exception;
 
 /**
  * @author 程序猿DD

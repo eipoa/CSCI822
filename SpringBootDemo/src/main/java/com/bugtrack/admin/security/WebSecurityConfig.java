@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.security;
+package com.bugtrack.admin.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

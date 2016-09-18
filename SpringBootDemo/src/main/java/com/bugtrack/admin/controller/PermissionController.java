@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.controller;
+package com.bugtrack.admin.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;

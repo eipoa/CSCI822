@@ -1,11 +1,11 @@
 /**
  * 
  */
-package com.springboot.demo.dao;
+package com.bugtrack.admin.dao;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.springboot.demo.model.RoleModel;
+import com.bugtrack.admin.model.RoleModel;
 
 /**
  * @author Administrator

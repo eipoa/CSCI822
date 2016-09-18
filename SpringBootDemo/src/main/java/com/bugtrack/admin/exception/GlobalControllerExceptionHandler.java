@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.exception;
+package com.bugtrack.admin.exception;
 
 import java.util.Date;
 
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.springboot.demo.util.PublicFunction;
+import com.bugtrack.admin.util.PublicFunction;
 
 /**
  * @author Administrator

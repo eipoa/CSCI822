@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.model;
+package com.bugtrack.admin.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

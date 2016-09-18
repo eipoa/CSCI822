@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.controller;
+package com.bugtrack.admin.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +23,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.admin.model.UserModel;
+import com.bugtrack.admin.util.PageContent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.demo.model.UserModel;
-import com.springboot.demo.util.PageContent;
 
 /**
  * @author Administrator

@@ -1,4 +1,4 @@
-package com.springboot.demo.exception;
+package com.bugtrack.admin.exception;
 
 public class CoustomErrorInfo<T> {
 

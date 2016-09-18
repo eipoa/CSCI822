@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.util;
+package com.bugtrack.admin.util;
 
 /**
  * @author Administrator

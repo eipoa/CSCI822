@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.security;
+package com.bugtrack.admin.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -17,8 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import com.springboot.demo.dao.UserRepository;
-import com.springboot.demo.model.UserModel;
+
+import com.bugtrack.admin.dao.UserRepository;
+import com.bugtrack.admin.model.UserModel;
 
 /**
  * @author Administrator

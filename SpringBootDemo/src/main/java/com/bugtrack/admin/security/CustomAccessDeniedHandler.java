@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.security;
+package com.bugtrack.admin.security;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -19,8 +19,8 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandlerImpl;
 import org.springframework.stereotype.Component;
 
+import com.bugtrack.admin.util.PublicFunction;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.demo.util.PublicFunction;
 
 /**
  * @author Administrator

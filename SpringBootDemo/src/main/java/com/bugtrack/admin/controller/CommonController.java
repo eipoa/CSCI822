@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.controller;
+package com.bugtrack.admin.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bugtrack.admin.dao.UserRepository;
+import com.bugtrack.admin.model.UserModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springboot.demo.dao.UserRepository;
-import com.springboot.demo.model.UserModel;
 
 /**
  * @author Administrator

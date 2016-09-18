@@ -1,13 +1,13 @@
-package com.springboot.demo;
+package com.bugtrack.admin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class SpringBootDemoApplication {
+public class BugTrackAdminApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringBootDemoApplication.class, args);
+		SpringApplication.run(BugTrackAdminApplication.class, args);
 	}
 }

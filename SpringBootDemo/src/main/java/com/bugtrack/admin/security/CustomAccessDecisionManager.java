@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.springboot.demo.security;
+package com.bugtrack.admin.security;
 
 import java.util.Collection;
 import org.slf4j.Logger;
@@ -15,7 +15,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
-import com.springboot.demo.dao.PermissionRepository;
+import com.bugtrack.admin.dao.PermissionRepository;
+
 //import org.springframework.security.access.ConfigAttribute; 
 import org.springframework.security.web.FilterInvocation;
 
