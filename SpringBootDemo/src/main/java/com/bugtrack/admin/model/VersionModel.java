@@ -27,8 +27,17 @@ public class VersionModel {
 	private Integer oid;
 	@NotNull
 	private String versiond;
-	@NotNull
-	private int status = 1;
+	
+	
+	public VersionModel() {
+		super();
+	}
+	public VersionModel(Integer pid, Integer oid, String versiond) {
+		super();
+		this.pid = pid;
+		this.oid = oid;
+		this.versiond = versiond;
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -46,11 +55,5 @@ public class VersionModel {
 	}
 	public void setVersiond(String versiond) {
 		this.versiond = versiond;
-	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
 	}
 }

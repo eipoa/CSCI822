@@ -11,6 +11,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.data.domain.Pageable;
 
+import com.bugtrack.admin.model.BugsModel;
+
 /**
  * @author Administrator
  *
@@ -39,10 +41,9 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 		boolean iscid = false, ispid = false, isbstatus = false, isver = false, isintitle = false;
 
 		StringBuffer sql = new StringBuffer("");
-		sql.append("select {b.*}, {p.*}, {o.*}, {v.*} from bug b, os o, product p, version v where ");
-		sql.append("b.product_id=p.id and b.os_id=o.id and b.version_id=v.id ");
-		//sql.append("select {b.*}, p.productName, o.osname, v.versiond from bug b, os o where ");
-		sql.append("  b.os_id=o.id  ");
+//		sql.append("select b.* from bug b, product p, os o where ");
+//		sql.append(" b.product_id=p.id and p.os_id=o.id ");
+		sql.append("select b.* from bug b ");
 		if (keywords.containsKey("classification_id")) {
 			cid = keywords.get("classification_id");
 			if (!cid.trim().equals("-1")) {
@@ -91,14 +92,12 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 		}
 
 		if (!tempSql.equals("")) {
-			sql.append(" and ");
+			sql.append(" where ");
 			sql = sql.append(tempSql);
 		}
 
 		
-
-		// Query query = em.createNativeQuery(sql.toString(), BugsModel.class);
-		Query query = em.createNativeQuery(sql.toString(),"BugsMapping");
+		Query query = em.createNativeQuery(sql.toString(),BugsModel.class);//"BugsMapping");
 		if (iscid) {
 			query.setParameter("cid", cid);
 		}

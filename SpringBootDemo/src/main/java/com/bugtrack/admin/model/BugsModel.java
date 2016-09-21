@@ -3,12 +3,14 @@
  */
 package com.bugtrack.admin.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
-import javax.persistence.FieldResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
@@ -46,8 +48,7 @@ import javax.validation.constraints.NotNull;
 	      name="BugsMapping",
 	      entities={@EntityResult(entityClass=BugsModel.class),
 	                @EntityResult(entityClass=ProductModel.class),
-	                @EntityResult(entityClass=OsModel.class),
-	                @EntityResult(entityClass=VersionModel.class)}
+	                @EntityResult(entityClass=OsModel.class)}
 	  )
 })
 @Table(name = "bug", uniqueConstraints = @UniqueConstraint(columnNames = { "id" }))
@@ -55,33 +56,102 @@ public class BugsModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
+	
 	@NotNull
-	private Integer priority;// 1:normal/2:medium/3:high
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="priority_id")// 1:normal/2:medium/3:high
+	private BugPriorityModel priority;
+	
+	@NotNull
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="classification_id")
+	private BugClassModel classification;
+	
+	@NotNull
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="product_id")
+	private ProductModel product;
+	
+	@NotNull
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="status_id")// 1:new(triager)/2:assigned(developer)/3:verify(reviewer)/4:fixed/5:merged
+	private BugStatusModel status;
+	
 	@NotNull
 	private String title;
 	@NotNull
 	private String short_desc;
+	
 	@NotNull
-	private Integer classification_id;
-	@NotNull
-	private Integer product_id;
-	@NotNull
-	private Integer version_id;
-	@NotNull
-	private String os_id;
-	@NotNull
-	private Integer bug_status = 1;// 1:new(triager)/2:assigned(developer)/3:verify(reviewer)/4:close
-	@NotNull
-	private String reporter;
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="reporter_id")
+	private UserModel reporter;
+	
 	@NotNull
 	private String creation_ts;
-	private String developer;
-	private String reviewer;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="developer_id")
+	private UserModel developer;
+	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="reviewer_id")
+	private UserModel reviewer;
+	
+	
 	@NotNull
-	private String change_ts;// staffs or reporter(before assigned) can modify
-								// the report,
+	private String change_ts;
 	@NotNull
-	private Integer rank = 0;
+	private Integer rank = 0;// how many users vote it
+
+	
+	public UserModel getReporter() {
+		return reporter;
+	}
+
+	public void setReporter(UserModel reporter) {
+		this.reporter = reporter;
+	}
+
+	public UserModel getDeveloper() {
+		return developer;
+	}
+
+	public void setDeveloper(UserModel developer) {
+		this.developer = developer;
+	}
+
+	public UserModel getReviewer() {
+		return reviewer;
+	}
+
+	public void setReviewer(UserModel reviewer) {
+		this.reviewer = reviewer;
+	}
+
+	public BugPriorityModel getPriority() {
+		return priority;
+	}
+
+	public void setPriority(BugPriorityModel priority) {
+		this.priority = priority;
+	}
+
+	public BugClassModel getClassification() {
+		return classification;
+	}
+
+	public void setClassification(BugClassModel classification) {
+		this.classification = classification;
+	}
+
+	public BugStatusModel getStatus() {
+		return status;
+	}
+
+	public void setStatus(BugStatusModel status) {
+		this.status = status;
+	}
 
 	public Integer getId() {
 		return id;
@@ -107,36 +177,12 @@ public class BugsModel {
 		this.short_desc = short_desc;
 	}
 
-	public Integer getClassification_id() {
-		return classification_id;
+	public ProductModel getProduct() {
+		return product;
 	}
 
-	public void setClassification_id(Integer classification_id) {
-		this.classification_id = classification_id;
-	}
-
-	public Integer getProduct_id() {
-		return product_id;
-	}
-
-	public void setProduct_id(Integer product_id) {
-		this.product_id = product_id;
-	}
-
-	public Integer getBug_status() {
-		return bug_status;
-	}
-
-	public void setBug_status(Integer bug_status) {
-		this.bug_status = bug_status;
-	}
-
-	public String getReporter() {
-		return reporter;
-	}
-
-	public void setReporter(String reporter) {
-		this.reporter = reporter;
+	public void setProduct(ProductModel product) {
+		this.product = product;
 	}
 
 	public String getCreation_ts() {
@@ -145,22 +191,6 @@ public class BugsModel {
 
 	public void setCreation_ts(String creation_ts) {
 		this.creation_ts = creation_ts;
-	}
-
-	public String getDeveloper() {
-		return developer;
-	}
-
-	public void setDeveloper(String developer) {
-		this.developer = developer;
-	}
-
-	public String getReviewer() {
-		return reviewer;
-	}
-
-	public void setReviewer(String reviewer) {
-		this.reviewer = reviewer;
 	}
 
 	public String getChange_ts() {
@@ -179,27 +209,4 @@ public class BugsModel {
 		this.rank = rank;
 	}
 
-	public Integer getPriority() {
-		return priority;
-	}
-
-	public void setPriority(Integer priority) {
-		this.priority = priority;
-	}
-
-	public Integer getVersion_id() {
-		return version_id;
-	}
-
-	public void setVersion_id(Integer version_id) {
-		this.version_id = version_id;
-	}
-
-	public String getOs_id() {
-		return os_id;
-	}
-
-	public void setOs_id(String os_id) {
-		this.os_id = os_id;
-	}
 }

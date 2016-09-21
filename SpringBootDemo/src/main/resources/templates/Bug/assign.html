@@ -184,13 +184,15 @@
 									toolbar:'#tb'">
 							<thead>
 								<tr>
-									<th data-options="field:'id',width:100">Bug ID</th>
+									<th data-options="field:'id',width:70">Bug ID</th>
+									<th data-options="field:'priority_id',width:70,formatter:formatPriority">Priority</th>
 									<th data-options="field:'title',width:300">title</th>
-									<th data-options="field:'classification_id',width:100">classification</th>
-									<th data-options="field:'product_id',width:100">product_id</th>
-									<th data-options="field:'version',width:100">version</th>
-									<th data-options="field:'creation_ts',width:150">creation_ts</th>
-									<th data-options="field:'bug_status',width:150">bug_status</th>
+									<th data-options="field:'classification',width:100,formatter:formatClass">Classification</th>
+									<th data-options="field:'product_id',width:100,formatter:formatProduct">Product</th>
+									<th data-options="field:'product_ver',width:100,formatter:formatVersion">Version</th>
+									<th data-options="field:'os_id',width:60,formatter:formatOS">OS</th>
+									<th data-options="field:'creation_ts',width:150">Creation time</th>
+									<th data-options="field:'status_id',width:80,formatter:formatStatus">Status</th>
 								</tr>
 							</thead>
 						</table>

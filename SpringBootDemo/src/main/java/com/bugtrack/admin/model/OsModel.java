@@ -23,16 +23,24 @@ public class OsModel {
 	private Integer id;
 	@NotNull
 	private String osname;
+	
+	public OsModel() {
+		super();
+	}
+	public OsModel(String osname) {
+		super();
+		this.osname = osname;
+	}
 	public Integer getId() {
 		return id;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	public String getOsName() {
+	public String getOsname() {
 		return osname;
 	}
-	public void setOsName(String osname) {
+	public void setOsname(String osname) {
 		this.osname = osname;
 	}
 }

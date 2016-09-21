@@ -147,6 +147,30 @@ function formatStatus(value,row,index){
 	}
 }
 
+/**
+ * ------------------------------------
+ * bug list
+ */
+function formatPriority(value,row,index){
+	return row.priority.desc;
+}
+function formatClass(value,row,index){
+	return row.classification.desc;
+}
+function formatProduct(value,row,index){
+	return row.product.name;	
+}
+function formatVersion(value,row,index){
+	return row.product.version;
+}
+function formatOS(value,row,index){
+	return row.product.os.osname;
+}
+function formatStatus(value,row,index){
+	return row.status.desc;
+}
+/*--------------------------------------*/
+
 // make the row with false status gray & italic
 function rowStatus(index,row){
 	if (row.status != 1){

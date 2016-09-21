@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
  *
  */
 @Entity
-@Table(name = "bugstatus", uniqueConstraints = @UniqueConstraint(columnNames = {"id"}))
+@Table(name = "bug_status", uniqueConstraints = @UniqueConstraint(columnNames = {"id"}))
 public class BugStatusModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

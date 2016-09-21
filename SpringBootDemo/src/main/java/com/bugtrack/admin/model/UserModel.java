@@ -33,15 +33,56 @@ public class UserModel {
 	private String email;
 	@NotNull
 	private int status = 1;
-//	@NotNull
-//	private String create_ts;
-//	@NotNull
-//	private String login_ts;
+	@NotNull
+	private String create_ts;
+	@NotNull
+	private String login_ts;
 
-	/**
-	 * 1: active
-	 * 0: frozen
-	 */
+	public UserModel() {
+		super();
+	}
+
+	public UserModel(String username, String password, String first_name, String last_name, int age, String email,
+			int status, String create_ts, String login_ts) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.age = age;
+		this.email = email;
+		this.status = status;
+		this.create_ts = create_ts;
+		this.login_ts = login_ts;
+	}
+
+	public UserModel(String username, String password, String first_name, String last_name, int status,
+			String create_ts, String login_ts) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.first_name = first_name;
+		this.last_name = last_name;
+		this.status = status;
+		this.create_ts = create_ts;
+		this.login_ts = login_ts;
+	}
+
+	public String getCreate_ts() {
+		return create_ts;
+	}
+
+	public void setCreate_ts(String create_ts) {
+		this.create_ts = create_ts;
+	}
+
+	public String getLogin_ts() {
+		return login_ts;
+	}
+
+	public void setLogin_ts(String login_ts) {
+		this.login_ts = login_ts;
+	}
 
 	public String getUsername() {
 		return username;
@@ -106,10 +147,12 @@ public class UserModel {
 	public void setAge(int age) {
 		this.age = age;
 	}
-	
+
 	@Override
-	public String toString(){
-		return this.username + " - " + this.first_name + " - " + this.last_name 
-				+ " - " + this.email + " - " +Integer.toString(this.age) + " - " +Integer.toString(this.status);
+	public String toString() {
+		return "UserModel [id=" + id + ", username=" + username + ", password=" + password + ", first_name="
+				+ first_name + ", last_name=" + last_name + ", age=" + age + ", email=" + email + ", status=" + status
+				+ ", create_ts=" + create_ts + ", login_ts=" + login_ts + "]";
 	}
+	
 }
