@@ -33,6 +33,10 @@ public class UserModel {
 	private String email;
 	@NotNull
 	private int status = 1;
+//	@NotNull
+//	private String create_ts;
+//	@NotNull
+//	private String login_ts;
 
 	/**
 	 * 1: active

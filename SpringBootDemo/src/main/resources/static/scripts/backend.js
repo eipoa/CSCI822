@@ -153,6 +153,13 @@ function rowStatus(index,row){
 		return 'color:#7b7b7b; font-style: italic';
 	}
 }
+function rowStatusBug(index,row){
+	switch (row.bug_status){
+		case 4:
+			return 'color:#7b7b7b; font-style: italic';
+			break;
+	}
+}
 
 // select a row of datagrid, and fill data into fm
 function dgselect(index,row){

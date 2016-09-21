@@ -27,3 +27,28 @@ values
 insert into authorise(id, roleid, userid)
 values
 (1,1, 1), (2,3, 2);
+
+insert into bug(id,priority,title,short_desc,classification_id,product_id,version_id,os_id,	bug_status,reporter,creation_ts,change_ts,rank)
+values(1,1,'test777','bbbbbbbbbbbbbb',1,1,1,1,1,'123','2016-08-20 12:20:30','2016-08-21 12:20:30',0);
+insert into bug(id,priority,title,short_desc,classification_id,product_id,version_id,os_id,	bug_status,reporter,creation_ts,change_ts,rank)
+values(2,2,'test888','bbbbbbbbbbbbbb',2,1,1,1,1,'123','2016-08-20 12:20:30','2016-08-21 12:20:30',0);
+insert into bug(id,priority,title,short_desc,classification_id,product_id,version_id,os_id,	bug_status,reporter,creation_ts,change_ts,rank)
+values(3,3,'test999','bbbbbbbbbbbbbb',2,1,2,2,1,'123','2016-08-20 12:20:30','2016-08-21 12:20:30',0);
+
+
+insert into product(id, productName, status)
+values(1, 'MS Office',1);
+insert into product(id, productName, status)
+values(2, 'Eclipse',1);
+
+insert into os(id, osName)
+values(1, 'windows');
+insert into os(id, osName)
+values(2, 'Linux');
+
+insert into version(id, pid, oid, versiond,status)
+values(1, 1, 1, 'v10.1',1);
+insert into version(id, pid, oid, versiond,status)
+values(2, 1, 1, 'v11.1',1);
+insert into version(id, pid, oid, versiond,status)
+values(3, 2, 2, 'v9.10',1);

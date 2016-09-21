@@ -6,10 +6,10 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="">
-<meta name="author" content="">
+<meta name="description" content="user admin">
+<meta name="author" content="Li baoxing">
 
-<title>SB Admin - Bootstrap Admin Template</title>
+<title>Bugs Admin - Users</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="/cssv1.0/bootstrap.min.css" rel="stylesheet">
@@ -23,8 +23,8 @@
 <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
 
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet"
-	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css">
+<!-- <link rel="stylesheet"
+	href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.0/bootstrap-table.min.css"> -->
 
 <!-- Custom Fonts -->
 <link href="/font-awesome/css/font-awesome.min.css" rel="stylesheet"
@@ -86,32 +86,37 @@
 						<li class="divider"></li>
 						<li><a href="#">View All</a></li>
 					</ul></li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown" th:if="${fullname}"><i
-						class="fa fa-user"></i> <span th:text="${fullname}">Fullname</span>
-						<b class="caret"></b></a>
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
+						<i class="fa fa-user"></i> 
+						<span th:text="${fullname}">Fullname</span>
+						<b class="caret"></b>
+					</a>
 					<ul class="dropdown-menu">
-						<li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-						</li>
-						<li><a href="#"><i class="fa fa-fw fa-envelope"></i>
-								Inbox</a></li>
+						<li><a href="#"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="#"><i class="fa fa-fw fa-envelope"></i>Inbox</a></li>
 						<li class="divider"></li>
-						<li><a href="/j_spring_security_logout"><i
-								class="fa fa-fw fa-power-off"></i> Log Out</a></li>
-					</ul></li>
+						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+					</ul>
+				</li>
 			</ul>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="/"><i class="fa fa-fw fa-dashboard"></i>
-							Dashboard</a></li>
-					<li><a href="/"><i
-							class="glyphicon glyphicon-tasks"></i> Assign Bug</a></li>
-					<li><a href="/"><i class="glyphicon glyphicon-flash"></i>
-							Process Bug</a></li>
-					<li><a href="/"><i class="glyphicon glyphicon-refresh"></i>
-							Solution Check</a></li>
-					<li><a href="/"><i
-							class="glyphicon glyphicon-list-alt"></i> Bug Report</a></li>
+					<li>
+						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+					</li>
+					<li>
+						<a href="/Bug/assign"><i class="glyphicon glyphicon-tasks"></i> Assign Bugs</a>
+					</li>
+					<li>
+						<a href="/Bug/process"><i class="glyphicon glyphicon-flash"></i> Process Bugs</a>
+					</li>
+					<li>
+						<a href="/Bug/review"><i class="glyphicon glyphicon-refresh"></i> Review Solutions</a>
+					</li>
+					<li>
+						<a href="/Bug/report"><i class="glyphicon glyphicon-list-alt"></i> Bug Reports</a>
+					</li>
 					<li>
 						<a href="javascript:;" aria-expanded="true" data-toggle="collapse" data-target="#demo0">
 							<i class="glyphicon glyphicon-menu-hamburger"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
@@ -180,18 +185,15 @@
 									<th data-options="field:'last_name',width:300">Last Name</th>
 									<th data-options="field:'age',width:150">Age</th>
 									<th data-options="field:'email',width:150">E-mail</th>
-									<th
-										data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
+									<th data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
 								</tr>
 							</thead>
 						</table>
 
 						<!-- table tool bar-->
 						<div id="tb" style="padding: 2px 5px;">
-							<a href="javascript:void(0)" class="easyui-linkbutton"
-								data-options="iconCls:'icon-add', plain:true, onClick:add">New</a><a
-								href="javascript:void(0)" class="easyui-linkbutton"
-								data-options="iconCls:'icon-remove', plain:true, onClick:remove">Remove</a>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true, onClick:add">New</a>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true, onClick:remove">Remove</a>
 							<div style="float: right">
 								<input id="s-role" class="easyui-combobox"
 									data-options="
@@ -221,48 +223,37 @@
 				<!-- detail row -->
 				<div class="row" style="margin-top: 10px;">
 					<div class="col-lg-12">
-						<form id="fm" method="post">
-							<div id="edit-panel" class="easyui-panel" data-options="title:'User Detail', collapsible:true">
+						<div id="edit-panel" class="easyui-panel" data-options="fit:true, title:'User Detail', collapsible:true">
+							<form id="fm" method="post">
 								<input id="id" name="id" type="hidden" />
 								<table align="left" valign="middle" class="edittable">
 									<tr>
 										<th class="tRight">Username</th>
-										<td colspan="5"><input id="username" name="username"
-											class="easyui-textbox" data-options="width:170, readonly: 'true'" /></td>
-									</tr>
-									<tr>
+										<td><input id="username" name="username" class="easyui-textbox" data-options="width:170, readonly: 'true'" /></td>
 										<th class="tRight">First name</th>
-										<td class="tRight"><input id="first_name"
-											name="first_name" class="easyui-textbox"
-											data-options="width:170" /></td>
+										<td class="tRight"><input id="first_name" name="first_name" class="easyui-textbox" data-options="width:170" /></td>
 										<th class="tRight">Last name</th>
-										<td class="tRight"><input id="last_name" name="last_name"
-											class="easyui-textbox" data-options="width:170" /></td>
+										<td class="tRight"><input id="last_name" name="last_name" class="easyui-textbox" data-options="width:170" /></td>
 										<th class="tRight">Age</th>
-										<td class="tRight"><input id="age" name="age"
-											class="easyui-numberspinner" data-options="width:50" /></td>
+										<td class="tRight"><input id="age" name="age" class="easyui-numberspinner" data-options="width:50" /></td>
 									</tr>
 									<tr>
 										<th class="tRight">E-mail</th>
-										<td><input id="email" name="email" class="easyui-textbox"
-											data-options="width:170" /></td>
+										<td><input id="email" name="email" class="easyui-textbox" data-options="width:170" /></td>
 										<th class="tRight">Status</th>
-										<td colspan="3"><input id="status" name="status"
-											class="easyui-switchbutton"
-											data-options="width:50, height: 22" /></td>
+										<td colspan="5"><input id="status" name="status" class="easyui-switchbutton" data-options="width:50, height: 22" /></td>
 									</tr>
 									<tr>
-										<td colspan="6">
+										<td colspan="8">
 											<div style="border:1px solid #ddd; ">
 												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:save">Save</a>
 												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:cancel">Cancel</a>
 											</div>										
 										</td>
-<!-- 										<td colspan="5"></td> -->
 									</tr>
-								</table>								
-							</div>
-						</form>
+								</table>
+							</form>							
+						</div>
 					</div>
 				</div>
 				<!-- /.row -->

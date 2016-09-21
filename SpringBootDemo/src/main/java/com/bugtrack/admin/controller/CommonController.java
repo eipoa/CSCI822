@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
-
+import com.bugtrack.admin.dao.BugRepository;
 import com.bugtrack.admin.dao.UserRepository;
 import com.bugtrack.admin.model.UserModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,7 +24,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CommonController {
 	@Autowired
 	UserRepository userRepo;
-
+	
+	@Autowired
+	BugRepository bugRepo;
+	
 	@Autowired
 	HttpServletRequest request;
 
