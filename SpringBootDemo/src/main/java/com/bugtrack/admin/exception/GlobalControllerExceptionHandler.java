@@ -23,26 +23,36 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bugtrack.admin.util.PublicFunction;
 
 /**
- * @author Administrator
- *
+ * @author Baoxing Li
+ * @version 1.0.0
+ * A global handle for exception to support Ajax and common exception
+ * @see CoustomErrorInfo
+ * @see CoustomJsonException
  */
+
 @ControllerAdvice
 @RestController
 public class GlobalControllerExceptionHandler {
 	public static final String DEFAULT_ERROR_VIEW = "/Public/error";
 
 	@Autowired  
-	private PublicFunction pf;// = new PublicFunction();
+	private PublicFunction pf;
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
+	/**
+	 * Default exception handler for Spring Controller exception 
+	 * if the request is via an Ajax method, then the exception will be throw as a CoustomJsonException.
+	 *  
+	 * @param req in HttpServletRequest
+	 * @param rep in HttpServletResponse
+	 * @param e	in Exception
+	 * @return out ModelAndView
+	 * @throws Exception
+	 */
 	@ExceptionHandler(value = Exception.class)
 	public ModelAndView defaultErrorHandler(HttpServletRequest req, HttpServletResponse rep, Exception e)
 			throws Exception {
-		// If the exception is annotated with @ResponseStatus rethrow it and let
-		// the framework handle it - like the OrderNotFoundException example
-		// at the start of this post.
-		// AnnotationUtils is a Spring Framework utility class.
 		if (AnnotationUtils.findAnnotation(e.getClass(), ResponseStatus.class) != null){
 			logger.info("----------- GlobalExceptionHandler, throw ResponseStatus Exceptions!");
 			throw e;
@@ -61,6 +71,15 @@ public class GlobalControllerExceptionHandler {
 		return mav;
 	}
 
+	/**
+	 * Exception handler for CoustomJsonException class
+	 * 
+	 * @param req in HttpServletRequest
+	 * @param rep in HttpServletResponse
+	 * @param e	in CoustomJsonException
+	 * @return out CoustomErrorInfo
+	 * @throws Exception
+	 */
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(value = CoustomJsonException.class)
 	@ResponseBody

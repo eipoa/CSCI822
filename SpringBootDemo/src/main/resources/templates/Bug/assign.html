@@ -169,7 +169,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 						<!-- easyui table for bug list-->
-						<table id="dg" class="easyui-datagrid" title="bugs list"
+						<table id="dg" class="easyui-datagrid" title="Bug list"
 							style="width: auto; height: 335px"
 							data-options="
 									rownumbers:true,
@@ -185,38 +185,120 @@
 							<thead>
 								<tr>
 									<th data-options="field:'id',width:70">Bug ID</th>
-									<th data-options="field:'priority_id',width:70,formatter:formatPriority">Priority</th>
+									<th data-options="field:'priority_id',width:70,formatter:formatBugPriority">Priority</th>
 									<th data-options="field:'title',width:300">title</th>
-									<th data-options="field:'classification',width:100,formatter:formatClass">Classification</th>
-									<th data-options="field:'product_id',width:100,formatter:formatProduct">Product</th>
-									<th data-options="field:'product_ver',width:100,formatter:formatVersion">Version</th>
-									<th data-options="field:'os_id',width:60,formatter:formatOS">OS</th>
+									<th data-options="field:'classification',width:100,formatter:formatBugClass">Classification</th>
+									<th data-options="field:'product_id',width:100,formatter:formatBugProduct">Product</th>
+									<th data-options="field:'product_ver',width:100,formatter:formatBugVersion">Version</th>
+									<th data-options="field:'os_id',width:60,formatter:formatBugOS">OS</th>
 									<th data-options="field:'creation_ts',width:150">Creation time</th>
-									<th data-options="field:'status_id',width:80,formatter:formatStatus">Status</th>
+									<th data-options="field:'status_id',width:80,formatter:formatBugStatus">Status</th>
 								</tr>
 							</thead>
 						</table>
 
 						<!-- table tool bar-->
 						<div id="tb" style="padding: 2px 5px;">
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true, onClick:add">New</a>
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true, onClick:remove">Remove</a>
-							<div style="float: right">
-								<input id="s-id" class="easyui-textbox"
+							<div>
+								<input id="s-pname" class="easyui-combobox"
 									data-options="
-							                    label:'BUg ID',
+							                    valueField: 'id',
+							                    textField: 'name',
+							                    label:'Product name',
+							                    labelWidth: 90,
 							                    labelAlign: 'right',
 							                    method: 'get',
-							                    width: 250"></input>
-								<input id="s-cid" class="easyui-textbox"
+							                    width: 220,
+							                    url:'/Product/namelist',
+							                    onSelect:fillVersion,
+							                    panelHeight:150"></input>
+							    <input id="s-pver" class="easyui-combobox"
+									data-options="
+							                    valueField: 'text',
+							                    textField: 'value',
+							                    label:'Product version',
+							                    labelWidth: 100,
+							                    labelAlign: 'right',
+							                    method: 'get',
+							                    width: 230,
+							                    onSelect:fillOs,
+							                    panelHeight:150"></input>
+							    <input id="s-pos" class="easyui-combobox"
+									data-options="
+							                    valueField: 'id',
+							                    textField: 'osname',
+							                    label:'OS',
+							                    labelWidth: 40,
+							                    labelAlign: 'right',
+							                    method: 'get',
+							                    width: 170,
+							                    panelHeight:150"></input>
+							    <input id="s-status" class="easyui-combobox"
+									data-options="
+							                    valueField: 'id',
+							                    textField: 'desc',
+							                    label:'Status',
+							                    labelWidth: 60,
+							                    labelAlign: 'right',
+							                    method: 'get',
+							                    width: 170,
+							                    url:'/Bug/bugstatuslist',
+							                    panelHeight:150"></input>
+							    <input id="s-title" class="easyui-textbox" 
+									data-options="
+												label:'Title',
+												labelWidth: 50,
+												labelAlign: 'right',
+												prompt:'Title like ...',
+												width:260,
+												onClickButton:search"></input>               
+							</div>
+							<div style="margin-top:5px">
+							    <input id="s-begin" class="easyui-datetimebox"
+           							data-options="
+           								label:'Start Date',
+           								labelWidth: 90,
+						                labelAlign: 'right',
+						                showSeconds:false, width:220"></input>
+           						<input id="s-end" class="easyui-datetimebox"
+           							data-options="
+           								label:'End Date',
+           								labelWidth: 100,
+						                labelAlign: 'right',
+           								showSeconds:false, 
+           								width:230"></input>
+           						<input id="s-priority" class="easyui-combobox"
+									data-options="
+						                    valueField: 'id',
+						                    textField: 'desc',
+						                    label:'Priority',
+						                    labelWidth: 60,
+						                    labelAlign: 'right',
+						                    method: 'get',
+						                    width: 170,
+						                    url:'/Bug/bugprioritylist',
+						                    panelHeight:150"></input>
+           						<input id="s-category" class="easyui-combobox"
+									data-options="
+						                    valueField: 'id',
+						                    textField: 'desc',
+						                    label:'Category',
+						                    labelWidth: 60,
+						                    labelAlign: 'right',
+						                    method: 'get',
+						                    width: 170,
+						                    url:'/Bug/bugclasslist',
+						                    panelHeight:150"></input>
+								<input id="s-bid" class="easyui-textbox" 
 									data-options="
 												buttonText:'Search',
 												buttonIcon:'icon-search',
-												label:'User name',
+												label:'Bug ID',
+												labelWidth: 50,
 												labelAlign: 'right',
-												prompt:'User ID...',
-												width:320,
-												onClickButton:search"></input>
+												prompt:'Bug ID...',
+												width:260,
+												onClickButton:search"></input>							                    							                    
 							</div>
 						</div>
 					</div>
@@ -244,11 +326,30 @@
 </body>
 <script type="text/javascript">
 	var MODEL = '/Bug/assign';
+	//
+	function fillVersion(record){
+		$('#s-pver').combobox({
+			url:'/Product/verlist?id='+record.id
+		});
+	}
+	function fillOs(record){
+		$('#s-pos').combobox({
+			url:'/Product/oslist001?id='+$('#s-pname').combobox('getValue')+'&ver='+record.text
+		});
+	}
 	//clicks earch btn 
 	function search() {
 		var query = {
-			role : $('#s-role').combobox('getValue'),
-			username : $('#s-username').textbox('getValue')
+			pname : $('#s-pname').combobox('getValue'),
+			pver : $('#s-pver').combobox('getValue'),
+			pos : $('#s-pos').combobox('getValue'),
+			bstatus : $('#s-status').combobox('getValue'),
+			btitle : $('#s-title').textbox('getValue'),
+			bstart : $('#s-begin').datetimebox('getValue'),
+			bend : $('#s-end').datetimebox('getValue'),
+			bpriority : $('#s-priority').combobox('getValue'),
+			bcategory : $('#s-category').combobox('getValue'),
+			bid : $('#s-bid').textbox('getValue')
 		};
 		$("#dg").datagrid('load', query);
 	}

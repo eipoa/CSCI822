@@ -175,17 +175,19 @@
 									method:'get',
 									idField:'id',
 									rowStyler:rowStatus,
-									onSelect: dgselect,
+									onSelect: dgUserSelect,
 									loadMsg:'',
 									toolbar:'#tb'">
 							<thead>
 								<tr>
 									<th data-options="field:'username',width:100">User ID</th>
 									<th data-options="field:'first_name',width:100">First Name</th>
-									<th data-options="field:'last_name',width:300">Last Name</th>
-									<th data-options="field:'age',width:150">Age</th>
-									<th data-options="field:'email',width:150">E-mail</th>
-									<th data-options="field:'status',width:80,align:'center',formatter:formatStatus">Status</th>
+									<th data-options="field:'last_name',width:100">Last Name</th>
+									<th data-options="field:'age',width:80">Age</th>
+									<th data-options="field:'email',width:100">E-mail</th>
+									<th data-options="field:'role_id',width:100,formatter:formatUserRole">Role</th>
+									<th data-options="field:'create_ts',width:150">Creation Time</th>
+									<th data-options="field:'status',width:80,align:'center',formatter:formatUserStatus">Status</th>
 								</tr>
 							</thead>
 						</table>
@@ -240,8 +242,19 @@
 									<tr>
 										<th class="tRight">E-mail</th>
 										<td><input id="email" name="email" class="easyui-textbox" data-options="width:170" /></td>
+										<th class="tRight">Role</th>
+										<td>
+											<input id="role_id" name="role_id" class="easyui-combobox"
+												data-options="
+										                    valueField: 'id',
+										                    textField: 'roleName',
+										                    method: 'get',
+										                    width: 170,
+										                    url:'/Auth/role/listname',
+										                    panelHeight:150"></input>
+										</td>
 										<th class="tRight">Status</th>
-										<td colspan="5"><input id="status" name="status" class="easyui-switchbutton" data-options="width:50, height: 22" /></td>
+										<td colspan="3"><input id="status" name="status" class="easyui-switchbutton" data-options="width:50, height: 22" /></td>
 									</tr>
 									<tr>
 										<td colspan="8">
@@ -335,18 +348,20 @@
 	function save(){
 		var url= MODEL + '/save';
 		var data= $('#fm').serializeArray();
+		// switchbutton
+		var obj={name:'status',value:1};
+		data.push(obj);
+		console.log(data);
 		$(data).each(function(){
 			// initial value of id
+			if(this.name=='role_id'){
+				this.value = $('#role_id').combobox('getValue');
+			}
 			if(this.name=='status'){
-				if(this.value=='on'){
-					this.value=1;
-				}else{
-					this.value=0;
-				}
+				this.value = $('#status').switchbutton('options').checked ? 1 : 0;
 			}
 		});
 		var dg= $('#dg');
-		console.log(data);
 		action(url, data, dg, "POST");
 	}
 	

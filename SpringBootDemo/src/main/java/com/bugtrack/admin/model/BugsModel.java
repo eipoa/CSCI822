@@ -5,52 +5,56 @@ package com.bugtrack.admin.model;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.EntityResult;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
-import javax.persistence.SqlResultSetMapping;
-import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Administrator
- *
+ * @author Baoxing Li
+ * @version 1.0.0
+ * A entity class for bugs <br>
+ *  <br>
+ * CREATE TABLE `bug` ( <br>
+ *   `id` int(11) NOT NULL AUTO_INCREMENT, <br>
+ *   `change_ts` varchar(255) NOT NULL, <br>
+ *   `classification_id` int(11) NOT NULL, <br>
+ *   `creation_ts` varchar(255) NOT NULL, <br>
+ *   `product_id` int(11) NOT NULL, <br>
+ *   `rank` int(11) NOT NULL, <br>
+ *   `short_desc` varchar(255) NOT NULL, <br>
+ *   `title` varchar(255) NOT NULL, <br>
+ *   `status_id` int(11) NOT NULL, <br>
+ *   `priority_id` int(11) NOT NULL, <br>
+ *   `reporter_id` int(11) NOT NULL, <br>
+ *   `developer_id` int(11) NOT NULL, <br>
+ *   `reviewer_id` int(11) DEFAULT NULL, <br>
+ *   PRIMARY KEY (`id`), <br>
+ *   KEY `bug_fk_01` (`classification_id`), <br>
+ *   KEY `bug_fk_02` (`priority_id`), <br>
+ *   KEY `bug_fk_03` (`developer_id`), <br>
+ *   KEY `bug_fk_04` (`reporter_id`), <br>
+ *   KEY `bug_fk_05` (`reviewer_id`), <br>
+ *   KEY `bug_fk_06` (`product_id`), <br>
+ *   KEY `bug_fk_07` (`status_id`), <br>
+ *   CONSTRAINT `bug_fk_01` FOREIGN KEY (`classification_id`) REFERENCES `bug_class` (`id`), <br>
+ *   CONSTRAINT `bug_fk_02` FOREIGN KEY (`priority_id`) REFERENCES `bug_priority` (`id`), <br>
+ *   CONSTRAINT `bug_fk_03` FOREIGN KEY (`developer_id`) REFERENCES `user` (`id`), <br>
+ *   CONSTRAINT `bug_fk_04` FOREIGN KEY (`reporter_id`) REFERENCES `user` (`id`), <br>
+ *   CONSTRAINT `bug_fk_05` FOREIGN KEY (`reviewer_id`) REFERENCES `user` (`id`), <br>
+ *   CONSTRAINT `bug_fk_06` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`), <br>
+ *   CONSTRAINT `bug_fk_07` FOREIGN KEY (`status_id`) REFERENCES `bug_status` (`id`) <br>
+ * ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8; <br>
+ * 
+ * @see BugClassModel
+ * @see BugPriorityModel
+ * @see BugStatusModel
  */
 @Entity
-//@SqlResultSetMapping(name = "BugsMapping", entities = { 
-//		@EntityResult(entityClass = BugsModel.class, fields = {
-//			@FieldResult(name = "id", column = "id"), 
-//			@FieldResult(name = "priority", column = "priority"),
-//			@FieldResult(name = "title", column = "title"), 
-//			@FieldResult(name = "short_desc", column = "short_desc"),
-//			@FieldResult(name = "classification_id", column = "classification_id"),
-//			@FieldResult(name = "product_id", column = "product_id"),
-//			@FieldResult(name = "version_id", column = "version_id"), 
-//			@FieldResult(name = "os_id", column = "os_id"),
-//			@FieldResult(name = "bug_status", column = "bug_status"), 
-//			@FieldResult(name = "reporter", column = "reporter"),
-//			@FieldResult(name = "creation_ts", column = "creation_ts"),
-//			@FieldResult(name = "developer", column = "developer"), 
-//			@FieldResult(name = "reviewer", column = "reviewer"),
-//			@FieldResult(name = "change_ts", column = "change_ts"), 
-//			@FieldResult(name = "rank", column = "rank") }),
-//		@EntityResult(entityClass = OsModel.class, fields = {
-//				@FieldResult(name = "id", column = "oid"),
-//				@FieldResult(name = "osname", column = "osname")
-//				}) })
-@SqlResultSetMappings({
-	  @SqlResultSetMapping(
-	      name="BugsMapping",
-	      entities={@EntityResult(entityClass=BugsModel.class),
-	                @EntityResult(entityClass=ProductModel.class),
-	                @EntityResult(entityClass=OsModel.class)}
-	  )
-})
 @Table(name = "bug", uniqueConstraints = @UniqueConstraint(columnNames = { "id" }))
 public class BugsModel {
 	@Id

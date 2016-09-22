@@ -129,12 +129,16 @@ var ew_buttons=[{
 			$('#editw').dialog('close');
 		}
 	}];
-
-// to convert status field to switchbutton
-function formatStatus(value,row,index){
+/**
+ * ------------------------------------
+ * user list
+ */
+function formatUserStatus(value,row,index){
+	// to convert status field to switchbutton
 	ret='<input class="easyui-switchbutton" ';
 	ret+='data-options="width:50, height: 22, ';
-	ret+='onChange:function(checked){reverseStatus(event,'+row.id+','+ index+');}"';
+	ret+='onChange:function(checked){reverseStatus('+row.id+','+ index+');}"';
+	console.log(ret);
 	switch(value){
 		case 1:
 			return ret + ' checked>';
@@ -147,26 +151,31 @@ function formatStatus(value,row,index){
 	}
 }
 
+function formatUserRole(value,row,index){
+	return row.role.roleName;
+}
+/*--------------------------------------*/
+
 /**
  * ------------------------------------
  * bug list
  */
-function formatPriority(value,row,index){
+function formatBugPriority(value,row,index){
 	return row.priority.desc;
 }
-function formatClass(value,row,index){
+function formatBugClass(value,row,index){
 	return row.classification.desc;
 }
-function formatProduct(value,row,index){
-	return row.product.name;	
+function formatBugProduct(value,row,index){
+	return row.product.name.name;	
 }
-function formatVersion(value,row,index){
+function formatBugVersion(value,row,index){
 	return row.product.version;
 }
-function formatOS(value,row,index){
+function formatBugOS(value,row,index){
 	return row.product.os.osname;
 }
-function formatStatus(value,row,index){
+function formatBugStatus(value,row,index){
 	return row.status.desc;
 }
 /*--------------------------------------*/
@@ -186,7 +195,7 @@ function rowStatusBug(index,row){
 }
 
 // select a row of datagrid, and fill data into fm
-function dgselect(index,row){
+function dgUserSelect(index,row){
 	$('#fm').form('clear');
 	$('#fm').form('load', row);
 	if(row.status==1){
@@ -194,10 +203,12 @@ function dgselect(index,row){
 	}else{
 		$('#status').switchbutton('uncheck');
 	}
+	$('#role_id').combobox('setValue', row.role.id);
 }
 
 // a fast way to modify status value
-function reverseStatus(event_obj, id, index){
+function reverseStatus(id, index){
+	console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 	$.ajax({
         type: "PUT",
         url: MODEL+"/status",
@@ -266,6 +277,13 @@ function action(url, data, dg, method){
 function checkContent(XMLHttpRequest){
 	console.log(XMLHttpRequest);
 }
+
+//$.extend($.fn.switchbutton.methods, {
+//	getValue:function(sb){
+//		return sb.switchbutton('options').checked;
+//	}
+//})
+
 
 function clockon() {
     var now = new Date();

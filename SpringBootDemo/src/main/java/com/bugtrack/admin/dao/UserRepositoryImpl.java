@@ -25,7 +25,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	public void setEntityManager(EntityManager em) {
 		this.em = em;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -36,35 +36,29 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	public Map<String, Object> findAll(Map<String, String> keywords, Pageable pageable) {
 		// TODO Auto-generated method stub
 		// http://www.christophbrill.de/de_DE/how-to-use-the-jpa-criteria-api-in-a-subquery-on-an-elementcollection/
-		String role, username;
+		String role = "", username = "";
+		String tmpSql = "";
+		boolean isrole = false, isname = false;
 		StringBuffer sql = new StringBuffer("");
 		sql.append("select u.* from user u ");
 		if (keywords.containsKey("role")) {
 			role = keywords.get("role");
-		} else {
-			role = null;
+			isrole = true;
+			tmpSql = " where u.role_id=:role ";
 		}
 		if (keywords.containsKey("username")) {
 			username = keywords.get("username");
-		} else {
-			username = null;
+			isname = true;
+			tmpSql = tmpSql.equals("")?" where u.username like :username ":tmpSql + " and  u.username like :username ";
 		}
-		if (role != null && !("").equals(role.trim()) && !role.trim().equals("-1")) {
-			sql.append(" where u.id in (select au.userid from authorise au where au.roleid=:role) ");
-			if (username != null && !("").equals(username.trim())) {
-				sql.append(" and u.username like :username");
-			}
-		}else{
-			if (username != null && !("").equals(username.trim())) {
-				sql.append("  where u.username like :username");
-			}
+		if(!tmpSql.equals("")){
+			sql.append(tmpSql);
 		}
-
 		Query query = em.createNativeQuery(sql.toString(), UserModel.class);
-		if (role != null && !("").equals(role.trim()) && !role.trim().equals("-1")) {
+		if (isrole) {
 			query.setParameter("role", role);
 		}
-		if (username != null && !("").equals(username.trim())) {
+		if (isname) {
 			query.setParameter("username", "%"+username+"%");
 		}
 		Map<String, Object> map= new HashMap<String, Object>();

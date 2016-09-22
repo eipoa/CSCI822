@@ -11,8 +11,18 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Administrator
- *
+ * @author Baoxing Li
+ * @version 1.0.0
+ * A entity class for role of bugs system <br>
+ *  <br>
+ * CREATE TABLE `role` ( <br>
+ *  `id` int(11) NOT NULL AUTO_INCREMENT, <br>
+ *  `rolename` varchar(45) NOT NULL, <br>
+ *  `description` varchar(255) DEFAULT NULL, <br>
+ *  PRIMARY KEY (`id`) <br>
+ * ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8; <br>
+ * 
+ * @see UserModel
  */
 @Entity
 @Table(name = "role")
@@ -55,6 +65,11 @@ public class RoleModel {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "RoleModel [id=" + id + ", rolename=" + rolename + ", description=" + description + "]";
 	}
 
 }

@@ -40,7 +40,7 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 			return;
 		}*/
 
-		// 根据object取得资源所需的角色，进行判断
+		// get permission according to object, and then check authorization
 		logger.info("------------------"+object.toString());
 		String url = ((FilterInvocation) object).getHttpRequest().getRequestURI();
 		logger.info("------------------"+((FilterInvocation) object).getHttpRequest().getRequestURI());

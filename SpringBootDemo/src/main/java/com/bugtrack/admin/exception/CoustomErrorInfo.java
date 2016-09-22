@@ -1,5 +1,10 @@
 package com.bugtrack.admin.exception;
-
+/**
+ * @author Baoxing Li
+ * @version 1.0.0
+ * A self-define class for error message
+ * @see GlobalControllerExceptionHandler
+ */
 public class CoustomErrorInfo<T> {
 
     public static final Integer OK = 0;

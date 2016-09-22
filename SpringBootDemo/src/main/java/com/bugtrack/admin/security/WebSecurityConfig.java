@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		// 设置不拦截规则
+		// set permission rules
 		web.ignoring().antMatchers("/css/**").antMatchers("/scripts/**").antMatchers("/images/**")
 				.antMatchers("/data/**").antMatchers("/Public/**");
 	}

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.admin.model.RoleModel;
 import com.bugtrack.admin.model.UserModel;
 import com.bugtrack.admin.util.PageContent;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -97,11 +98,25 @@ public class UserController extends CommonController {
 		return map;
 	}
 
-	@Transactional
+	@Transactional(readOnly = false)
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
-	public String addUser(HttpServletRequest request, UserModel user) throws Exception {
+	public String addUser(HttpServletRequest request, UserModel user,
+			@RequestParam(value = "role_id", required = true) Integer role_id) throws Exception {
 		try {
-			user.setPassword(new Md5PasswordEncoder().encodePassword("1", null));
+			UserModel tmpUser = userRepo.findByUsername(user.getUsername());
+			if (tmpUser == null) {
+				// new user / set password=1
+				user.setPassword(new Md5PasswordEncoder().encodePassword("1", null));
+				user.setCreate_ts(getCurrentTime());
+			} else {
+				// modify
+				if (user.getPassword() == null)
+					// fill out with old password
+					user.setPassword(userRepo.findByUsername(user.getUsername()).getPassword());
+				user.setCreate_ts(tmpUser.getCreate_ts());
+			}
+			RoleModel role = roleRepo.findOne(role_id);
+			user.setRole(role);
 			logger.info("-----------------------add " + user.toString());
 			user = userRepo.saveAndFlush(user);
 
@@ -111,17 +126,21 @@ public class UserController extends CommonController {
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly=false)
 	@RequestMapping(value = "user/delete", method = RequestMethod.DELETE)
-	public String addUser(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
+	public String delUser(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
 			throws Exception {
 		try {
-			//Integer id= Integer.parseInt(request.getParameter("id"));
-			logger.info("----------------------- delete " + id.toString());
-			UserModel user = userRepo.findById(id);
+			UserModel user;
+			try{
+				user = userRepo.findById(id);
+			}catch(Exception e){
+				return ajaxReturn(false, "", e.getMessage());
+			}
 			if (user == null)
 				return ajaxReturn(false, "", "can not find the user!");
 			logger.info("----------------------- delete " + user.toString());
+			user.setRole(null);
 			userRepo.delete(user);
 			return ajaxReturn(true, "", "OK");
 		} catch (Exception e) {
@@ -129,7 +148,7 @@ public class UserController extends CommonController {
 		}
 	}
 
-	@Transactional
+	@Transactional(readOnly = false)
 	@RequestMapping(value = "user/status", method = RequestMethod.PUT)
 	public String userSwitchStatus(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
 			throws Exception {

@@ -43,7 +43,6 @@ public class RoleController {
 	@RequestMapping(value = "role/listname", method = RequestMethod.GET)
 	public List<RoleModel> listRoleName() {
 		List<RoleModel> result= repo.findAll();
-		result.add(0, new RoleModel(-1, "All", ""));
 		return result;
 	}
 	

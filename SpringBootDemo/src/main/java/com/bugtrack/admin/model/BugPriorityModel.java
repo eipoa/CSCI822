@@ -12,8 +12,17 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author Administrator
- *
+ * @author Baoxing Li
+ * @version 1.0.0
+ * A entity class for priority of bugs <br>
+ *  <br>
+ * CREATE TABLE `bug_priority` ( <br>
+ *   `id` int(11) NOT NULL AUTO_INCREMENT, <br>
+ *   `desc` varchar(45) NOT NULL, <br>
+ *   PRIMARY KEY (`id`) <br>
+ * ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8; <br>
+ * 
+ * @see BugsModel
  */
 @Entity
 @Table(name = "bug_priority", uniqueConstraints = @UniqueConstraint(columnNames = {"id"}))
@@ -23,6 +32,10 @@ public class BugPriorityModel {
 	private Integer id;
 	@NotNull
 	private String desc;
+	
+	public BugPriorityModel() {
+		super();
+	}
 	public Integer getId() {
 		return id;
 	}
@@ -34,5 +47,9 @@ public class BugPriorityModel {
 	}
 	public void setId(Integer id) {
 		this.id = id;
+	}
+	@Override
+	public String toString() {
+		return "BugPriorityModel [id=" + id + ", desc=" + desc + "]";
 	}
 }

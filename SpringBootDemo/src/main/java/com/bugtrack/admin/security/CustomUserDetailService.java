@@ -41,6 +41,7 @@ public class CustomUserDetailService implements UserDetailsService {
 			if (userObj == null) {
 				throw new UsernameNotFoundException("Cannot find the user!");
 			}
+			logger.info("------------------com.BugTracker "+username+" is "+userObj.getRole().getRoleName());
 			// get all authorities related to this userObj
 			Collection<GrantedAuthority> auths = new ArrayList<GrantedAuthority>();
 			SimpleGrantedAuthority auth1 = new SimpleGrantedAuthority("ROLE_ADMIN");

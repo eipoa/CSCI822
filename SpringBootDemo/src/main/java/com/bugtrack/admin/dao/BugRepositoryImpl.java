@@ -14,8 +14,9 @@ import org.springframework.data.domain.Pageable;
 import com.bugtrack.admin.model.BugsModel;
 
 /**
- * @author Administrator
- *
+ * @author Baoxing Li
+ * @version 1.0.0
+ * A implements of BugRepositoryCustom interface
  */
 public class BugRepositoryImpl implements BugRepositoryCustom {
 
@@ -26,93 +27,126 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 		this.em = em;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.springboot.demo.dao.BugRepositoryCustom#findAll(java.util.Map,
-	 * org.springframework.data.domain.Pageable)
+
+	/**
+	 * Retrieve bugs according to keywords and page
+	 * @param keywords in query list
+	 * @param pageable in page object
+	 * @return out json object for JqeasyUI datagrid
+	 * 		{total: 10,
+	 * 		 rows : {
+	 * 			bugs object list
+	 * 		 }
+	 *      }
+	 * @see Pageable
 	 */
 	@Override
 	public Map<String, Object> findAll(Map<String, String> keywords, Pageable pageable) {
 		// TODO Auto-generated method stub
 		// http://www.christophbrill.de/de_DE/how-to-use-the-jpa-criteria-api-in-a-subquery-on-an-elementcollection/
-		String cid = "", pid = "", bstatus = "";
-		String ver = "", intitle = "", tempSql = "";
-		boolean iscid = false, ispid = false, isbstatus = false, isver = false, isintitle = false;
+		String cid = "", pid = "", bid = "", bstatus = "", btitle = "";
+		String pname = "", pver = "", pos = "";
+		String tempSql = "", productSql = "";
+		boolean ispname = false, ispver = false, ispos = false;
+		boolean isbcid = false, isbid = false, isbstatus = false, isbtitle = false, isbpri = false;
 
 		StringBuffer sql = new StringBuffer("");
-//		sql.append("select b.* from bug b, product p, os o where ");
-//		sql.append(" b.product_id=p.id and p.os_id=o.id ");
-		sql.append("select b.* from bug b ");
-		if (keywords.containsKey("classification_id")) {
-			cid = keywords.get("classification_id");
-			if (!cid.trim().equals("-1")) {
-				iscid = true;
-				tempSql = " b.classification_id=:cid ";
-			}
-		}
-		if (keywords.containsKey("product_id")) {
-			pid = keywords.get("product_id");
-			if (!pid.trim().equals("-1")) {
-				ispid = true;
-				if (tempSql.equals("")) {
-					tempSql = " b.product_id=:pid ";
-				} else {
-					tempSql = tempSql + " and b.product_id=:pid ";
-				}
+		// products are on sell
+		sql.append("select b.* from bug b where b.product_id in ( ");
 
-			}
+		// for product
+		productSql = " select id from product where status=1 ";
+		// pname
+		if (keywords.containsKey("pname")) {
+			pname = keywords.get("pname");
+			ispname = true;
+			productSql = productSql + " and name_id=:pname ";
 		}
-		if (keywords.containsKey("version")) {
-			ver = keywords.get("version");
-			isver = true;
-			if (tempSql.equals("")) {
-				tempSql = " b.version=:ver ";
-			} else {
-				tempSql = tempSql + " and b.version=:ver ";
-			}
+		// ver
+		if (keywords.containsKey("pver")) {
+			pver = keywords.get("pver");
+			ispver = true;
+			//productSql = productSql.equals("")?"":productSql + " and ";
+			productSql = productSql + " and version=:pver ";
 		}
-		if (keywords.containsKey("bug_status")) {
-			bstatus = keywords.get("bug_status");
+		// os
+		if (keywords.containsKey("pos")) {
+			pos = keywords.get("pos");
+			ispos = true;
+			//productSql = productSql.equals("")?"":productSql + " and ";
+			productSql = productSql + " and os_id=:pos ";
+		}
+		productSql = productSql + ") ";
+		sql.append(productSql);
+		
+		
+		// category
+		if (keywords.containsKey("bcategory")) {
+			cid = keywords.get("bcategory");
+			isbcid = true;
+			tempSql = " and b.classification_id=:cid ";
+		}
+		// priority
+		if (keywords.containsKey("bpriority")) {
+			pid = keywords.get("bpriority");
+			isbpri = true;
+			tempSql = " and b.priority_id=:pid ";
+		}
+		// bug id
+		if (keywords.containsKey("bid")) {
+			bid = keywords.get("bid");
+			isbid = true;
+			//tempSql = tempSql.equals("")?"":tempSql + " and ";
+			tempSql = " and b.id=:bid ";
+		}
+		// bug status
+		if (keywords.containsKey("bstatus")) {
+			bstatus = keywords.get("bstatus");
 			isbstatus = true;
-			if (tempSql.equals("")) {
-				tempSql = " b.bug_status=:bstatus ";
-			} else {
-				tempSql = tempSql + " and b.bug_status=:bstatus ";
-			}
+			tempSql = tempSql + " and b.status_id=:bstatus ";
 		}
-		if (keywords.containsKey("title")) {
-			isintitle = true;
-			intitle = keywords.get("title");
-			if (tempSql.equals("")) {
-				tempSql = " b.title like :title ";
-			} else {
-				tempSql = tempSql + " and b.title like :title ";
-			}
+		// like title
+		if (keywords.containsKey("btitle")) {
+			isbtitle = true;
+			btitle = keywords.get("btitle");
+			tempSql = tempSql + " and b.title like :btitle ";
 		}
+		// start/end
 
 		if (!tempSql.equals("")) {
-			sql.append(" where ");
 			sql = sql.append(tempSql);
 		}
 
 		
 		Query query = em.createNativeQuery(sql.toString(),BugsModel.class);//"BugsMapping");
-		if (iscid) {
+		
+		// product
+		if (ispver) {
+			query.setParameter("pver", pver);
+		}
+		if (ispos) {
+			query.setParameter("pos", pos);
+		}
+		if (ispname) {
+			query.setParameter("pname", pname);
+		}
+		// bug
+		if (isbid) {
+			query.setParameter("bid", bid);
+		}
+		if (isbcid) {
 			query.setParameter("cid", cid);
 		}
-		if (ispid) {
+		if (isbpri) {
 			query.setParameter("pid", pid);
-		}
-		if (isver) {
-			query.setParameter("ver", ver);
 		}
 		if (isbstatus) {
 			query.setParameter("bstatus", bstatus);
 		}
-		if (isintitle) {
-			query.setParameter("intitle", "%" + intitle + "%");
+		if (isbtitle) {
+			query.setParameter("btitle", "%" + btitle + "%");
 		}
+		System.out.println(query.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("total", query.getResultList().size());
 		query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());

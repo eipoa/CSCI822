@@ -3,6 +3,8 @@
  */
 package com.bugtrack.admin.controller;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 import com.bugtrack.admin.dao.BugRepository;
+import com.bugtrack.admin.dao.RoleRepository;
 import com.bugtrack.admin.dao.UserRepository;
 import com.bugtrack.admin.model.UserModel;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -24,6 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CommonController {
 	@Autowired
 	UserRepository userRepo;
+	
+	@Autowired
+	RoleRepository roleRepo;
 	
 	@Autowired
 	BugRepository bugRepo;
@@ -61,5 +67,11 @@ public class CommonController {
 		String username = userDetails.getUsername();
 		UserModel user = userRepo.findByUsername(username);
 		return user.getFirst_name() + " " + user.getLast_name();
+	}
+	
+	public String getCurrentTime(){
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		return df.format(now);
 	}
 }
