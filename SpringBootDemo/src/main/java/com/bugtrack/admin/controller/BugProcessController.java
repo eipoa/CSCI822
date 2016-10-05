@@ -16,6 +16,9 @@ public class BugProcessController  extends CommonController {
 	@RequestMapping(value="process", method=RequestMethod.GET)
 	public ModelAndView index(){
 		ModelAndView mv = new ModelAndView("/Bug/process");
+		Integer num = this.getCountTask();
+		if(num.intValue()>0)
+			mv.addObject("tasks", this.getCountTask());
 		mv.addObject("fullname", this.getFullname());
 		return mv;
 	}

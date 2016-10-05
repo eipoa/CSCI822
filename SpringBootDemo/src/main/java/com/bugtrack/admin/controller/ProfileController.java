@@ -6,14 +6,17 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/")
-public class IndexController  extends CommonController {
-	@RequestMapping(value="", method=RequestMethod.GET)
+@RequestMapping("/Auth")
+public class ProfileController  extends CommonController {
+	
+	/**
+	 * the main view of assign bugs
+	 * @return template of /Auth/profile
+	 */
+	@RequestMapping(value="profile", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("index");
-		Integer num = this.getCountTask();
-		if(num.intValue()>0)
-			mv.addObject("tasks", this.getCountTask());
+		ModelAndView mv = new ModelAndView("/Auth/profile");
+		mv.addObject("tasks", this.getCountTask());
 		mv.addObject("fullname", this.getFullname());
 		return mv;
 	}

@@ -16,6 +16,9 @@ public class BugReportController  extends CommonController {
 	@RequestMapping(value="report", method=RequestMethod.GET)
 	public ModelAndView index(){
 		ModelAndView mv = new ModelAndView("/Bug/report");
+		Integer num = this.getCountTask();
+		if(num.intValue()>0)
+			mv.addObject("tasks", this.getCountTask());
 		mv.addObject("fullname", this.getFullname());
 		return mv;
 	}

@@ -4,13 +4,14 @@
 package com.bugtrack.admin.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.springframework.data.domain.Pageable;
-
+import com.bugtrack.admin.model.BugStatusModel;
 import com.bugtrack.admin.model.BugsModel;
 
 /**
@@ -84,20 +85,51 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 		if (keywords.containsKey("bcategory")) {
 			cid = keywords.get("bcategory");
 			isbcid = true;
-			tempSql = " and b.classification_id=:cid ";
+			tempSql = tempSql + " and b.classification_id=:cid ";
 		}
 		// priority
 		if (keywords.containsKey("bpriority")) {
 			pid = keywords.get("bpriority");
 			isbpri = true;
-			tempSql = " and b.priority_id=:pid ";
+			tempSql = tempSql + " and b.priority_id=:pid ";
 		}
 		// bug id
 		if (keywords.containsKey("bid")) {
 			bid = keywords.get("bid");
 			isbid = true;
 			//tempSql = tempSql.equals("")?"":tempSql + " and ";
-			tempSql = " and b.id=:bid ";
+			tempSql = tempSql + " and b.id=:bid ";
+		}
+
+		// like title
+		if (keywords.containsKey("btitle")) {
+			isbtitle = true;
+			btitle = keywords.get("btitle");
+			tempSql = tempSql + " and b.title like :btitle ";
+		}
+		// triager
+		boolean istriager = false;
+		String btriager = "";
+		if (keywords.containsKey("triager")) {
+			istriager = true;
+			btriager = keywords.get("triager");
+			tempSql = tempSql + " and b.triager_id=:btriager ";
+		}
+		// developer
+		boolean isdeve = false;
+		String bdeve = "";
+		if (keywords.containsKey("developer")) {
+			isdeve = true;
+			bdeve = keywords.get("developer");
+			tempSql = tempSql + " and b.developer_id=:bdeve and (b.status_id=2 or b.status_id=3 or b.status_id=4) ";
+		}
+		// reviewer
+		boolean isreview = false;
+		String breview = "";
+		if (keywords.containsKey("reviewer")) {
+			isreview = true;
+			breview = keywords.get("reviewer");
+			tempSql = tempSql + " and b.reviewer_id=:breview  and (b.status_id=3 or b.status_id=4) ";
 		}
 		// bug status
 		if (keywords.containsKey("bstatus")) {
@@ -105,19 +137,12 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 			isbstatus = true;
 			tempSql = tempSql + " and b.status_id=:bstatus ";
 		}
-		// like title
-		if (keywords.containsKey("btitle")) {
-			isbtitle = true;
-			btitle = keywords.get("btitle");
-			tempSql = tempSql + " and b.title like :btitle ";
-		}
-		// start/end
+		// start/end???
 
 		if (!tempSql.equals("")) {
 			sql = sql.append(tempSql);
 		}
 
-		
 		Query query = em.createNativeQuery(sql.toString(),BugsModel.class);//"BugsMapping");
 		
 		// product
@@ -146,6 +171,15 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 		if (isbtitle) {
 			query.setParameter("btitle", "%" + btitle + "%");
 		}
+		if (istriager) {
+			query.setParameter("btriager", btriager);
+		}
+		if (isdeve) {
+			query.setParameter("bdeve", bdeve);
+		}
+		if (isreview) {
+			query.setParameter("breview", breview);
+		}
 		System.out.println(query.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("total", query.getResultList().size());
@@ -155,4 +189,30 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 		return map;
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<BugStatusModel> findStatusList(String typeid, String sm) {
+		// TODO Auto-generated method stub
+		StringBuffer sql = new StringBuffer("");
+		// products are on sell
+		if(typeid.trim().equals("1")){
+			if(sm.trim().equals("0"))
+				sql.append("select b.* from bug_status b ");
+			else
+				sql.append("select b.* from bug_status b where b.id=1 or b.id=2 or b.id=5");
+		}else if(typeid.trim().equals("2")){
+			if(sm.trim().equals("0"))
+				sql.append("select b.* from bug_status b where b.id=2 or b.id=3 or b.id=4");
+			else
+				sql.append("select b.* from bug_status b where b.id=2 or b.id=3");
+		}else if(typeid.trim().equals("3")){
+			if(sm.trim().equals("0"))
+				sql.append("select b.* from bug_status b where b.id=3 or b.id=4");
+			else
+				sql.append("select b.* from bug_status b where b.id=2 or b.id=3 or b.id=4");
+		}
+		Query query = em.createNativeQuery(sql.toString(),BugStatusModel.class);
+		return query.getResultList();
+	}
+	
 }

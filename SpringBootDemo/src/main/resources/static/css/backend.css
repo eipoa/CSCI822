@@ -118,7 +118,7 @@ a:active {
  	margin:10px;
  }
  .edittable tr {
- 	//height:40px;
+ 	/*height:40px;*/
  }
  .edittable tr td{
  	padding:5px;
@@ -143,4 +143,6 @@ a:active {
 .panel-header {
     /*background-color: rgb(0, 129, 194);*/
 }
-
+.textbox-readonly{
+	border-width:0px 0px 1px 0px;
+}

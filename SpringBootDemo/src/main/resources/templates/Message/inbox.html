@@ -116,10 +116,10 @@
 					<li>
 						<a href="/Bug/review"><i class="glyphicon glyphicon-refresh"></i> Review Solutions</a>
 					</li>
-					<li class="active">
+					<li>
 						<a href="/Bug/report"><i class="glyphicon glyphicon-list-alt"></i> Bug Reports</a>
 					</li>
-					<li>
+					<li class="active">
 						<a href="/Message/inbox"><i class="glyphicon glyphicon-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
 					</li>
 					<li>
@@ -161,13 +161,106 @@
                         <ol class="breadcrumb">
                             <li class="active">
                                 <li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
-								<li class="active"><i class="glyphicon glyphicon-list-alt"></i> Bug Reports</li>
+								<li class="active"><i class="glyphicon glyphicon-envelope"></i> Inbox</li>
                             </li>
                         </ol>
                     </div>
                 </div>
                 <!-- /.row -->
-
+				
+				<!-- message list -->
+				<div class="row">
+                    <div class="col-lg-12">
+	                    <div class="easyui-layout" style="width:100%; height:500px">
+	                    	<div data-options="region:'east',split:false,title:'Message Body',collapsible:false" style="width:35%;">
+	                    		<table class="edittable" cellspacing="0" cellpadding="0">
+	                    			<tr>
+	                    				<td>
+											<input id="e-from" class="easyui-textbox" 
+												data-options="								
+													label:'From',
+													labelWidth: 40,
+													labelAlign: 'right',
+													editable:false,
+								                    readonly:true,
+													width:330"></input>
+											<input id="h-id" type="hidden" />	
+											<input id="h-status" type="hidden" />	
+											<input id="h-from" type="hidden" />
+										</td>
+	                    			</tr>
+	                    			<tr>
+	                    				<td>
+											<input id="e-to" class="easyui-textbox" 
+												data-options="								
+													label:'To',
+													labelWidth: 40,
+													labelAlign: 'right',
+													editable:false,
+								                    readonly:true,
+													width:330"></input>
+											<input id="h-to" type="hidden" />
+										</td>
+	                    			</tr>
+	                    			<tr>
+	                    				<td>
+											<input id="e-title" class="easyui-textbox" 
+												data-options="								
+													label:'Title',
+													labelWidth: 40,
+													labelAlign: 'right',
+													editable:false,
+								                    readonly:true,
+													width:330"></input>
+										</td>
+	                    			</tr>
+	                    			<tr>
+	                    				<td>
+											<input id="e-desc" class="easyui-textbox" 
+												data-options="								
+													editable:false,
+								                    multiline: true,
+								                    height: 290,
+													width:330"></input>
+										</td>
+	                    			</tr>
+	                    			<tr>
+	                    				<td>
+											<div style="float:right">
+												<a id="btn-read" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:read">Set read</a>
+<!-- 												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:reply">reply</a>						 -->
+											</div>
+										</td>
+	                    			</tr>
+	                    		</table>
+	                    	</div>
+	                    	<div data-options="region:'center',title:'Messages list'">
+		                    	<table id="dg" class="easyui-datagrid" title="" 
+									data-options="
+											rownumbers:true,
+											singleSelect:true,
+											pagination:true,
+											method:'get',
+											idField:'id',
+											fit:true,
+											border:false,
+											loadMsg:'',
+											onSelect:msgSelect">
+									<thead>
+										<tr>
+											<th data-options="field:'id',width:70">Msg ID</th>
+											<th data-options="field:'from',width:70,formatter:formatMsgFrom">From</th>
+											<th data-options="field:'title',width:250">title</th>
+											<th data-options="field:'creationts',width:150">Creation time</th>
+											<th data-options="field:'status',width:80,align:'center',formatter:formatMsgStatus">Status</th>
+										</tr>
+									</thead>
+								</table>
+							</div>
+						</div>
+                    </div>
+                </div>
+                <!-- /.row -->
             </div>
             <!-- /.container-fluid -->
 
@@ -191,5 +284,34 @@
     <script type="text/javascript" src="/scripts/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="/scripts/backend.js"></script>
 </body>
-
+<script type="text/javascript">
+var MODEL = '/Message/';
+	function read(){
+		var msgid= $('#h-id').val();
+		if(msgid!=undefined && msgid!=""){
+			$.ajax({
+		        type: "PUT",
+		        url: MODEL+"/status",
+		        data: {id:msgid},
+		        dataType: "json",
+		        success: function(result){
+		        	$.messager.show({
+						title: 'Success',
+						msg: result.info
+					});
+		        	// lazy way
+		        	$('#dg').datagrid('reload');
+		         }
+		    });
+		}
+	}
+	function reply(){
+		
+	}
+	$(function() {
+		$('#dg').datagrid({
+			url:'/Message/list?sort=creationts&order=desc',
+		});
+	});
+</script>
 </html>

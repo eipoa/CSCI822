@@ -61,6 +61,7 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		if (isname) {
 			query.setParameter("username", "%"+username+"%");
 		}
+
 		Map<String, Object> map= new HashMap<String, Object>();
 		map.put("total", query.getResultList().size());
 		query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());

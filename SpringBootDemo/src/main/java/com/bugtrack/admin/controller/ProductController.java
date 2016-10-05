@@ -79,6 +79,7 @@ public class ProductController extends CommonController {
 			@RequestParam(value = "id", required = true) Integer id) {
 		return osRepo.findOne(id);
 	}
+	
 	@RequestMapping(value = "oslist", method = RequestMethod.GET)
 	public List<ProductOsModel> getOsList() {
 		return osRepo.findAll();
@@ -93,6 +94,8 @@ public class ProductController extends CommonController {
 	}
 	@RequestMapping(value = "namelist", method = RequestMethod.GET)
 	public List<ProductNameModel> getNameList() {
+		// maybe some names aren't released
+		// it is in name table, but not in product table
 		return nameRepo.findAll();
 	}
 

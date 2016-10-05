@@ -83,7 +83,6 @@ public class BugsModel {
 	
 	@NotNull
 	private String title;
-	@NotNull
 	private String short_desc;
 	
 	@NotNull
@@ -102,6 +101,10 @@ public class BugsModel {
 	@JoinColumn(name="reviewer_id")
 	private UserModel reviewer;
 	
+	@NotNull
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="triager_id")
+	private UserModel triager;
 	
 	@NotNull
 	private String change_ts;
@@ -213,4 +216,20 @@ public class BugsModel {
 		this.rank = rank;
 	}
 
+	public UserModel getTriager() {
+		return triager;
+	}
+
+	public void setTriager(UserModel triager) {
+		this.triager = triager;
+	}
+
+	@Override
+	public String toString() {
+		return "BugsModel [id=" + id + ", priority=" + priority + ", classification=" + classification + ", product="
+				+ product + ", status=" + status + ", title=" + title + ", short_desc=" + short_desc + ", reporter="
+				+ reporter + ", creation_ts=" + creation_ts + ", developer=" + developer + ", reviewer=" + reviewer
+				+ ", change_ts=" + change_ts + ", rank=" + rank + "]";
+	}
+	
 }
