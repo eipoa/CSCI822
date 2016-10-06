@@ -146,3 +146,17 @@ a:active {
 .textbox-readonly{
 	border-width:0px 0px 1px 0px;
 }
+.fa-btn-icon{
+	/*margin-top: -7px;*/
+	font-size:16px;
+	font-style:normal;
+}
+.fa-green{
+	color:#5cb85c;
+}
+.fa-blue{
+	color:#428bca;
+}
+.fa-default{
+	color:#777;
+}

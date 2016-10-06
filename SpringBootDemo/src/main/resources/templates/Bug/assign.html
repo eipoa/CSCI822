@@ -17,7 +17,7 @@
 <!-- Custom CSS -->
 <link href="/cssv1.0/sb-admin.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css"
-	href="/scripts/themes/metro/easyui.css" />
+	href="/scripts/themes/material/easyui.css" />
 <link rel="stylesheet" type="text/css" href="/scripts/themes/icon.css" />
 <link rel="stylesheet" type="text/css" href="/css/backend.css" />
 <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
@@ -109,23 +109,23 @@
 						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
 					</li>
 					<li class="active">
-						<a href="/Bug/assign"><i class="glyphicon glyphicon-tasks"></i> Assign Bugs</a>
+						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/process"><i class="glyphicon glyphicon-flash"></i> Process Bugs</a>
+						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/review"><i class="glyphicon glyphicon-refresh"></i> Review Solutions</a>
+						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
 					<li>
-						<a href="/Bug/report"><i class="glyphicon glyphicon-list-alt"></i> Bug Reports</a>
+						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
-						<a href="/Message/inbox"><i class="glyphicon glyphicon-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
+						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
-							<i class="glyphicon glyphicon-menu-hamburger"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
+							<i class="fa fa-fw fa-reorder"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo0" class="collapse">
 							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
@@ -136,12 +136,12 @@
 					</li>
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
-							<i class="glyphicon glyphicon-menu-hamburger"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
+							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="#">Product Admin</a></li>
-							<li><a href="#">Bug Catalog</a></li>
-							<li><a href="#">Mail system</a></li>
+							<li><a href="#"> Product Admin</a></li>
+							<li><a href="#"> Bug Catalog</a></li>
+							<li><a href="#"> Mail system</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -156,14 +156,11 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-<!--                         <h1 class="page-header"> -->
-<!--                             Wellcome <small>Have a nice day!</small> -->
-<!--                         </h1> -->
                         <ol class="breadcrumb">
-<!--                             <li class="active"> -->
+                            <li class="active">
                                 <li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
-								<li class="active"><i class="glyphicon glyphicon-tasks"></i> Assign Bugs</li>
-<!--                             </li> -->
+								<li class="active"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</li>
+                            </li>
                         </ol>
                     </div>
                 </div>
@@ -211,14 +208,20 @@
 									<tr>
 										<td>
 											<input id="xtp" type="hidden" value=1 />
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true, onClick:edit">Edit</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true, onClick:edit">
+												 Edit
+											</a>
 										</td>
 										<td>
 											<span class="datagrid-btn-separator"></span>
 										</td>
 										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true, onClick:search">Search</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-clear', plain:true, onClick:reset">Reset</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true, onClick:search">
+												 Search
+											</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-clear', plain:true, onClick:reset">
+												 Reset
+											</a>
 										</td>
 									</tr>
 								</tbody>
@@ -539,8 +542,11 @@
 				<tr>
 					<td colspan="3">
 					<div style="float:right">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:save">Save</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:cancel">Cancel</a>							
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:save">
+							<i class="fa fa-check fa-btn-icon fa-green"></i> Save
+						</a>
+						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:cancel">
+							<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>								
 					</div>
 					</td>
 				</tr>
