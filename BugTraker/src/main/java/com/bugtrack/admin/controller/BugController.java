@@ -189,32 +189,21 @@ public class BugController extends CommonController {
 			}
 			// add new message
 			MessageModel msg = new MessageModel();
+			msg.setSender(bug.getDeveloper());
+			msg.setReceiver(bug.getReviewer());
+			msg.setCreationts(bug.getChange_ts());
+			msg.setTitle(bug.getTitle());
 			if(oldstatus.equals(1) && bug.getStatus().getId().equals(2)){
 				// new -> assign
-				msg.setSender(bug.getTriager());
-				msg.setReceiver(bug.getDeveloper());
-				msg.setCreationts(bug.getChange_ts());
-				msg.setTitle(bug.getTitle());
-				msg.setContent("This is a new bug, please give out a solution. Bug ID: " + Integer.toString(bug.getId()) + " Priority: " + bug.getPriority().getDesc());
-				logger.info("------------------ " + msg.toString());
+				msg.setContent(bug.getMsg(1, 2));
 				msgRepo.saveAndFlush(msg);
 			}else if(oldstatus.equals(3) && bug.getStatus().getId().equals(2)){
 				// verify -> assign
-				msg.setSender(bug.getReviewer());
-				msg.setReceiver(bug.getDeveloper());
-				msg.setCreationts(bug.getChange_ts());
-				msg.setTitle(bug.getTitle());
-				msg.setContent("The solution didn't pass testing, please check again. Bug ID: " + Integer.toString(bug.getId()) + " Priority: " + bug.getPriority().getDesc());
-				logger.info("------------------ " + msg.toString());
+				msg.setContent(bug.getMsg(3, 2));
 				msgRepo.saveAndFlush(msg);
 			}else if(oldstatus.equals(2) && bug.getStatus().getId().equals(3)){
 				// assign -> verify
-				msg.setSender(bug.getDeveloper());
-				msg.setReceiver(bug.getReviewer());
-				msg.setCreationts(bug.getChange_ts());
-				msg.setTitle(bug.getTitle());
-				msg.setContent("This is an new solution, please test it. Bug ID: " + Integer.toString(bug.getId()) + " Priority: " + bug.getPriority().getDesc());
-				logger.info("------------------ " + msg.toString());
+				msg.setContent(bug.getMsg(2, 3));
 				msgRepo.saveAndFlush(msg);
 			}
 			

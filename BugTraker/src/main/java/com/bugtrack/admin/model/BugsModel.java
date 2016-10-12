@@ -219,6 +219,25 @@ public class BugsModel {
 	}
 
 
+	public String getMsg(int s, int e){
+		String str = "";
+		str = "<h5><span class=\"label label-primary\">Bug ID: " + Integer.toString(this.getId()) + "</span></h5>";
+		if(this.getPriority().getId().equals(1))
+			str += "<h5><span class=\"label label-info\">Priority: " + this.getPriority().getDesc() + "</span></h5>";
+		if(this.getPriority().getId().equals(2))
+			str += "<h5><span class=\"label label-warning\">Priority: " + this.getPriority().getDesc() + "</span></h5>";
+		if(this.getPriority().getId().equals(3))
+			str += "<h5><span class=\"label label-danger\">Priority: " + this.getPriority().getDesc() + "</span></h5>";
+		if(s==1 && e==2){
+			str += "<h6>A new bug, please give out a solution.</h6>";
+		}else if(s==3 && e==2){
+			str += "<h6>The solution cannot pass testing, please check again.</h6>";
+		}else if(s==2 && e==3){
+			str += "<h6>A new solution, please test it.</h6>";
+		}
+		return str;
+	}
+	
 //	@Override
 //	public String toString() {
 //		return "BugsModel [id=" + id + ", priority=" + priority + ", classification=" + classification + ", product="

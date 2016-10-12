@@ -24,6 +24,9 @@
 <!-- Custom Fonts -->
 <link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
+<!-- syntax Highlight -->
+<link rel="stylesheet" type="text/css" href="/scripts/ueditor/third-party/SyntaxHighlighter/shCoreDefault.css">
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -167,16 +170,8 @@
 						<!-- easyui table for bug list-->
 						<table id="dg" class="easyui-datagrid" title="Bug list"
 							style="width: auto; height: 500px"
-							data-options="
-									rownumbers:true,
-									singleSelect:true,
-									pagination:true,
-									
-									method:'get',
-									idField:'id',
-									rowStyler:rowStatusBug,
-									loadMsg:'',
-									toolbar:'#tb'">
+							data-options="rownumbers:true, singleSelect:true, pagination:true, method:'get',
+									idField:'id', rowStyler:rowStatusBug, loadMsg:'', toolbar:'#tb'">
 							<thead>
 								<tr>
 									<th data-options="field:'id',width:70">Bug ID</th>
@@ -370,15 +365,6 @@
 					                    panelHeight:150"></input>
 							</td>
 							<td>
-								<!-- <input id="e-rank" class="easyui-textbox" 
-									data-options="
-										label:'Rank',
-										labelWidth: 40,
-										labelAlign: 'right',
-										editable:false,
-					                    readonly:true,
-										width:170,
-										onClickButton:search"></input>  -->
 								 <input id="e-rank" class="easyui-combobox"
 										data-options="
 											valueField: 'value',
@@ -405,137 +391,72 @@
 						<tr>
 							<td>
 								<input id="e-priority" class="easyui-textbox"
-									data-options="
-					                    label:'Priority',
-					                    labelWidth: 90,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 220,
-					                    editable:false,
-					                    readonly:true"></input>
+									data-options="label:'Priority', labelWidth: 90, labelAlign: 'right', 
+										method: 'get', width: 220, editable:false, readonly:true"></input>
 					            <input id="h-priority" type="hidden" />
 							</td>
 							<td colspan="2">
 								<input id="e-category" class="easyui-textbox"
-									data-options="
-					                    label:'Category',
-					                    labelWidth: 100,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 230,
-					                    editable:false,
-					                    readonly:true"></input>
+									data-options="label:'Category', labelWidth: 100, labelAlign: 'right',
+					                    method: 'get', width: 230, editable:false, readonly:true"></input>
 					            <input id="h-category" type="hidden" />
 							</td>
 						</tr>
 						<tr>
 							<td style="width:230px">
 								<input id="e-pname" class="easyui-textbox"
-									data-options="
-					                    label:'Product name',
-					                    labelWidth: 90,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width:220,
-					                    editable:false,
-					                    readonly:true"></input>
+									data-options="label:'Product name', labelWidth: 90, labelAlign: 'right',
+					                    method: 'get', width:220, editable:false, readonly:true"></input>
 					            <input id="h-pname" type="hidden" />
 							</td>
 							<td style="width:240px">
 							    <input id="e-pver" class="easyui-textbox"
-									data-options="
-					                    label:'Product version',
-					                    labelWidth: 100,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 230,
-					                    editable:false,
-					                    readonly:true"></input>
+									data-options="label:'Product version', labelWidth: 100, labelAlign: 'right',
+					                    method: 'get', width: 230, editable:false, readonly:true"></input>
 							</td>
 							<td style="width:180px">
 							    <input id="e-pos" class="easyui-textbox"
-									data-options="
-					                    label:'OS',
-					                    labelWidth: 40,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 170,
-					                    editable:false,
-					                    readonly:true"></input>	
+									data-options="label:'OS', labelWidth: 40, labelAlign: 'right',
+					                    method: 'get', width: 170,  editable:false, readonly:true"></input>	
 								<input id="h-pos" type="hidden" />
 							</td>
 						</tr>
 						<tr>
 							<td colspan="3">
 								<input id="e-title" class="easyui-textbox" 
-									data-options="
-										label:'Title',
-										labelWidth: 90,
-										labelAlign: 'right',
-										width:640,
-										editable:false,
-					                    readonly:true,
-										onClickButton:search"></input>
+									data-options="label:'Title', labelWidth: 90, labelAlign: 'right',
+										width:640, editable:false, readonly:true, onClickButton:search"></input>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="3">
 								<input id="e-desc" class="easyui-textbox" 
-									data-options="
-										label:'Description',
-										labelWidth: 90,
-										labelAlign: 'right',
-										width:640,
-										editable:false,
-					                    readonly:true,
-										multiline:true,
-										onClickButton:search"></input>
+									data-options="label:'Description', labelWidth: 90, labelAlign: 'right', width:640,
+										editable:false, readonly:true, multiline:true, onClickButton:search"></input>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<input id="e-develop" class="easyui-textbox"
-									data-options="
-					                    label:'Developer',
-					                    labelWidth: 90,
-					                    labelAlign: 'right',
-					                    width: 220,
-					                    editable:false,
-					                    readonly:true"></input>
+									data-options="label:'Developer', labelWidth: 90,
+					                    labelAlign: 'right', width: 220, editable:false, readonly:true"></input>
 							</td>
 							<td colspan="2">
 								<input id="e-review" class="easyui-textbox"
-									data-options="
-					                    label:'Reviewer',
-					                    labelWidth: 100,
-					                    labelAlign: 'right',
-					                    width: 230,
-					                    editable:false,
-					                    readonly:true"></input>
+									data-options="label:'Reviewer', labelWidth: 100,
+					                    labelAlign: 'right', width: 230, editable:false, readonly:true"></input>
 							</td>
 						</tr>
 						<tr>
 							<td>
 								<input id="e-reporter" class="easyui-textbox"
-									data-options="
-					                    label:'Reporter',
-					                    labelWidth: 90,
-					                    labelAlign: 'right',
-					                    width: 220,
-					                    editable:false,
-					                    readonly:true
-					                    "></input>
+									data-options="label:'Reporter', labelWidth: 90,
+					                    labelAlign: 'right', width: 220, editable:false, readonly:true"></input>
 							</td>
 							<td colspan="2">
 								<input id="e-cdt" class="easyui-textbox"
-									data-options="
-					                    label:'Creation Date',
-					                    labelWidth: 100,
-					                    labelAlign: 'right',
-					                    width: 230,
-					                    editable:false,
-					                    readonly:true
-					                    "></input>
+									data-options="label:'Creation Date', labelWidth: 100,
+					                    labelAlign: 'right', width: 230, editable:false, readonly:true"></input>
 							</td>
 						</tr>
 						<tr>
@@ -637,32 +558,16 @@
     <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.all.min.js"> </script>
     <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/lang/en/en.js"></script>
     <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/third-party/SyntaxHighlighter/shCore.js"></script>
 </body>
 <script type="text/javascript">
 	var MODEL = '/Bug/';
-	
-	var ue = UE.getEditor('editor', {
-    	toolbars: [
-    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
-    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist', 'attachment']/*, 'attachment'*/
-    	],
-    	mergeEmptyline: true,
-        removeClass: true,
-        removeEmptyline: false,
-        clearFontSize: false,
-        clearFontFamily: false,
-        enterTag:'br',
-    	zIndex:10000,
-    	allowDivTransToP: false,
-        autoHeightEnabled: true,
-        autoFloatEnabled: true,
-	    serverUrl: "/Upload/init/", 
-	    UEDITOR_HOME_URL: "/scripts/ueditor/"
-	});
+	var ue;
 	
 	// save modification
 	function save(){
 		var url= MODEL + 'save';
+		SyntaxHighlighter.all();
 		var data= {
 				id : $('#e-bid').textbox('getValue'),
 				classification : $('#h-category').val(),
@@ -682,7 +587,7 @@
 				patch_desc : ue.getContent()
 		}
 		var dg= $('#dg');
-		console.log(data);
+		//console.log(data);
 		action(url, data, dg, "POST");
 	}
 	
@@ -717,6 +622,44 @@
 				ajaxerror(XMLHttpRequest.responseText);
 			} 
 		});
+		
+		// init Baidu Ueditor
+		ue = UE.getEditor('editor', {
+	    	toolbars: [
+	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
+	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist', 'attachment','insertcode']/*, 'attachment'*/
+	    	],
+	    	autotypeset:{
+		    	mergeEmptyline: true,
+		        removeClass: true,
+		        removeEmptyline: false,
+		        clearFontSize: false,
+		        clearFontFamily: false
+	    	},
+	    	zIndex:10000,
+	    	allowDivTransToP: false,
+	        autoHeightEnabled: true,
+	        autoFloatEnabled: true,
+		    serverUrl: "/Upload/init/", 
+		    UEDITOR_HOME_URL: "/scripts/ueditor/"
+		});
+		ue.ready(function() {
+			console.log('ueditor is ready');
+			this.setContent('');
+			this.execCommand( 'rowspacing', '5', 'top' );
+			this.execCommand( 'fontsize', '12px' );
+			this.addListener('afterExecCommand' , function (){
+				// console.log(arguments);
+				var files, item, i;
+				if(arguments.length==3 && arguments[0]=='afterexeccommand' && arguments[1]=='insertfile'){
+					files = arguments[2][1];
+					if(files.length>0){
+						// write database;item.title/item.url
+					}
+				}
+			});
+		});
+		// console.log(ue);
 	});
 </script>
 

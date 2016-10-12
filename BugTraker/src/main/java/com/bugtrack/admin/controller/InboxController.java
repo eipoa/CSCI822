@@ -52,10 +52,16 @@ public class InboxController  extends CommonController {
 		int rows = Integer.parseInt(page.getRows());
 		Pageable pageable = new PageRequest(pageNum, rows, sort);
 		
-		List<MessageModel> msgs = msgRepo.findAllByReceiver(this.getUser(), pageable);
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("total", msgs.size());
-		map.put("rows", msgs);
+		List<MessageModel> msgs = msgRepo.findAllByReceiverAndStatusLessThan(this.getUser(), 2);
+		if(msgs!=null){
+			map.put("total", msgs.size());
+			msgs = msgRepo.findAllByReceiverAndStatusLessThan(this.getUser(), 2, pageable);
+			map.put("rows", msgs);
+		}else{
+			map.put("total", 0);
+			map.put("rows", msgs);
+		}
 		ObjectMapper om = new ObjectMapper();
 		String jsonString = om.writeValueAsString(map);
 		return jsonString;
@@ -63,19 +69,18 @@ public class InboxController  extends CommonController {
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "status", method = RequestMethod.PUT)
-	public String msgSwitchStatus(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
+	public String msgSwitchStatus(HttpServletRequest request, 
+			@RequestParam(value = "id", required = true) Integer id,
+			@RequestParam(value = "st", required = true) Integer st)
 			throws Exception {
 		try {
 			MessageModel msg = msgRepo.findOne(id);
 			if (msg == null)
 				return ajaxReturn(false, "", "can not find the message!");
-			if (msg.getStatus().equals(1))
-				msg.setStatus(0);
-			else
-				msg.setStatus(1);
+			msg.setStatus(st);
 			msg.setReadts(this.getCurrentTime());
 			msg = msgRepo.saveAndFlush(msg);
-			return ajaxReturn(true, Integer.toString(msg.getStatus()), "");
+			return ajaxReturn(true, Integer.toString(msg.getStatus()), "Ok");
 		} catch (Exception e) {
 			return ajaxReturn(false, "", e.getMessage());
 		}

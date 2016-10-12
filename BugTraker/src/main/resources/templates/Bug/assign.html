@@ -399,11 +399,6 @@
 	                    				{value:'5',text:'★★★★★'}
 	                    			]">
 						</input>
-								
-						<!-- <label for="e-rank">Rank</label>
-		                <input id="e-rank" name="e-rank" class="rating" data-min="0" 
-		                	data-max="5" data-step="1" data-size="xxs" data-readonly="true" data-animate="false"
-		                	data-show-clear="false" data-show-caption="false" data-hoverEnabled="false" /> -->
 					</td>
 				</tr>
 				<tr>
@@ -559,10 +554,10 @@
 				<tr>
 					<td colspan="3">
 					<div style="float:right">
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:save">
+						<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
 							<i class="fa fa-check fa-btn-icon fa-green"></i> Save
 						</a>
-						<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:cancel">
+						<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
 							<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>								
 					</div>
 					</td>

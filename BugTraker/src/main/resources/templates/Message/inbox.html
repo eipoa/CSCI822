@@ -167,19 +167,27 @@
 				<!-- message list -->
 				<div class="row">
                     <div class="col-lg-12">
-	                    <div class="easyui-layout" style="width:100%; height:500px">
-	                    	<div data-options="region:'east',title:'Message Body',collapsible:false" style="width:72%;"><!-- split:true, -->
-	                    		<table class="edittable" cellspacing="0" cellpadding="0"  width="auto"><!--  width="100%" -->
+	                    <div id="cc" class="easyui-layout" style="width:100%; height:500px">
+	                    	<div data-options="region:'west',title:'Message list',collapsible:false" style="width:401px;">
+		                    	<table id="dg" class="easyui-datagrid" title=""  
+		                    		data-options=" singleSelect:true, pagination:true, method:'get', idField:'id', 
+		                    			fit:true, pageList:[16], pageSize:16, border:false, loadMsg:'', onSelect:msgSelect">
+									<thead>
+										<tr>
+											<th data-options="field:'status',width:50,align:'center',formatter:formatMsgStatus">Status</th>
+											<th data-options="field:'title',width:223">title</th>
+											<th data-options="field:'creationts',width:125, formatter:formatTime">Creation time</th>											
+										</tr>
+									</thead>
+								</table>
+							</div>
+	                    	<div data-options="region:'center',title:'Message Body',collapsible:false">
+								<table class="edittable" cellspacing="0" cellpadding="0">
 	                    			<tr>
 	                    				<td>
-											<input id="e-from" class="easyui-textbox" 
-												data-options="								
-													label:'From',
-													labelWidth: 40,
-													labelAlign: 'right',
-													editable:false,
-								                    readonly:true,
-													width:350"></input>
+											<input id="e-from" class="easyui-textbox"  
+												data-options=" label:'From', labelWidth: 40, labelAlign: 'right', 
+													editable:false, readonly:true, width:350"></input>
 											<input id="h-id" type="hidden" />	
 											<input id="h-status" type="hidden" />	
 											<input id="h-from" type="hidden" />
@@ -187,35 +195,30 @@
 	                    			</tr>
 	                    			<tr>
 	                    				<td>
-											<input id="e-to" class="easyui-textbox" 
-												data-options="								
-													label:'To',
-													labelWidth: 40,
-													labelAlign: 'right',
-													editable:false,
-								                    readonly:true,
-													width:350"></input>
+											<input id="e-to" class="easyui-textbox"  
+												data-options="label:'To', labelWidth: 40, labelAlign: 'right', 
+													editable:false, readonly:true, width:350"></input>
 											<input id="h-to" type="hidden" />
 										</td>
 	                    			</tr>
 	                    			<tr>
 	                    				<td>
-											<input id="e-title" class="easyui-textbox" 
-												data-options="								
-													label:'Title',
-													labelWidth: 40,
-													labelAlign: 'right',
-													editable:false,
-								                    readonly:true,
-													width:350"></input>
+											<input id="e-title" class="easyui-textbox"  
+												data-options="label:'Title', labelWidth: 40, labelAlign: 'right', 
+													editable:false, readonly:true, width:350"></input>
 										</td>
 	                    			</tr>
-	                    			<tr>
-	                    				<td>
-											<script id="editor" type="text/plain" style="width:auto;height:230px;"></script>
-										</td>
-	                    			</tr>
-	                    			<tr>
+	                    		</table>
+	                    		<div style="padding: 10px;">	                    			                 
+									<div id="p" class="easyui-panel" title="Date: " data-options="tools:'#tt'" style="padding: 10px;"></div>
+									<div id="tt">
+								        <a id="btn-read" href="#" class="easyui-tooltip" title="Read" class="icon-ok" onClick= dealMsg(1)></a>
+            							<a id="btn-del" href="#" class="easyui-tooltip" title="Remove" class="icon-remove" onClick= dealMsg(2)></a>
+								    </div>
+							    </div>
+	                    	</div>
+	                    			<!-- <script id="editor" type="text/plain" style="width:auto;height:230px;"></script> -->
+	                    			<!-- <tr>
 	                    				<td>
 											<div style="float:right">
 												<a id="btn-read" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', plain:true, onClick:read">
@@ -226,33 +229,7 @@
 											</a>
 											</div>
 										</td>
-	                    			</tr>
-	                    		</table>
-	                    	</div>
-	                    	<div data-options="region:'center',title:'Messages list'">
-		                    	<table id="dg" class="easyui-datagrid" title="" 
-									data-options="
-											rownumbers:true,
-											singleSelect:true,
-											pagination:true,
-											method:'get',
-											idField:'id',
-											fit:true,
-											border:false,
-											loadMsg:'',
-											onSelect:msgSelect">
-									<thead>
-										<tr>
-											<th data-options="field:'status',width:80,align:'center',formatter:formatMsgStatus">Status</th>
-<!-- 											<th data-options="field:'id',width:70">Msg ID</th> -->
-<!-- 											<th data-options="field:'from',width:70,formatter:formatMsgFrom">From</th> -->
-											<th data-options="field:'title',width:250">title</th>
-											<th data-options="field:'creationts',width:150">Creation time</th>
-											
-										</tr>
-									</thead>
-								</table>
-							</div>
+	                    			</tr> -->
 						</div>
                     </div>
                 </div>
@@ -319,40 +296,30 @@
 	<script type="text/javascript" src="/scripts/backend.js"></script>
 	
 	<!-- Ueditor Core Javascript -->
-	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.all.min.js"> </script>
-    <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/lang/en/en.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script>
+<!-- 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.config.js"></script> -->
+<!--     <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.all.min.js"> </script> -->
+<!--     <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/lang/en/en.js"></script> -->
+<!--     <script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script> -->
 </body>
 <script type="text/javascript">
 	//UploadController.java-->rootPath
 	var MODEL = '/Message/';
-	var ue = UE.getEditor('editor', {
-	    	toolbars: [
-	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
-	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist', 'attachment']
-	    	],
-	        autoHeightEnabled: true,
-	        autoFloatEnabled: true,
- 	        serverUrl: "/Upload/init/", 
- 	        UEDITOR_HOME_URL: "/scripts/ueditor/"
-		});
-
-	function read(){
+	var ue;
+	function dealMsg(st){
 		var msgid= $('#h-id').val();
+		var url=MODEL + "/";
 		if(msgid!=undefined && msgid!=""){
 			$.ajax({
 		        type: "PUT",
 		        url: MODEL+"/status",
-		        data: {id:msgid},
+		        data: {id:msgid, st: st},
 		        dataType: "json",
 		        success: function(result){
-		        	$.messager.show({
-						title: 'Success',
-						msg: result.info
-					});
+		        	show('Success',result.info);
 		        	// lazy way
 		        	$('#dg').datagrid('reload');
+		        	$('#h-status').val(1);
+		        	$('#btn-read').linkbutton('disable');
 		         }
 		    });
 		}
@@ -360,15 +327,69 @@
 	function reply(){
 		
 	}
-	$(function() {
+	$(function(){
 		$('#dg').datagrid({
 			url:'/Message/list?sort=creationts&order=desc',
+			onBeforeLoad : function() {
+				// show fullscreen modal windows
+				fullScreenMask('open');
+			},
+			onLoadSuccess : function() {
+				var row = $('#dg').datagrid('getSelected'); 
+				if (row != null || row != undefined)
+					$('#dg').datagrid('selectRecord', row.id);
+				fullScreenMask('close');
+			},
+			onLoadError : function(XMLHttpRequest) {
+				fullScreenMask('close');
+				//console.log(XMLHttpRequest);
+				ajaxerror(XMLHttpRequest.responseText);
+			}
 		});
 		var pager = $('#dg').datagrid().datagrid('getPager');
 		pager.pagination({
 			layout:['first','prev','manual','next','last'],
 			displayMsg:'{from} to {to} of {total} items'
 		});
+		$('#cc').layout();
+		$('#p').panel();
+		
+// 		// init Baidu Ueditor
+// 		ue = UE.getEditor('editor', {
+// 	    	toolbars: [
+// 	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
+// 	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist', 'attachment','insertcode']/*, 'attachment'*/
+// 	    	],
+// 	    	autotypeset:{
+// 		    	mergeEmptyline: true,
+// 		        removeClass: true,
+// 		        removeEmptyline: false,
+// 		        clearFontSize: false,
+// 		        clearFontFamily: false
+// 	    	},
+// 	    	zIndex:10000,
+// 	    	allowDivTransToP: false,
+// 	        autoHeightEnabled: true,
+// 	        autoFloatEnabled: true,
+// 		    serverUrl: "/Upload/init/", 
+// 		    UEDITOR_HOME_URL: "/scripts/ueditor/"
+// 		});
+// 		ue.ready(function() {
+// 			console.log('ueditor is ready');
+// 			this.setContent('');
+// 			this.execCommand( 'rowspacing', '5', 'top' );
+// 			this.execCommand( 'fontsize', '12px' );
+// 			this.addListener('afterExecCommand' , function (){
+// 				// console.log(arguments);
+// 				var files, item, i;
+// 				if(arguments.length==3 && arguments[0]=='afterexeccommand' && arguments[1]=='insertfile'){
+// 					files = arguments[2][1];
+// 					if(files.length>0){
+// 						// write database;item.title/item.url
+// 					}
+// 				}
+// 			});
+// 		});
 	});
 </script>
 </html>

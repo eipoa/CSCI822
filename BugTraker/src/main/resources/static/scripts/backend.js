@@ -160,6 +160,9 @@ function formatUserRole(value,row,index){
 /*--------------------------------------*/
 
 /*---------------bug list---------------*/
+function formatTime(value,row,index){
+	return value.substr(0, 19)
+}
 function formatBugPriority(value,row,index){
 	return row.priority.desc;
 }
@@ -197,9 +200,9 @@ function formatMsgFrom(value,row,index){
 }
 function formatMsgStatus(value,row,index){
 	if(row.status==0){
-		return '<span class="label label-danger"><i class="fa fa-envelope"></i> new</span>';
+		return '<span class="label label-danger"><i class="fa fa-envelope"></i> </span>';
 	}else{
-		return '<span class="label label-success"><i class="fa fa-envelope"></i> read</span>';
+		return '<span class="label label-default"><i class="fa fa-envelope"></i> </span>';
 	}
 }
 function msgSelect(index,row){
@@ -209,11 +212,16 @@ function msgSelect(index,row){
 	$('#e-to').textbox('setValue', row.receiver.last_name + " " + row.receiver.first_name);
 	$('#h-to').val(row.receiver.id);
 	$('#e-title').textbox('setValue', row.title);
-	$('#e-desc').textbox('setValue', row.content);
-	if(row.status==1)
-		$('#btn-read').linkbutton('disable');
-	else
-		$('#btn-read').linkbutton('enable');
+	//$('#e-desc').textbox('setValue', row.content);
+	//ue.setContent(row.content);
+	$('#p').panel({
+		content:row.content,
+		title: 'Time: ' + row.creationts});
+	if(row.status!=0){
+		$('#btn-read').hide();;
+	}else{
+		$('#btn-read').show();
+	}
 }
 /*--------------------------------------*/
 
@@ -291,14 +299,14 @@ function fillOs01(record){
 }
 // rank show stars
 function formatItem(row){
-	console.log(row);
+	//console.log(row);
 	var opts = $(this).combobox('options');
 	var s = '<span style="font-size:18px">'+row[opts.textField]+'</span>'
 	return s
 }
 // click edit
 function edit(){
-	console.log(ue);
+	//console.log(ue);
 	var row = $('#dg').datagrid('getSelected',{});
 	if(row==null || row==undefined){
 		alert_('Please select a row to edit.');
@@ -372,7 +380,7 @@ function edit(){
 		}
 		if(row.solution!=null)
 			$('#e-patch-list').html(row.solution.description);
-		ue.setContent('');
+		if(ue!==undefined) ue.setContent('');
 	}
 	if(tp==1)	
 		$('#editw').dialog('open').dialog('setTitle','Modify and assign the bugs');
@@ -551,6 +559,40 @@ function chpw(){
 	})
 }
 
+function getFileIcon(fn){
+    var ext = fn.substr(fn.lastIndexOf('.') + 1).toLowerCase(),
+        maps = {
+            "rar":"icon_rar.gif",
+            "zip":"icon_rar.gif",
+            "tar":"icon_rar.gif",
+            "gz":"icon_rar.gif",
+            "bz2":"icon_rar.gif",
+            "doc":"icon_doc.gif",
+            "docx":"icon_doc.gif",
+            "pdf":"icon_pdf.gif",
+            "mp3":"icon_mp3.gif",
+            "xls":"icon_xls.gif",
+            "chm":"icon_chm.gif",
+            "ppt":"icon_ppt.gif",
+            "pptx":"icon_ppt.gif",
+            "avi":"icon_mv.gif",
+            "rmvb":"icon_mv.gif",
+            "wmv":"icon_mv.gif",
+            "flv":"icon_mv.gif",
+            "swf":"icon_mv.gif",
+            "rm":"icon_mv.gif",
+            "exe":"icon_exe.gif",
+            "psd":"icon_psd.gif",
+            "txt":"icon_txt.gif",
+            "jpg":"icon_jpg.gif",
+            "png":"icon_jpg.gif",
+            "jpeg":"icon_jpg.gif",
+            "gif":"icon_jpg.gif",
+            "ico":"icon_jpg.gif",
+            "bmp":"icon_jpg.gif"
+        };
+    return maps[ext] ? maps[ext]:maps['txt'];
+}
 
 function clockon() {
     var now = new Date();
@@ -576,4 +618,8 @@ function clockon() {
     $("#bgclock").html(time);
 
     var timer = setTimeout("clockon()", 200);
+}
+
+function ueCallback(json){
+	console.log(json);
 }

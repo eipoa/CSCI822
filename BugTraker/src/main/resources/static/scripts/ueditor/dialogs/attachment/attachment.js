@@ -500,8 +500,8 @@
             uploader.on('uploadSuccess', function (file, ret) {
                 var $file = $('#' + file.id);
                 try {
-                    var responseText = (ret._raw || ret), json = utils.str2json(responseText);
-                    console.log(json);
+                    var responseText = (ret._raw || ret),
+                        json = utils.str2json(responseText);
                     if (json.state == 'SUCCESS') {
                         _this.fileList.push(json);
                         $file.append('<span class="success"></span>');

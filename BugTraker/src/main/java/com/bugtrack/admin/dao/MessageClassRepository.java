@@ -18,4 +18,7 @@ public interface MessageClassRepository  extends JpaRepository<MessageModel, Int
 	List<MessageModel> findAllByReceiverAndReadtsIsNull(UserModel user);
 	List<MessageModel> findAllByReceiver(UserModel user, Pageable pageable);
 	List<MessageModel> findAllByReceiverAndStatus(UserModel user, Integer i);
+	List<MessageModel> findAllByReceiver(UserModel user);
+	List<MessageModel> findAllByReceiverAndStatusLessThan(UserModel user, int i);
+	List<MessageModel> findAllByReceiverAndStatusLessThan(UserModel user, int i, Pageable pageable);
 }
