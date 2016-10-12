@@ -53,7 +53,7 @@ a:active {
 	height:400px;
 	top:50%;
 	margin-top:-200px;
-	margin-left:-20px;
+	/*margin-left:-20px;*/
 	background:url('../images/bg-login2.png') repeat-x center center;
 }
 .login-content{
@@ -66,14 +66,18 @@ a:active {
 	margin-top:-121px;
 }
 .login-box-top{
-	text-align: center;
+	text-align: left;/*center;*/
 	vertical-align: middle;
 	background: linear-gradient(to bottom,#ffffff 0,#F2F2F2 100%);
 	background-repeat: repeat-x;
 	height: 38px;
-	/*border-width: 0px,0px,0px,0px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-width: 1px 1px 0px; 
+	border-style: solid;
 	border-color: #D4D4D4;
-	border-style: solid;*/
 }
 
 .footer{
@@ -128,8 +132,17 @@ a:active {
 .accordion .accordion-header-selected {
 	background: #0081c2;
 }
+.icon-login-title{
+	padding-left:25px;
+	background:url('../images/Bug_24px.png') no-repeat;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 20px;
+	font-weight: 500;
+	font-style:italic;
+}
 .icon-login{
-	background:url('../scripts/jqeasyui/themes/icons/login.png') no-repeat center center;
+	background:url('../images/Login_16px.png') no-repeat center center;
 }
 .icon-logout{
 	background:url('../scripts/jqeasyui/themes/icons/logout.png') no-repeat center center;
@@ -159,4 +172,30 @@ a:active {
 }
 .fa-default{
 	color:#777;
+}
+
+.rating-xxs {
+    font-size: 1.5em;
+}
+.blank-star{
+	
+}
+.bs-callout + .bs-callout {
+    margin-top: -5px;
+}
+.bs-callout {
+    padding: 20px;
+    margin: 10px 5px 10px 5px;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+.bs-callout-warning {
+    border-left-color: #4cae4c;/*#f0ad4e;*/
+}
+.dropdown-menu{
+	min-width: 170px;
+}
+.dropdown-menu > li > a {
+	padding: 3px 10px;
 }

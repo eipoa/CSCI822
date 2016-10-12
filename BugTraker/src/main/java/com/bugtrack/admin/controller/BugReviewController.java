@@ -15,7 +15,7 @@ public class BugReviewController  extends CommonController {
 	 */
 	@RequestMapping(value="review", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("/Bug/review");
+		ModelAndView mv = new ModelAndView("Bug/review");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

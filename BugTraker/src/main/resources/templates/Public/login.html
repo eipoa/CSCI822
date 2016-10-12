@@ -27,9 +27,9 @@
 <div class="login-warp">
 	<div class="login-content">
 		<form id="loginForm" action="/j_spring_security_check" method="post">
-		<div class="login-box-top" style="border-width: 1px 1px 0px; border-style: solid;border-color: #D4D4D4;">
-			<input type="hidden" name="isAjax" value="1" />
-			<h2 style="margin: 3px 0px 0px;">Staff Login...</h2><!-- padding-top: 7px; -->
+		<input type="hidden" name="isAjax" value="1" />
+		<div class="login-box-top">
+			<h3 class="icon-login-title"> Bug Tracking System<small> v1.0</small></h3>
 		</div>
 		<div class="easyui-panel" style="width:300px; padding:20px 20px" data-options="loadingMessage:''">
 			<div style="margin-bottom:20px">
@@ -42,9 +42,9 @@
 				<div style="float:right;">
 					<a id="btn-login" href="javascript:void(0)" class="easyui-linkbutton c1" data-options="iconCls:'icon-login'" style="width:100px;height:35px;">Login</a>
 				</div>
-				<div style="float: left; width: auto; height: 35px; padding-top: 19px;">
-					<a id="btn-forget" href="#" style="bottom:0px;">Forgetton Password ?</a>
-				</div>
+<!-- 				<div style="float: left; width: auto; height: 35px; padding-top: 19px;"> -->
+<!-- 					<a id="btn-forget" href="#" style="bottom:0px;">Forgetton Password ?</a> -->
+<!-- 				</div> -->
 			</div>
 		</div>
 		<div id="viewer"></div>
@@ -112,8 +112,8 @@
 <style>
 	#viewer{
 		position: relative;
-		padding: 0 25px;
-		top: -105px;
+		padding: 0 20px;
+		top: -70px;
 		font-size: 40px;
 		line-height: 60px;
 	}

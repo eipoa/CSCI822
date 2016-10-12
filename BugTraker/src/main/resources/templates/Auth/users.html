@@ -88,9 +88,11 @@
 						<span th:text="${fullname}">Fullname</span> <span class="label label-primary" th:text="${tasks}">tasks</span>
 						<b class="caret"></b>
 					</a>
-					<ul class="dropdown-menu">
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+					<ul class="dropdown-menu" role="menu">
 						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li class="divider"></li>
+						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
 					</ul>
@@ -164,7 +166,7 @@
 					<div class="col-lg-12">
 						<!-- easyui table for user list-->
 						<table id="dg" class="easyui-datagrid" title="users list"
-							style="width: auto; height: 335px"
+							style="width: auto; height: 500px"
 							data-options="
 									rownumbers:true,
 									singleSelect:true,
@@ -223,47 +225,93 @@
 				<!-- detail row -->
 				<div class="row" style="margin-top: 10px;">
 					<div class="col-lg-12">
-						<div id="edit-panel" class="easyui-panel" data-options="fit:true, title:'User Detail', collapsible:true">
-							<form id="fm" method="post">
-								<input id="id" name="id" type="hidden" />
-								<table align="left" valign="middle" class="edittable">
+					    <!-- editor window -->
+					    <div id="editw" > <!-- style="padding:10px" -->
+					    	<input id="id" name="id" type="hidden" />      
+					        <table class="edittable" cellspacing="0" cellpadding="0">
+								<tbody>
 									<tr>
-										<th class="tRight">Username</th>
-										<td><input id="username" name="username" class="easyui-textbox" data-options="width:170, readonly: 'true'" /></td>
-										<th class="tRight">First name</th>
-										<td class="tRight"><input id="first_name" name="first_name" class="easyui-textbox" data-options="width:170" /></td>
-										<th class="tRight">Last name</th>
-										<td class="tRight"><input id="last_name" name="last_name" class="easyui-textbox" data-options="width:170" /></td>
-										<th class="tRight">Age</th>
-										<td class="tRight"><input id="age" name="age" class="easyui-numberspinner" data-options="width:50" /></td>
+										<td colspan="3">
+											<input id="e-username" class="easyui-textbox" 
+												data-options="
+													label:'Username',
+													labelWidth: 80,
+													labelAlign: 'right',
+													width:210,
+													readonly: 'true',
+													onClickButton:search"></input>
+										</td>
 									</tr>
 									<tr>
-										<th class="tRight">E-mail</th>
-										<td><input id="email" name="email" class="easyui-textbox" data-options="width:170" /></td>
-										<th class="tRight">Role</th>
+										<td style="width:220px">
+										<input id="e-firstname" class="easyui-textbox" 
+												data-options="
+													label:'First name',
+													labelWidth: 80,
+													labelAlign: 'right',
+													width:210,
+													onClickButton:search"></input>
+										</td>
+										<td style="width:220px">
+										<input id="e-lastname" class="easyui-textbox" 
+												data-options="
+													label:'Last name',
+													labelWidth: 80,
+													labelAlign: 'right',
+													width:210,
+													onClickButton:search"></input>
+										</td>
 										<td>
-											<input id="role_id" name="role_id" class="easyui-combobox"
+											<input id="e-age" name="age" class="easyui-numberspinner" 
+												data-options="
+													label:'Age',
+													labelWidth: 40,
+													width:90" />
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3">
+											<input id="e-email" class="easyui-textbox" 
+												data-options="
+													label:'E-mail',
+													labelWidth: 80,
+													labelAlign: 'right',
+													width:210,
+													onClickButton:search"></input>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input id="e-role_id" name="role_id" class="easyui-combobox"
 												data-options="
 										                    valueField: 'id',
 										                    textField: 'roleName',
+										                    label:'Role',
+										                    labelAlign: 'right',
+										                    labelWidth: 80,
 										                    method: 'get',
-										                    width: 170,
+										                    width: 210,
 										                    url:'/Auth/role/listname',
 										                    panelHeight:150"></input>
 										</td>
-										<th class="tRight">Status</th>
-										<td colspan="3"><input id="status" name="status" class="easyui-switchbutton" data-options="width:50, height: 22" /></td>
+										<td colspan="2">
+											<label class="textbox-label textbox-label-before" style="text-align: right; width: 80px; height: 27px; line-height: 27px;" for="_easyui_textbox_input4">Status</label>
+											<input id="e-status" name="status" class="easyui-switchbutton" 
+											data-options="width:50" />
+										</td>
 									</tr>
 									<tr>
-										<td colspan="8">
-											<div style="border:1px solid #ddd; ">
-												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:save">Save</a>
-												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:cancel">Cancel</a>
+										<td colspan="3">
+											<div style="float:right">
+												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:save">
+													<i class="fa fa-check fa-btn-icon fa-green"></i> Save</a>
+												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:cancel">
+													<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
 											</div>										
 										</td>
 									</tr>
-								</table>
-							</form>							
+								</tbody>
+							</table>						
 						</div>
 					</div>
 				</div>
@@ -272,10 +320,7 @@
 				<!-- new row -->
 				<!-- <div class="row">
                     <div class="col-lg-12">
-						<div class="easyui-panel" style="padding:5px;">
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-save', plain:true, onClick:save">Save</a>
-							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:cancel">Cancel</a>
-						</div>
+						
                     </div>
                 </div> -->
 				<!-- /.row -->
@@ -293,7 +338,45 @@
 	<div id="w" class="easyui-window" title="Modal Window"
 		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
 		style="width: 300px; height: 80px; padding: 10px;">Processing, please wait …</div>
-
+	<!-- change password -->
+	<div id="chpw" class="easyui-window" title="Change Password"
+		data-options="modal:true,closed:true,iconCls:'fa fa-fw fa-key',minimizable:false,maximizable:false,collapsible:false" 
+		style="padding:5px;">
+        <div>
+	        <table class="edittable" style="margin:0px" cellspacing="0" cellpadding="0">
+	        	<tbody>
+	        		<tr>
+						<td colspan="2">
+							<input id="e-oldpass" class="easyui-passwordbox"
+								data-options="label:'Old password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="e-newpass01" class="easyui-passwordbox"
+								data-options="label:'New password', labelWidth: 90, labelAlign: 'right',  width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="e-newpass02" class="easyui-passwordbox"
+								data-options="label:'New password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
+								<i class="fa fa-check fa-btn-icon fa-green"></i> Save&nbsp;&nbsp;</a>
+						</td>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
+								<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
+						</td>
+					</tr>
+	        	</tbody>
+	        </table>
+        </div>
+    </div>
 	<!-- jQuery -->
 	<script src="/scripts/jquery.min.js"></script>
 
@@ -318,9 +401,9 @@
 
 	// click new button
 	function add(){
-		$('#fm').form('clear');
-		$('#username').textbox('readonly',false);
-		$('#username').focus();
+		$('#editw').dialog('open').dialog('setTitle','Create Account');
+		$('#e-username').textbox('readonly',false);
+		$('#e-username').focus();
 		console.log('call user add');
 	}
 	
@@ -363,14 +446,17 @@
 		action(url, data, dg, "POST");
 	}
 	
-	// click cancel
-	function cancel(){
-		$('#fm').form('clear');
-		$('#username').textbox('readonly',true);
-		console.log('cancel user add');
-	}
-	
 	$(function() {
+		// editor windows
+		$("#editw").dialog({
+			width:580,
+			closed:true,
+			modal:true,
+			shadow:false,
+			closable:true,
+			draggable:true
+		});
+		
 		// dynamic bind datagrid
 		$('#dg').datagrid({
 			onBeforeLoad : function() {

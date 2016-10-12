@@ -88,9 +88,11 @@
 						<span th:text="${fullname}">Fullname</span> <span class="label label-primary" th:text="${tasks}">tasks</span>
 						<b class="caret"></b>
 					</a>
-					<ul class="dropdown-menu">
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+					<ul class="dropdown-menu" role="menu">
 						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li class="divider"></li>
+						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
 					</ul>
@@ -166,8 +168,8 @@
 				<div class="row">
                     <div class="col-lg-12">
 	                    <div class="easyui-layout" style="width:100%; height:500px">
-	                    	<div data-options="region:'east',split:true,title:'Message Body',collapsible:false" style="width:38%;">
-	                    		<table class="edittable" cellspacing="0" cellpadding="0"><!--  width="100%" -->
+	                    	<div data-options="region:'east',title:'Message Body',collapsible:false" style="width:72%;"><!-- split:true, -->
+	                    		<table class="edittable" cellspacing="0" cellpadding="0"  width="auto"><!--  width="100%" -->
 	                    			<tr>
 	                    				<td>
 											<input id="e-from" class="easyui-textbox" 
@@ -210,22 +212,18 @@
 	                    			</tr>
 	                    			<tr>
 	                    				<td>
-<!-- 											<input id="e-desc" class="easyui-textbox"  -->
-<!-- 												data-options="								 -->
-<!-- 													editable:false, -->
-<!-- 								                    multiline: true, -->
-<!-- 								                    height: 290, -->
-<!-- 													width:330"></input> -->
-											<script id="editor" type="text/plain" style="width:350px;height:230px;"></script>
+											<script id="editor" type="text/plain" style="width:auto;height:230px;"></script>
 										</td>
 	                    			</tr>
 	                    			<tr>
 	                    				<td>
 											<div style="float:right">
-												<a id="btn-read" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:read">
+												<a id="btn-read" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', plain:true, onClick:read">
 													<i class="fa fa-check fa-btn-icon fa-green"></i> Set read
 												</a>
-<!-- 												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-cancel', plain:true, onClick:reply">reply</a>						 -->
+ 											<a id="btn-del" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', plain:true, onClick:reply">
+													<i class="fa fa-reply fa-btn-icon fa-green"></i> reply
+											</a>
 											</div>
 										</td>
 	                    			</tr>
@@ -245,11 +243,12 @@
 											onSelect:msgSelect">
 									<thead>
 										<tr>
-											<th data-options="field:'id',width:70">Msg ID</th>
-											<th data-options="field:'from',width:70,formatter:formatMsgFrom">From</th>
+											<th data-options="field:'status',width:80,align:'center',formatter:formatMsgStatus">Status</th>
+<!-- 											<th data-options="field:'id',width:70">Msg ID</th> -->
+<!-- 											<th data-options="field:'from',width:70,formatter:formatMsgFrom">From</th> -->
 											<th data-options="field:'title',width:250">title</th>
 											<th data-options="field:'creationts',width:150">Creation time</th>
-											<th data-options="field:'status',width:80,align:'center',formatter:formatMsgStatus">Status</th>
+											
 										</tr>
 									</thead>
 								</table>
@@ -271,7 +270,45 @@
 	<div id="w" class="easyui-window" title="Modal Window"
 		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
 		style="width: 300px; height: 80px; padding: 10px;">Processing, please wait …</div>
-		
+	<!-- change password -->
+	<div id="chpw" class="easyui-window" title="Change Password"
+		data-options="modal:true,closed:true,iconCls:'fa fa-fw fa-key',minimizable:false,maximizable:false,collapsible:false" 
+		style="padding:5px;">
+        <div>
+	        <table class="edittable" style="margin:0px" cellspacing="0" cellpadding="0">
+	        	<tbody>
+	        		<tr>
+						<td colspan="2">
+							<input id="e-oldpass" class="easyui-passwordbox"
+								data-options="label:'Old password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="e-newpass01" class="easyui-passwordbox"
+								data-options="label:'New password', labelWidth: 90, labelAlign: 'right',  width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="e-newpass02" class="easyui-passwordbox"
+								data-options="label:'New password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
+								<i class="fa fa-check fa-btn-icon fa-green"></i> Save&nbsp;&nbsp;</a>
+						</td>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
+								<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
+						</td>
+					</tr>
+	        	</tbody>
+	        </table>
+        </div>
+    </div>		
 	<!-- jQuery -->
 	<script src="/scripts/jquery.min.js"></script>
 
@@ -326,6 +363,11 @@
 	$(function() {
 		$('#dg').datagrid({
 			url:'/Message/list?sort=creationts&order=desc',
+		});
+		var pager = $('#dg').datagrid().datagrid('getPager');
+		pager.pagination({
+			layout:['first','prev','manual','next','last'],
+			displayMsg:'{from} to {to} of {total} items'
 		});
 	});
 </script>

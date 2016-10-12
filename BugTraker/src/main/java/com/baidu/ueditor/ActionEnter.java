@@ -16,20 +16,21 @@ public class ActionEnter {
 	
 	private HttpServletRequest request = null;
 	
+	private String confPath = null;
 	private String rootPath = null;
-	private String contextPath = null;
+	//private String contextPath = null;
 	
 	private String actionType = null;
 	
 	private ConfigManager configManager = null;
 
-	public ActionEnter ( HttpServletRequest request, String rootPath ) {
-		
+	public ActionEnter ( HttpServletRequest request, String rootPath , String confPath) {
+		this.confPath = confPath;
 		this.request = request;
 		this.rootPath = rootPath;
 		this.actionType = request.getParameter( "action" );
-		this.contextPath = request.getContextPath();
-		this.configManager = ConfigManager.getInstance( this.rootPath, this.contextPath, request.getRequestURI() );
+		//this.contextPath = request.getContextPath();
+		this.configManager = ConfigManager.getInstance( this.rootPath, this.confPath);//this.contextPath, request.getRequestURI() );
 		
 	}
 	

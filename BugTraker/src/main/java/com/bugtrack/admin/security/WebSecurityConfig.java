@@ -39,9 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 		// set permission rules
 		web.ignoring().antMatchers("/css/**").antMatchers("/scripts/**").antMatchers("/images/**")
-				.antMatchers("/data/**").antMatchers("/Public/**").antMatchers("/cssv1.0/**")
-				.antMatchers("/font-awesome/**").antMatchers("/fonts/**").antMatchers("/js/**")
-				.antMatchers("/ueditor/**");
+				.antMatchers("/fonts/**").antMatchers("/Public/**").antMatchers("/Upload/**");
 	}
 
 	@Override
@@ -51,10 +49,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// define accessDecisionManager, Specify that URLs are allowed by any
 		// authenticated user
 		http.authorizeRequests().anyRequest().authenticated().accessDecisionManager(customAccessDecisionManager());
-		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler);//.accessDeniedPage("/Public/error");
+		http.exceptionHandling().accessDeniedHandler(accessDeniedHandler).accessDeniedPage("/Public/403");//.accessDeniedPage("/Public/error");
 
 		// the resources under the Public do not need permission
 		http.authorizeRequests().antMatchers("/Public/**").permitAll();
+		http.authorizeRequests().antMatchers("/css/**").permitAll();
+		http.authorizeRequests().antMatchers("/scripts/**").permitAll();
+		http.authorizeRequests().antMatchers("/images/**").permitAll();
+		http.authorizeRequests().antMatchers("/fonts/**").permitAll();
+		http.authorizeRequests().antMatchers("/Public/**").permitAll();
+		http.authorizeRequests().antMatchers("Upload/**").permitAll();
 
 		// define login pages
 		http.csrf().disable();

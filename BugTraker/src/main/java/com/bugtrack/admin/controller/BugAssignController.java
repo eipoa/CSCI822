@@ -15,7 +15,7 @@ public class BugAssignController extends CommonController {
 	 */
 	@RequestMapping(value = "assign", method = RequestMethod.GET)
 	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView("/Bug/assign");
+		ModelAndView mv = new ModelAndView("Bug/assign");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

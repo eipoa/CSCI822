@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bugtrack.admin.exception.CoustomJsonException;
 import com.bugtrack.admin.model.BugClassModel;
+import com.bugtrack.admin.model.BugPatchModel;
 import com.bugtrack.admin.model.BugPriorityModel;
 import com.bugtrack.admin.model.BugStatusModel;
 import com.bugtrack.admin.model.BugsModel;
@@ -127,7 +128,8 @@ public class BugController extends CommonController {
 			@RequestParam(value = "short_desc", required = false) String short_desc,
 			@RequestParam(value = "developer_id", required = false) String developer_id,
 			@RequestParam(value = "reviewer_id", required = false) String reviewer_id,
-			@RequestParam(value = "rank", required = false) String rank) throws Exception {
+			@RequestParam(value = "rank", required = false) String rank,
+			@RequestParam(value = "patch_desc", required = false) String patch_desc) throws Exception {
 		try {
 			BugsModel bug = bugRepo.findById(new Integer(id));
 			if (bug == null) {
@@ -162,14 +164,36 @@ public class BugController extends CommonController {
 			bug.setChange_ts(getCurrentTime());
 
 			bug = bugRepo.saveAndFlush(bug);
-
+			// save patch
+			if(patch_desc!=null && patch_desc.trim().length()>0){
+				patch_desc = patch_desc.replace( "<p>", "" );
+				patch_desc = patch_desc.replace( "</p>", "" );
+				patch_desc = patch_desc.replace( "<br/>", "" );
+				
+				// one message
+				patch_desc = "<div class=\"bs-callout bs-callout-warning\">" + patch_desc;
+				patch_desc = patch_desc + "<p style=\"text-align: right;\">"+bug.getChange_ts()+"</p>";
+				patch_desc = patch_desc + "<p style=\"text-align: right;\">"+this.getFullname()+"</p>";
+				patch_desc = patch_desc + "</div>";
+				BugPatchModel patch = new BugPatchModel();
+				if(bug.getSolution()!=null){
+					patch = patchRepo.findOne(bug.getSolution().getId());
+					patch_desc = patch.getDescription() + patch_desc;
+				}
+				patch.setDescription(patch_desc);
+				patch.setCreation_ts(bug.getChange_ts());
+				//patch.setBug(bug);
+				patchRepo.saveAndFlush(patch);
+				bug.setSolution(patch);
+				bug = bugRepo.saveAndFlush(bug);
+			}
 			// add new message
 			MessageModel msg = new MessageModel();
 			if(oldstatus.equals(1) && bug.getStatus().getId().equals(2)){
 				// new -> assign
 				msg.setSender(bug.getTriager());
 				msg.setReceiver(bug.getDeveloper());
-				msg.setCreationts(getCurrentTime());
+				msg.setCreationts(bug.getChange_ts());
 				msg.setTitle(bug.getTitle());
 				msg.setContent("This is a new bug, please give out a solution. Bug ID: " + Integer.toString(bug.getId()) + " Priority: " + bug.getPriority().getDesc());
 				logger.info("------------------ " + msg.toString());
@@ -178,7 +202,7 @@ public class BugController extends CommonController {
 				// verify -> assign
 				msg.setSender(bug.getReviewer());
 				msg.setReceiver(bug.getDeveloper());
-				msg.setCreationts(getCurrentTime());
+				msg.setCreationts(bug.getChange_ts());
 				msg.setTitle(bug.getTitle());
 				msg.setContent("The solution didn't pass testing, please check again. Bug ID: " + Integer.toString(bug.getId()) + " Priority: " + bug.getPriority().getDesc());
 				logger.info("------------------ " + msg.toString());
@@ -187,7 +211,7 @@ public class BugController extends CommonController {
 				// assign -> verify
 				msg.setSender(bug.getDeveloper());
 				msg.setReceiver(bug.getReviewer());
-				msg.setCreationts(getCurrentTime());
+				msg.setCreationts(bug.getChange_ts());
 				msg.setTitle(bug.getTitle());
 				msg.setContent("This is an new solution, please test it. Bug ID: " + Integer.toString(bug.getId()) + " Priority: " + bug.getPriority().getDesc());
 				logger.info("------------------ " + msg.toString());

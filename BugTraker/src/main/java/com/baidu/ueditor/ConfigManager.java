@@ -1,10 +1,9 @@
 package com.baidu.ueditor;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
@@ -12,9 +11,9 @@ import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import com.baidu.ueditor.define.ActionMap;
 
 /**
@@ -24,11 +23,12 @@ import com.baidu.ueditor.define.ActionMap;
  */
 public final class ConfigManager {
 
-	private final String rootPath;
-	private final String originalPath;
-	private final String contextPath;
-	private static final String configFileName = "config.json";
-	private String parentPath = null;
+	private final String rootPath;// Upload directory path
+	private final String confPath;// configure file path
+	
+	
+	
+	//private String parentPath = null;
 	private JSONObject jsonConfig = null;
 	// 涂鸦上传filename定义
 	private final static String SCRAWL_FILE_NAME = "scrawl";
@@ -38,19 +38,12 @@ public final class ConfigManager {
 	/*
 	 * 通过一个给定的路径构建一个配置管理器， 该管理器要求地址路径所在目录下必须存在config.properties文件
 	 */
-	private ConfigManager ( String rootPath, String contextPath, String uri ) throws FileNotFoundException, IOException {
+	private ConfigManager ( String rootPath, String confPath) throws FileNotFoundException, IOException {
 		
 		rootPath = rootPath.replace( "\\", "/" );
 		
 		this.rootPath = rootPath;
-		this.contextPath = contextPath;
-		
-		if ( contextPath.length() > 0 ) {
-			this.originalPath = this.rootPath + uri.substring( contextPath.length() );
-		} else {
-			this.originalPath = this.rootPath + uri;
-		}
-		
+		this.confPath = confPath;
 		this.initEnv();
 		
 	}
@@ -62,10 +55,10 @@ public final class ConfigManager {
 	 * @param uri 当前访问的uri
 	 * @return 配置管理器实例或者null
 	 */
-	public static ConfigManager getInstance ( String rootPath, String contextPath, String uri ) {
+	public static ConfigManager getInstance ( String rootPath, String confPath) {
 		
 		try {
-			return new ConfigManager(rootPath, contextPath, uri);
+			return new ConfigManager(rootPath, confPath);
 		} catch ( Exception e ) {
 			return null;
 		}
@@ -150,19 +143,9 @@ public final class ConfigManager {
 		return conf;
 		
 	}
-	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	private void initEnv () throws FileNotFoundException, IOException {
-		
-		File file = new File( this.originalPath );
-		
-		if ( !file.isAbsolute() ) {
-			file = new File( file.getAbsolutePath() );
-		}
-		
-		this.parentPath = file.getParent();
-		logger.info("--------------------------------------- Configure file path = " + this.getConfigPath());
-		
-		String configContent = this.readFile( this.getConfigPath() );
+		String configContent = this.readFile( this.confPath );
 		
 		try{
 			JSONObject jsonConfig = new JSONObject( configContent );
@@ -173,10 +156,6 @@ public final class ConfigManager {
 		
 	}
 	
-	private String getConfigPath () {
-		return this.parentPath + File.separator + ConfigManager.configFileName;
-	}
-
 	private String[] getArray ( String key ) {
 		
 		JSONArray jsonArray = this.jsonConfig.getJSONArray( key );
@@ -196,12 +175,21 @@ public final class ConfigManager {
 		
 		try {
 			
-			InputStreamReader reader = new InputStreamReader( new FileInputStream( path ), "UTF-8" );
+			// lbx 20161010
+			ResourceLoader resourceLoader = new DefaultResourceLoader();
+			String conf = path;
+			Resource resource = resourceLoader.getResource(conf);
+			InputStream is = resource.getInputStream();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			
+			// baidu
+			//InputStreamReader reader = new InputStreamReader( new FileInputStream( path ), "UTF-8" );
 			BufferedReader bfReader = new BufferedReader( reader );
 			
 			String tmpContent = null;
 			
 			while ( ( tmpContent = bfReader.readLine() ) != null ) {
+				System.out.println(tmpContent);
 				builder.append( tmpContent );
 			}
 			

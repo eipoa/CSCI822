@@ -33,7 +33,7 @@ import com.bugtrack.admin.util.PublicFunction;
 @ControllerAdvice
 @RestController
 public class GlobalControllerExceptionHandler {
-	public static final String DEFAULT_ERROR_VIEW = "/Public/error";
+	public static final String DEFAULT_ERROR_VIEW = "Public/error";
 
 	@Autowired  
 	private PublicFunction pf;
@@ -43,7 +43,7 @@ public class GlobalControllerExceptionHandler {
 	/**
 	 * Default exception handler for Spring Controller exception 
 	 * if the request is via an Ajax method, then the exception will be throw as a CoustomJsonException.
-	 *  
+	 *  http://blog.csdn.net/projectarchitect/article/details/42463471
 	 * @param req in HttpServletRequest
 	 * @param rep in HttpServletResponse
 	 * @param e	in Exception

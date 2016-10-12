@@ -10,12 +10,14 @@ import java.util.Map;
 import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bugtrack.admin.dao.BugClassRepository;
+import com.bugtrack.admin.dao.BugPatchRepository;
 import com.bugtrack.admin.dao.BugPriorityRepository;
 import com.bugtrack.admin.dao.BugRepository;
 import com.bugtrack.admin.dao.BugStatusRepository;
@@ -48,6 +50,9 @@ public class CommonController {
 	@Autowired
 	HttpServletRequest request;
 	
+	@Autowired 
+	HttpServletResponse response;
+	
 	@Autowired
 	BugStatusRepository bugstatusRepo;
 	
@@ -68,6 +73,9 @@ public class CommonController {
 	
 	@Autowired
 	MessageClassRepository msgRepo;
+	
+	@Autowired
+	BugPatchRepository patchRepo;
 	
 	@Autowired
 	BugTrackerProperty btProperty;

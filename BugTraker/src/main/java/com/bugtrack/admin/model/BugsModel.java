@@ -208,6 +208,17 @@ public class BugsModel {
 		this.rank = rank;
 	}
 	
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="patch_id")
+	private BugPatchModel solution;
+	public BugPatchModel getSolution() {
+		return solution;
+	}
+	public void setSolution(BugPatchModel solution) {
+		this.solution = solution;
+	}
+
+
 //	@Override
 //	public String toString() {
 //		return "BugsModel [id=" + id + ", priority=" + priority + ", classification=" + classification + ", product="

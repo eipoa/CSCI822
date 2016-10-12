@@ -15,7 +15,7 @@ public class ProfileController  extends CommonController {
 	 */
 	@RequestMapping(value="profile", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("/Auth/profile");
+		ModelAndView mv = new ModelAndView("Auth/profile");
 		mv.addObject("tasks", this.getCountTask());
 		mv.addObject("fullname", this.getFullname());
 		return mv;

@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/")
-public class IndexController  extends CommonController {
+public class IndexController extends CommonController {
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public ModelAndView index(){
 		ModelAndView mv = new ModelAndView("index");

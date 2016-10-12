@@ -31,7 +31,7 @@ public class InboxController  extends CommonController {
 	 */
 	@RequestMapping(value="inbox", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("/Message/inbox");
+		ModelAndView mv = new ModelAndView("Message/inbox");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

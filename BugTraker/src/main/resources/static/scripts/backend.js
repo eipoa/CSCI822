@@ -13,7 +13,6 @@ function addTab(title, url){
     }
 }
 
-
 // fullscreen mask
 function fullScreenMask(action){
 	if(action=='open'){
@@ -32,8 +31,12 @@ function show(title, msg){
 		showType:'show'
 	});
 }
+// dialog message
 function alert_(msg){
 	$.messager.alert('Error',msg,'error');
+}
+function success_(msg){
+	$.messager.alert('Success',msg,'success');
 }
 function ajaxerror(obj){
 	// 用来保存所有的属性名称和值
@@ -138,7 +141,7 @@ function formatUserStatus(value,row,index){
 	ret='<input class="easyui-switchbutton" ';
 	ret+='data-options="width:50, height: 22, ';
 	ret+='onChange:function(checked){reverseStatus('+row.id+','+ index+');}"';
-	console.log(ret);
+	// console.log(ret);
 	switch(value){
 		case 1:
 			return ret + ' checked>';
@@ -286,8 +289,16 @@ function fillOs01(record){
 		url:'/Product/oslist001?id='+$('#e-pname').combobox('getValue')+'&ver='+record.text
 	});
 }
+// rank show stars
+function formatItem(row){
+	console.log(row);
+	var opts = $(this).combobox('options');
+	var s = '<span style="font-size:18px">'+row[opts.textField]+'</span>'
+	return s
+}
 // click edit
 function edit(){
+	console.log(ue);
 	var row = $('#dg').datagrid('getSelected',{});
 	if(row==null || row==undefined){
 		alert_('Please select a row to edit.');
@@ -313,7 +324,7 @@ function edit(){
 		$('#e-bid').textbox('setValue', row.id);
 		$('#e-title').textbox('setValue', row.title);
 		$('#e-desc').textbox('setValue', row.short_desc);
-		$('#e-rank').textbox('setValue', row.rank);
+		$('#e-rank').combobox('setValue', row.rank);
 		$('#e-status').combobox('setValue', row.status.id);
 		$('#e-priority').combobox('setValue', row.priority.id);
 		$('#e-category').combobox('setValue', row.classification.id);
@@ -336,7 +347,7 @@ function edit(){
 		$('#e-bid').textbox('setValue', row.id);
 		$('#e-title').textbox('setValue', row.title);
 		$('#e-desc').textbox('setValue', row.short_desc);
-		$('#e-rank').textbox('setValue', row.rank);
+		$('#e-rank').combobox('setValue', row.rank);
 		$('#e-status').combobox('setValue', row.status.id);
 		$('#e-priority').textbox('setValue', row.priority.desc);
 		$('#h-priority').val(row.priority.id);
@@ -359,6 +370,9 @@ function edit(){
 		}else{
 			$('#e-review').textbox('clear');
 		}
+		if(row.solution!=null)
+			$('#e-patch-list').html(row.solution.description);
+		ue.setContent('');
 	}
 	if(tp==1)	
 		$('#editw').dialog('open').dialog('setTitle','Modify and assign the bugs');
@@ -370,7 +384,8 @@ function edit(){
 }
 // cancel modification
 function cancel(){
-	$('#editw').dialog('close');
+	console.log($(this).parent().parent());
+	//$('#'+id).dialog('close');
 }
 // choose developer or reviewer
 var whichStaff = 0;
@@ -422,7 +437,7 @@ function dgUserSelect(index,row){
 
 // a fast way to modify status value
 function reverseStatus(id, index){
-	console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+	//console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 	$.ajax({
         type: "PUT",
         url: MODEL+"/status",
@@ -430,6 +445,7 @@ function reverseStatus(id, index){
         dataType: "json",
         success: function(result){
         	// lazy way
+        	show('Success',result.info);
         	$('#dg').datagrid('reload');
          }
     });
@@ -465,16 +481,10 @@ function action(url, data, dg, method){
 			var result = eval('('+result+')');					
 			if (result.status){
 				dg.datagrid('reload');
-				$.messager.show({
-					title: 'Success',
-					msg: result.info
-				});
+				show('Success',result.info);
 				$('#editw').dialog('close');
 			} else {
-				$.messager.show({
-					title: 'Error',
-					msg: result.info
-				});
+				show('Error', result.info);
 			}
 			fullScreenMask('close');
 		},
@@ -486,10 +496,7 @@ function action(url, data, dg, method){
 	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
 	    error: function(result){
 	    	//var result = eval('('+result+')');	
-	    	$.messager.show({
-				title: 'Error',
-				msg: result.responseJSON.message
-			});
+	    	show('Error', result.responseJSON.message);
 	    }        
 	 });
 }
@@ -498,11 +505,51 @@ function checkContent(XMLHttpRequest){
 	console.log(XMLHttpRequest);
 }
 
-//$.extend($.fn.switchbutton.methods, {
-//	getValue:function(sb){
-//		return sb.switchbutton('options').checked;
-//	}
-//})
+/*----------- change password ------------*/
+function changepassword(){
+	$('#chpw').dialog('open');
+	$('#e-oldpass').focus();
+}
+function chpw(){
+	var p1 = $('#e-oldpass').textbox('getValue');
+	var p2 = $('#e-newpass01').textbox('getValue');
+	var p3 = $('#e-newpass02').textbox('getValue');
+	if(p1==''){
+		show('Error','Please provide old password');
+		$('#e-oldpass').focus();return;
+	} else if(p2==''){
+		show('Error','Please provide new password');
+		$('#e-newpass01').focus();return;
+	} else if(p3==''){
+		show('Error','Please provide new password again');
+		$('#e-newpass02').focus();return;
+	} else if(p2!=p3){
+		show('Error','Two new password are not equal');
+		$('#e-newpass01').focus();return;
+	}
+	var data = {
+		oldpw: p1,
+		newpw: p2
+	}
+	$.ajax({
+		type:'PUT',
+		url:'../Public/chpwd',
+	    data:data,
+	    datatype: "json",
+	    success:function(result){
+	    	var result = eval('('+result+')');					
+			if (result.status){
+				show('Success',result.info);
+				$('#chpw').dialog('close');
+			} else {
+				show('Error',result.info);
+			}
+	    },
+	    error: function(result){
+	    	show('Error',result.responseJSON.status + '<br />' + result.responseJSON.message);
+	    }
+	})
+}
 
 
 function clockon() {
