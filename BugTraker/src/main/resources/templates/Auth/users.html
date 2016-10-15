@@ -50,38 +50,6 @@
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
-				<!-- <li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
-						class="caret"></b></a>
-					<ul class="dropdown-menu message-dropdown">
-						<li class="message-preview"><a href="#">
-								<div class="media">
-									<span class="pull-left"> <img class="media-object" src="http://placehold.it/50x50" alt=""> </span>
-									<div class="media-body">
-										<h5 class="media-heading">
-											<strong>John Smith</strong>
-										</h5>
-										<p class="small text-muted">
-											<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
-										</p>
-										<p>Lorem ipsum dolor sit amet, consectetur...</p>
-									</div>
-								</div>
-						</a></li>
-						<li class="message-footer"><a href="#">Read All New
-								Messages</a></li>
-					</ul>
-				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-bell"></i> <b
-						class="caret"></b></a>
-					<ul class="dropdown-menu alert-dropdown">
-						<li><a href="#">Alert Name <span
-								class="label label-danger">Alert Badge</span></a></li>
-						<li class="divider"></li>
-						<li><a href="#">View All</a></li>
-					</ul>
-				</li> -->
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
 						<i class="fa fa-user"></i> 
@@ -120,13 +88,13 @@
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
-							<i class="fa fa-fw fa-reorder"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
+							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
-						<ul id="demo0" aria-expanded="true" class="nav">
+						<ul id="demo0" aria-expanded="true" class="nav navbar-nav">
 							<li class="active"><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li><a href="#"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="#"><i class="fa fa-fw fa-random"></i> Group and Permission</a></li>
-							<li><a href="#"><i class="fa fa-fw fa-group"></i> Assign Group</a></li>
+							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
+							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
 						</ul>
 					</li>
 					<li>
@@ -164,20 +132,15 @@
 				<!-- user list row -->
 				<div class="row">
 					<div class="col-lg-12">
+					
+					<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
+						<div data-options="region:'west',title:'users list',collapsible:false" style="width:75%">
+					
 						<!-- easyui table for user list-->
-						<table id="dg" class="easyui-datagrid" title="users list"
-							style="width: auto; height: 500px"
-							data-options="
-									rownumbers:true,
-									singleSelect:true,
-									pagination:true,
-									url:'/Auth/user/list?sort=username&order=asc',
-									method:'get',
-									idField:'id',
-									rowStyler:rowStatus,
-									onSelect: dgUserSelect,
-									loadMsg:'',
-									toolbar:'#tb'">
+						<table id="dg" class="easyui-datagrid" title=""
+							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
+									fit:true,onSelect: dgUserSelect,
+									idField:'id',rowStyler:rowStatus,loadMsg:'',toolbar:'#tb'">
 							<thead>
 								<tr>
 									<th data-options="field:'username',width:100">User ID</th>
@@ -185,7 +148,7 @@
 									<th data-options="field:'last_name',width:100">Last Name</th>
 									<th data-options="field:'age',width:80">Age</th>
 									<th data-options="field:'email',width:100">E-mail</th>
-									<th data-options="field:'role_id',width:100,formatter:formatUserRole">Role</th>
+<!-- 									<th data-options="field:'role_id',width:100,formatter:formatUserRole">Role</th> -->
 									<th data-options="field:'create_ts',width:150">Creation Time</th>
 									<th data-options="field:'status',width:80,align:'center',formatter:formatUserStatus">Status</th>
 								</tr>
@@ -195,29 +158,36 @@
 						<!-- table tool bar-->
 						<div id="tb" style="padding: 2px 5px;">
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true, onClick:add">New</a>
+							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true, onClick:uedit">Edit</a>
 							<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true, onClick:remove">Remove</a>
 							<div style="float: right">
 								<input id="s-role" class="easyui-combobox"
-									data-options="
-							                    valueField: 'id',
-							                    textField: 'roleName',
-							                    label:'Select Role',
-							                    labelAlign: 'right',
-							                    method: 'get',
-							                    width: 250,
-							                    url:'/Auth/role/listname',
-							                    panelHeight:150"></input>
+									data-options="valueField: 'id',textField: 'rolename',label:'Select Role',
+							        	labelAlign: 'right',width: 250,panelHeight:150"></input>
 								<input id="s-username" class="easyui-textbox"
-									data-options="
-												buttonText:'Search',
-												buttonIcon:'icon-search',
-												label:'User name',
-												labelAlign: 'right',
-												prompt:'User ID...',
-												width:320,
-												onClickButton:search"></input>
+									data-options="buttonText:'Search',buttonIcon:'icon-search',label:'User name',labelAlign: 'right',
+										prompt:'User ID...',width:320,onClickButton:search"></input>
 							</div>
 						</div>
+						
+						</div>
+						<div data-options="region:'center',title:'Authorited Resource list',collapsible:false" >
+							<div id="dl" class="easyui-datalist" 
+								data-options="lines:true,textFormatter:formatxxxStatus,idField:'id',toolbar:'#tb01',
+										valueField:'id', textField:'rolename', border:false, fit:true, checkbox: true,singleSelect: false"> </div>
+
+							<!-- table tool bar-->
+							<div id="tb01" style="padding: 2px 5px;">
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Check all items" data-options="plain:true" onClick="$('#dl').datalist('checkAll')">
+								<i class="fa fa-check-square-o fa-btn-icon fa-green fa-lg"></i> Check All </a>
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Uncheck all items" data-options="plain:true" onClick="$('#dl').datalist('uncheckAll')">
+								<i class="fa fa-square-o fa-btn-icon fa-green fa-lg"></i> Clear All </a>
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Fast change roles" data-options="plain:true" onClick=fastChangeRoles()>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save Roles </a>
+							</div>
+						
+						</div>
+					</div>
 					</div>
 				</div>
 				<!-- /.row -->
@@ -227,85 +197,59 @@
 					<div class="col-lg-12">
 					    <!-- editor window -->
 					    <div id="editw" > <!-- style="padding:10px" -->
-					    	<input id="id" name="id" type="hidden" />      
-					        <table class="edittable" cellspacing="0" cellpadding="0">
+					    	<input id="e-id" class="easyui-textbox" name="id" type="hidden" />      
+					        <table class="edittable" cellspacing="0" cellpadding="0" style="margin:0px">
 								<tbody>
 									<tr>
-										<td colspan="3">
+										<td>
 											<input id="e-username" class="easyui-textbox" 
-												data-options="
-													label:'Username',
-													labelWidth: 80,
-													labelAlign: 'right',
-													width:210,
-													readonly: 'true',
-													onClickButton:search"></input>
+												data-options="label:'Username', labelWidth: 80, labelAlign: 'right', width:210,
+													readonly: 'true', onClickButton:search" />
+										</td>
+										<td colspan="2">
+											<input id="e-rep" name="rep" class="easyui-numberspinner" 
+												data-options="label:'Reputation', labelAlign: 'right',labelWidth: 80, width:210" />
 										</td>
 									</tr>
 									<tr>
 										<td style="width:220px">
-										<input id="e-firstname" class="easyui-textbox" 
-												data-options="
-													label:'First name',
-													labelWidth: 80,
-													labelAlign: 'right',
-													width:210,
-													onClickButton:search"></input>
+											<input id="e-firstname" class="easyui-textbox" 
+												data-options="label:'First name', labelWidth: 80, labelAlign: 'right',width:210" />
 										</td>
 										<td style="width:220px">
-										<input id="e-lastname" class="easyui-textbox" 
-												data-options="
-													label:'Last name',
-													labelWidth: 80,
-													labelAlign: 'right',
-													width:210,
-													onClickButton:search"></input>
+											<input id="e-lastname" class="easyui-textbox" 
+												data-options="label:'Last name', labelWidth: 80, labelAlign: 'right', width:210" />
 										</td>
 										<td>
 											<input id="e-age" name="age" class="easyui-numberspinner" 
-												data-options="
-													label:'Age',
-													labelWidth: 40,
-													width:90" />
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3">
-											<input id="e-email" class="easyui-textbox" 
-												data-options="
-													label:'E-mail',
-													labelWidth: 80,
-													labelAlign: 'right',
-													width:210,
-													onClickButton:search"></input>
+												data-options="label:'Age', labelWidth: 40, width:90" />
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<input id="e-role_id" name="role_id" class="easyui-combobox"
-												data-options="
-										                    valueField: 'id',
-										                    textField: 'roleName',
-										                    label:'Role',
-										                    labelAlign: 'right',
-										                    labelWidth: 80,
-										                    method: 'get',
-										                    width: 210,
-										                    url:'/Auth/role/listname',
-										                    panelHeight:150"></input>
+											<input id="e-email" class="easyui-textbox" 
+												data-options="label:'E-mail',labelWidth: 80,labelAlign: 'right',width:210" />
 										</td>
 										<td colspan="2">
-											<label class="textbox-label textbox-label-before" style="text-align: right; width: 80px; height: 27px; line-height: 27px;" for="_easyui_textbox_input4">Status</label>
+											<label class="textbox-label textbox-label-before" style="text-align: right; width: 80px; 
+												height: 27px; line-height: 27px;" for="_easyui_textbox_input4">Status</label>
 											<input id="e-status" name="status" class="easyui-switchbutton" 
 											data-options="width:50" />
+										</td>
+										
+									</tr>
+									<tr>
+										<td  colspan="3">
+											<input id="e-skill" class="easyui-textbox" 
+												data-options="label:'Skill', labelWidth: 80, labelAlign: 'right', width:530,high:200,multiline:true" />
 										</td>
 									</tr>
 									<tr>
 										<td colspan="3">
 											<div style="float:right">
-												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:save">
+												<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
 													<i class="fa fa-check fa-btn-icon fa-green"></i> Save</a>
-												<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', onClick:cancel">
+												<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
 													<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
 											</div>										
 										</td>
@@ -335,7 +279,7 @@
 	<!-- /#wrapper -->
 	
 	<!-- mask windows -->
-	<div id="w" class="easyui-window" title="Modal Window"
+	<div id="w" class="easyui-window" title="loading..."
 		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
 		style="width: 300px; height: 80px; padding: 10px;">Processing, please wait …</div>
 	<!-- change password -->
@@ -390,6 +334,7 @@
 
 <script type="text/javascript">
 	var MODEL = '/Auth/user';
+
 	//clicks earch btn 
 	function search() {
 		var query = {
@@ -399,19 +344,60 @@
 		$("#dg").datagrid('load', query);
 	}
 
+	// select user
+	function dgUserSelect(index,row){
+		$('#dl').datalist('uncheckAll');
+		row.roles.forEach(function(r){
+			//console.log(res);
+			var rid = r.id;
+			$('#dl').datalist('selectRecord',rid);
+		})
+	}
 	// click new button
 	function add(){
+		$('#e-id').textbox('clear');
+		$('#e-username').textbox('clear');
+		$('#e-firstname').textbox('clear');
+		$('#e-lastname').textbox('clear');
+		$('#e-age').numberspinner('clear');
+		$('#e-rep').numberspinner('clear');
+		$('#e-email').textbox('clear');
+		$('#e-skill').textbox('clear');
+		$('#e-status').switchbutton('check');
+		
 		$('#editw').dialog('open').dialog('setTitle','Create Account');
 		$('#e-username').textbox('readonly',false);
 		$('#e-username').focus();
-		console.log('call user add');
+		
 	}
-	
+	// click edit
+	function uedit(){
+		//console.log(ue);
+		var row = $('#dg').datagrid('getSelected',{});
+		if(row==null || row==undefined){
+			alert_('Please select a row to edit.');
+			return;
+		}
+		if(row.status==1){
+			$('#e-status').switchbutton('check');
+		}else{
+			$('#e-status').switchbutton('uncheck');
+		}
+		$('#e-id').textbox('setValue',row.id);
+		$('#e-username').textbox('setValue', row.username);
+		$('#e-firstname').textbox('setValue', row.first_name);
+		$('#e-lastname').textbox('setValue', row.last_name);
+		$('#e-age').numberspinner('setValue', row.age);
+		$('#e-rep').numberspinner('setValue', row.age);
+		$('#e-email').textbox('setValue', row.email);
+		$('#e-skill').textbox('setValue', row.skill);
+		$('#editw').dialog('open').dialog('setTitle','edit user');
+	}
 	// click remove
 	function remove(){
 		var row = $('#dg').datagrid('getSelected',{});
 		if(row==null || row==undefined){
-			alert_('Please select a row to delete.');
+			alert_('Please select a user to delete.');
 			return;
 		}
 		$.messager.confirm('Confirm', 'Are you confirm this?', function(r){
@@ -424,41 +410,78 @@
 			}
 		});
 	}
-	
+	// fastChangeRoles
+	function fastChangeRoles(){
+		var url= MODEL + '/save';
+		var row = $('#dg').datagrid('getSelected',{});
+		if(row==null || row==undefined){
+			alert_('Please select a user to modify.');
+			return;
+		}
+		var ids="";
+		rolRow = $('#dl').datalist('getChecked');
+		rolRow.forEach(function(r){
+			ids = ids==""?"":ids + ",";
+			ids = ids+ r.id
+		})
+		//console.log(row);
+		delete row.roles;
+		row.roleids = ids;
+		//console.log(row);
+		var dg= $('#dg');
+		action(url, row, dg, "POST");
+	}
 	// click save
 	function save(){
 		var url= MODEL + '/save';
-		var data= $('#fm').serializeArray();
-		// switchbutton
-		var obj={name:'status',value:1};
-		data.push(obj);
+		var ids="";
+		rolRow = $('#dl').datalist('getChecked');
+		rolRow.forEach(function(r){
+			ids = ids==""?"":ids + ",";
+			ids = ids+ r.id
+		})
+		
+		var data={
+			id:$('#e-id').textbox('getValue'),
+			username:$('#e-username').textbox('getValue'),
+			first_name:$('#e-firstname').textbox('getValue'),
+			last_name:$('#e-lastname').textbox('getValue'),
+			age:$('#e-age').numberspinner('getValue'),
+			email:$('#e-email').textbox('getValue'),
+			skill:$('#e-skill').textbox('getValue'),
+			status:$('#e-status').switchbutton('options').checked ? 1 : 0,
+			reputation:$('#e-rep').numberspinner('getValue')==""?0:$('#e-rep').numberspinner('getValue'),
+			roleids:ids
+		}
 		console.log(data);
-		$(data).each(function(){
-			// initial value of id
-			if(this.name=='role_id'){
-				this.value = $('#role_id').combobox('getValue');
-			}
-			if(this.name=='status'){
-				this.value = $('#status').switchbutton('options').checked ? 1 : 0;
-			}
-		});
+
 		var dg= $('#dg');
 		action(url, data, dg, "POST");
+	}
+	
+	function formatxxxStatus(value,row,index){
+		return "<code>" + row.rolename + "</code>";
 	}
 	
 	$(function() {
 		// editor windows
 		$("#editw").dialog({
-			width:580,
+			width:560,
 			closed:true,
 			modal:true,
 			shadow:false,
 			closable:true,
 			draggable:true
 		});
-		
+		$('#e-role_id').combobox({
+			url:'/Auth/roles/listname',method: 'get'
+		});
+		$('#s-role').combobox({
+			url:'/Auth/roles/listname',method: 'get'
+		});
 		// dynamic bind datagrid
 		$('#dg').datagrid({
+			url:'/Auth/user/list?sort=username&order=asc',method:'get',
 			onBeforeLoad : function() {
 				// show fullscreen modal windows
 				fullScreenMask('open');
@@ -472,13 +495,17 @@
 				var row = $('#dg').datagrid('getSelected');
 				if (row != null || row != undefined)
 					$('#dg').datagrid('selectRecord', row.id);
-				$('#w').window('close', true);
+				fullScreenMask('close');
 			},
 			onLoadError : function(XMLHttpRequest) {
 				fullScreenMask('close');
 				//console.log(XMLHttpRequest);
 				ajaxerror(XMLHttpRequest.responseText);
 			}
+		});
+		$('#dl').datalist({
+			url:'/Auth/roles/list01?sort=rolename&order=asc',
+			method:'get'
 		});
 	});
 </script>

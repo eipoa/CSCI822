@@ -61,7 +61,7 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
 			map.put("data", "");
 			ObjectMapper om = new ObjectMapper();
 			String jsonString = om.writeValueAsString(map);
-			logger.info("------------------AjaxAuthenticationFailureHandler Login Failure!   " + jsonString);
+			logger.info("------------------Ajax AuthenticationFailureHandler Login Failure!   " + jsonString);
 			OutputStream out = response.getOutputStream();
 			out.write(jsonString.getBytes());
 		} else {

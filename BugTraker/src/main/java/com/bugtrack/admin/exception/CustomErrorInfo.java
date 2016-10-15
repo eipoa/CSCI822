@@ -5,7 +5,7 @@ package com.bugtrack.admin.exception;
  * A self-define class for error message
  * @see GlobalControllerExceptionHandler
  */
-public class CoustomErrorInfo<T> {
+public class CustomErrorInfo {
 
     public static final Integer OK = 0;
     public static final Integer ERROR = 100;
@@ -13,49 +13,40 @@ public class CoustomErrorInfo<T> {
     private Integer code;
     private String message;
     private String url;
-    private T data;
+    private String data;
 
     public String getUrl() {
         return url;
     }
-
     public void setUrl(String url) {
         this.url = url;
     }
-
     public static Integer getOK() {
         return OK;
     }
-
     public static Integer getERROR() {
         return ERROR;
     }
-
     public Integer getCode() {
         return code;
     }
-
     public void setCode(Integer code) {
         this.code = code;
     }
-
     public String getMessage() {
         return message;
     }
-
     public void setMessage(String message) {
     	if(message==null){
-    		this.message = "xxx";
+    		this.message = "no message";
     	}else{
     		this.message = message;
     	}
     }
-
-    public T getData() {
+    public String getData() {
         return data;
     }
-
-    public void setData(T data) {
+    public void setData(String data) {
         this.data = data;
     }
     

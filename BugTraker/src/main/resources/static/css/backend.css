@@ -199,3 +199,59 @@ a:active {
 .dropdown-menu > li > a {
 	padding: 3px 10px;
 }
+
+
+
+
+
+.txt-default{
+	color:#777;
+}
+.txt-primary{
+	color:#428bca;
+}
+.txt-success{
+	color:#5cb85c;
+}
+.txt-info{
+	color:#5bc0de;
+}
+.txt-warning{
+	color: #f0ad4e;
+}
+.txt-danger{
+	color: #d9534f;
+}
+
+
+
+
+
+.nav li{
+	width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

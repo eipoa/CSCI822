@@ -93,8 +93,8 @@
 						<ul id="demo0" aria-expanded="true" class="nav navbar-nav">
 							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
 							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
-							<li class="active"><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
+							<li class="active"><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
 						</ul>
 					</li>
 					<li>
@@ -136,7 +136,7 @@
 						<table id="dg" class="easyui-datagrid" title="Resource list"
 							style="width: auto; height: 500px"
 							data-options="rownumbers:true,singleSelect:true,pagination:true,
-									
+									url:'/Auth/resources/list?sort=resource&order=asc',method:'get',
 									idField:'id',loadMsg:'',toolbar:'#tb',onSelect: dgResSelect">
 							<thead>
 								<tr>
@@ -149,7 +149,7 @@
 						</table>
 
 						<!-- table tool bar-->
-						<div id="tb" > <!-- style="padding: 2px 5px;" -->
+						<div id="tb" style="padding: 2px 5px;">
 							<table class="edittable" cellspacing="0" cellpadding="0" style="margin:0px">
 								<tbody>
 									<tr>
@@ -253,6 +253,30 @@
 
 <script type="text/javascript">
 	var MODEL = '/Auth/resources';
+// 	// click new button
+// 	function add(){
+// 		$('#editw').dialog('open').dialog('setTitle','Create Account');
+// 		$('#e-username').textbox('readonly',false);
+// 		$('#e-username').focus();
+// 	}
+	
+// 	// click remove
+// 	function remove(){
+// 		var row = $('#dg').datagrid('getSelected',{});
+// 		if(row==null || row==undefined){
+// 			alert_('Please select a row to delete.');
+// 			return;
+// 		}
+// 		$.messager.confirm('Confirm', 'Are you confirm this?', function(r){
+// 			if (r){
+// 				var url= MODEL + '/delete';
+// 				var data= {"id":Number(row.id), "_method": 'DELETE'};
+// 				var dg= $('#dg');
+// 				console.log(data);
+// 				action(url, data, dg, "POST");
+// 			}
+// 		});
+// 	}
 	
 	// click save
 	function save(x){
@@ -272,9 +296,6 @@
 	$(function() {
 		// dynamic bind datagrid
 		$('#dg').datagrid({
-			url:'/Auth/resources/list?sort=resource&order=asc',method:'get',
-			pageList:[5, 13, 20, 30, 50], 
-			pageSize:13,
 			onBeforeLoad : function() {
 				// show fullscreen modal windows
 				fullScreenMask('open');

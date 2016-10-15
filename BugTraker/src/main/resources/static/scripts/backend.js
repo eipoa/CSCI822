@@ -155,7 +155,14 @@ function formatUserStatus(value,row,index){
 }
 
 function formatUserRole(value,row,index){
-	return row.role.roleName;
+	var role = "", i;
+	if(row.roles!=null && row.roles.length>0){
+		for(i=0; i<row.roles.length;++i){
+			role = row.roles[i].rolename + (i<row.roles.length-1?", ":"");
+		}
+	}
+	
+	return role;
 }
 /*--------------------------------------*/
 
@@ -304,7 +311,7 @@ function formatItem(row){
 	var s = '<span style="font-size:18px">'+row[opts.textField]+'</span>'
 	return s
 }
-// click edit
+// bug click edit
 function edit(){
 	//console.log(ue);
 	var row = $('#dg').datagrid('getSelected',{});
@@ -431,32 +438,42 @@ function rowStatusBug(index,row){
 	}
 }
 
-// select a row of datagrid, and fill data into fm
-function dgUserSelect(index,row){
-	$('#fm').form('clear');
-	$('#fm').form('load', row);
-	if(row.status==1){
-		$('#status').switchbutton('check');
-	}else{
-		$('#status').switchbutton('uncheck');
-	}
-	$('#role_id').combobox('setValue', row.role.id);
-}
-
 // a fast way to modify status value
 function reverseStatus(id, index){
-	//console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
+	console.log('xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx');
 	$.ajax({
         type: "PUT",
         url: MODEL+"/status",
         data: {id:id},
         dataType: "json",
         success: function(result){
-        	// lazy way
         	show('Success',result.info);
+        	// lazy way
+        	console.log(result);
+        	if (result.status){
+        		$('#dg').datagrid('reload');
+        	}
+        },
+        error: function(result){
+        	console.log(result.responseText);
+        	result = result.responseText;
+        	var result = eval('('+result+')');
+        	show('Error',result.info);
         	$('#dg').datagrid('reload');
-         }
+        }
     });
+}
+// select resource
+function dgResSelect(index,row){
+	//console.log(row);
+	$('#e-id').val(row.id);
+	$('#e-resource').textbox('setValue', row.resource);
+	$('#e-name').textbox('setValue', row.name);
+	$('#e-desc').textbox('setValue', row.description);
+	$('#e-status').textbox('setValue', row.status);
+}
+function formatUrlStatus(value,row,index){
+	return "<code>" + row.resource + "</code>";
 }
 
 // check url of main panel
@@ -503,8 +520,12 @@ function action(url, data, dg, method){
 	    //调用出错执行的函数
 	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
 	    error: function(result){
-	    	//var result = eval('('+result+')');	
-	    	show('Error', result.responseJSON.message);
+	    	fullScreenMask('close');
+	    	console.log(result.responseText);
+        	result = result.responseText;
+        	var result = eval('('+result+')');
+        	show('Error',result.info);
+	    	fullScreenMask('close');
 	    }        
 	 });
 }

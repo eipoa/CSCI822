@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bugtrack.admin.exception.CoustomJsonException;
+import com.bugtrack.admin.exception.CustomJsonException;
 import com.bugtrack.admin.model.BugClassModel;
 import com.bugtrack.admin.model.BugPatchModel;
 import com.bugtrack.admin.model.BugPriorityModel;
@@ -38,7 +38,7 @@ public class BugController extends CommonController {
 	 * the main view of assign bugs
 	 * 
 	 * @return template of /Bug
-	 * @throws CoustomJsonException
+	 * @throws CustomJsonException
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	public Map<String, Object> bugList(HttpServletRequest request, PageContent page,
@@ -133,7 +133,7 @@ public class BugController extends CommonController {
 		try {
 			BugsModel bug = bugRepo.findById(new Integer(id));
 			if (bug == null) {
-				throw new CoustomJsonException("cannot find the bug");
+				throw new CustomJsonException("cannot find the bug");
 			}
 			Integer oldstatus = bug.getStatus().getId();
 			// status

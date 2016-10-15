@@ -40,16 +40,16 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		String tmpSql = "";
 		boolean isrole = false, isname = false;
 		StringBuffer sql = new StringBuffer("");
-		sql.append("select u.* from user u ");
+		sql.append("select u.* from auth_user u where u.status<>100 ");
 		if (keywords.containsKey("role")) {
 			role = keywords.get("role");
 			isrole = true;
-			tmpSql = " where u.role_id=:role ";
+			tmpSql = "  and u.id in (select ur.userid from auth_roleuser ur where ur.roleid=:role) ";
 		}
 		if (keywords.containsKey("username")) {
 			username = keywords.get("username");
 			isname = true;
-			tmpSql = tmpSql.equals("")?" where u.username like :username ":tmpSql + " and  u.username like :username ";
+			tmpSql = tmpSql + " and  u.username like :username ";
 		}
 		if(!tmpSql.equals("")){
 			sql.append(tmpSql);

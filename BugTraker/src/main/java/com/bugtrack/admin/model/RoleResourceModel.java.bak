@@ -3,37 +3,26 @@
  */
 package com.bugtrack.admin.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 /**
  * @author Administrator
  *
  */
 @Entity
-@Table(name = "permission")
-public class PermissionModel {
+@Table(name = "auth_roleresource")
+public class RoleResourceModel implements Serializable{
+	private static final long serialVersionUID = 1L;
+
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	
-	@NotNull
 	private int roleid;
 	
-	@NotNull
+	@Id
 	private int resid;
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public int getRoleid() {
 		return roleid;

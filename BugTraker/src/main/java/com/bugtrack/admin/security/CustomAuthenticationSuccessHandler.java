@@ -71,15 +71,12 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 			map.put("data", getReturnUrl(request, response));
 			ObjectMapper om = new ObjectMapper();
 			String jsonString = om.writeValueAsString(map);
-			logger.info("------------------AjaxAuthenticationSuccessHandler Login Success!   " + jsonString);
-			//OutputStream out = response.getOutputStream();
-			//out.write(jsonString.getBytes());
+			logger.info("------------------Ajax AuthenticationSuccessHandler Login Success!   " + jsonString);
 			response.setContentType("application/json"); 
 			response.setCharacterEncoding("UTF-8");
             response.getWriter().print(jsonString);  
             response.getWriter().flush(); 
             super.clearAuthenticationAttributes(request);
-		//} else {
 			logger.info("------------------AuthenticationSuccessHandler Login Success!");
 			super.onAuthenticationSuccess(request, response, authentication);
 		}

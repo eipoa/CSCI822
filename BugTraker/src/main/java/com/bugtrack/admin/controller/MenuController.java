@@ -14,10 +14,14 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @RestController
 @RequestMapping("/Auth")
-public class PermissionController {
-	@RequestMapping(value = "permissions", method = RequestMethod.GET)
+public class MenuController extends CommonController {
+	@RequestMapping(value = "menus", method = RequestMethod.GET)
 	public ModelAndView roleIndex() throws Exception {
-		ModelAndView mv = new ModelAndView("Auth/permissions");
+		ModelAndView mv = new ModelAndView("Auth/menus");
+		Integer num = this.getCountTask();
+		if(num.intValue()>0)
+			mv.addObject("tasks", this.getCountTask());
+		mv.addObject("fullname", this.getFullname());
 		return mv;
 	}
 }

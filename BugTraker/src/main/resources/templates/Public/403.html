@@ -86,13 +86,13 @@
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
-							<i class="fa fa-fw fa-reorder"></i> User Profile<i class="fa fa-fw fa-caret-down"></i>
+							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
-						<ul id="demo0" class="collapse">
+						<ul id="demo0" aria-expanded="true" class="nav">
 							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li><a href="#"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="#"><i class="fa fa-fw fa-random"></i> Group and Permission</a></li>
-							<li><a href="#"><i class="fa fa-fw fa-group"></i> Assign Group</a></li>
+							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
+							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
 						</ul>
 					</li>
 					<li>
@@ -117,8 +117,8 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Error 403:
+                        <h1 class="page-header txt-warning">
+                            <i class="fa fa-exclamation-triangle fa-1x" aria-hidden="true"></i> Error 403:
                         </h1>
 						<div class="alert alert-danger" role="alert">
 							<p th:if="${exception}">

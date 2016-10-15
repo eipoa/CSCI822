@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * @author Administrator
- *
+ * only logined user can go here
  */
 @Component
 public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
@@ -37,20 +37,27 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		if (this.pf.isAjax()) {
-			// logger.info("------------------com.BugTracker Login Failure!");
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("status", false);
 			map.put("info", accessDeniedException.getMessage());
-			map.put("data", "");
+			map.put("data", "403");
 			ObjectMapper om = new ObjectMapper();
 			String jsonString = om.writeValueAsString(map);
 			logger.info("------------------Ajax CustomAccessDeniedHandler!   " + jsonString);
+			response.setStatus(403);
 			OutputStream out = response.getOutputStream();
 			out.write(jsonString.getBytes());
 		} else {
-			//????? 为什么走不到这里
 			logger.info("------------------AccessDeniedHandler   ");
+			logger.info("------------------URI   " + request.getRequestURI());
+			
+			this.setErrorPage("/Public/403?bcc=cccc");//test parameter
+			request.setAttribute("oriurl", request.getRequestURI());
 			super.handle(request, response, accessDeniedException);
 		}
 	}
+	// ExceptionTranslationFilter(import org.springframework.security.web.access.ExceptionTranslationFilter;)
+	//        1. Access is denied (user is anonymous); redirecting to authentication entry point
+	//		  2. Access is denied (user is not anonymous); delegating to AccessDeniedHandler
+	
 }

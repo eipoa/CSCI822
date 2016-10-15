@@ -13,8 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -48,7 +48,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  *  * @see RoleModel
  */
 @Entity
-@Table(name = "user", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
+@Table(name = "auth_user", uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 public class UserModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -121,21 +121,34 @@ public class UserModel {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
-	/**
-	 * @see RoleModel
-	 */
-	@NotNull
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="role_id")
-	private RoleModel role;
-	public RoleModel getRole() {
-		return role;
-	}
-	public void setRole(RoleModel role) {
-		this.role = role;
-	}
 	
+	@OneToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)//
+	@JoinTable(name="auth_roleuser",
+    joinColumns={ @JoinColumn(name="userid",referencedColumnName="id")},
+    inverseJoinColumns={@JoinColumn(name="roleid",referencedColumnName="id")})
+	private Collection<RoleModel> roles = new ArrayList<RoleModel>();
+	public Collection<RoleModel> getRoles() {
+		return roles;
+	}
+	public void setRoles(Collection<RoleModel> roles) {
+		this.roles = roles;
+	}
+	public String getRoleString(){
+		String str = "has role [";
+		for (RoleModel role : roles) {
+			str = str + role.getRolename() + ",";
+		}
+		str = str + "]";
+		return str;
+	}
+	public boolean isAdmin(){
+		for (RoleModel r : roles) {
+			if(r.getRolename().equals("ROLE_ADMIN")){
+				return true;
+			}
+		}
+		return false;
+	}
 	/**
 	 * @see BugsModel.reporter
 	 */
@@ -148,18 +161,6 @@ public class UserModel {
 	public void setBugs(Collection<BugsModel> bugs) {
 		this.bugs = bugs;
 	}
-	
-//	/**
-//	 * @see comment.reporter
-//	 */
-//	@OneToMany(mappedBy="reporter")
-//	private Collection<BugsModel> bugs = new ArrayList<BugsModel>();
-//	public Collection<BugsModel> getBugs() {
-//		return bugs;
-//	}
-//	public void setBugs(Collection<BugsModel> bugs) {
-//		this.bugs = bugs;
-//	}
 
 	@NotNull
 	private Integer reputation = 0;
@@ -187,11 +188,12 @@ public class UserModel {
 		this.login_ts = login_ts;
 	}
 	
-//	@Override
-//	public String toString() {
-//		return "UserModel [id=" + id + ", username=" + username + ", password=" + password + ", first_name="
-//				+ first_name + ", last_name=" + last_name + ", age=" + age + ", email=" + email + ", status=" + status
-//				+ ", role=" + role + ", bugs=" + bugs + ", reputation=" + reputation + ", create_ts=" + create_ts
-//				+ ", login_ts=" + login_ts + "]";
-//	}	
+	private String skill;
+	public String getSkill() {
+		return skill;
+	}
+	public void setSkill(String skill) {
+		this.skill = skill;
+	}
+	
 }
