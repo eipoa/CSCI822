@@ -167,14 +167,27 @@ function formatUserRole(value,row,index){
 /*--------------------------------------*/
 
 /*---------------bug list---------------*/
+function formatBugtitle(value,row,index){
+	var percent = 100;
+	if(row.status.id==1)
+		percent = 0;
+	if(row.status.id==2)
+		percent = 30;
+	if(row.status.id==3)
+		percent = 60;
+	var s = '<div class="bugprogressbar" style="width:'+percent +'%;">'+value;
+	s = s + '<span class="label label-success" style="float:right">';
+	s = s + percent+'% </span></div>'
+	return s;
+}
 function formatTime(value,row,index){
 	return value.substr(0, 19)
 }
 function formatBugPriority(value,row,index){
-	return row.priority.desc;
+	return row.priority.descp;
 }
 function formatBugClass(value,row,index){
-	return row.classification.desc;
+	return row.classification.descp;
 }
 function formatBugProduct(value,row,index){
 	return row.product.name.name;	
@@ -224,18 +237,18 @@ function msgSelect(index,row){
 	$('#p').panel({
 		content:row.content,
 		title: 'Time: ' + row.creationts});
-	if(row.status!=0){
-		$('#btn-read').hide();;
-	}else{
-		$('#btn-read').show();
-	}
+//	if(row.status!=0){
+//		$('#btn-read').hide();;
+//	}else{
+//		$('#btn-read').show();
+//	}
 }
 /*--------------------------------------*/
 
 // format combox text - (value)
 function comboxfm(row){
 	var opts = $(this).combobox('options');
-	return row[opts.textField] + ' - (' + row[opts.valueField] + ')';
+	return row[opts.textField];// + ' - (' + row[opts.valueField] + ')';
 }
 
 /*------------- bug search -------------*/
@@ -335,6 +348,7 @@ function edit(){
 		return;
 	}
 	// initialize fields of windows
+	$('#e-vote').textbox('setValue', row.vote);
 	if(tp==1){
 		$('#e-bid').textbox('setValue', row.id);
 		$('#e-title').textbox('setValue', row.title);
@@ -364,9 +378,9 @@ function edit(){
 		$('#e-desc').textbox('setValue', row.short_desc);
 		$('#e-rank').combobox('setValue', row.rank);
 		$('#e-status').combobox('setValue', row.status.id);
-		$('#e-priority').textbox('setValue', row.priority.desc);
+		$('#e-priority').textbox('setValue', row.priority.descp);
 		$('#h-priority').val(row.priority.id);
-		$('#e-category').textbox('setValue', row.classification.desc);
+		$('#e-category').textbox('setValue', row.classification.descp);
 		$('#h-category').val(row.classification.id);
 		$('#e-pname').textbox('setValue', row.product.name.name);
 		$('#h-pname').val(row.product.id);
@@ -429,7 +443,7 @@ function rowStatus(index,row){
 function rowStatusBug(index,row){
 	// fixed or merged
 	if(row.status!=undefined && (row.status.id==4 || row.status.id==5)){
-		return 'color:#2E8B57;font-style: italic';
+		return 'color:#5cb85c;font-style: italic';
 	}
 
 	// unfixed and high priority
@@ -525,7 +539,6 @@ function action(url, data, dg, method){
         	result = result.responseText;
         	var result = eval('('+result+')');
         	show('Error',result.info);
-	    	fullScreenMask('close');
 	    }        
 	 });
 }
@@ -613,6 +626,58 @@ function getFileIcon(fn){
             "bmp":"icon_jpg.gif"
         };
     return maps[ext] ? maps[ext]:maps['txt'];
+}
+
+$.fn.datebox.defaults.formatter = function(date){
+	var y = date.getFullYear();
+	var m = date.getMonth()+1;
+	var d = date.getDate();
+	//return m+'/'+d+'/'+y;
+	if(m<10) m = '0' + m;
+	if(d<10) d = '0' + d;
+	var abc = y + '-' + m + '-' + d;
+	//console.log(abc);
+	return abc;
+}
+$.fn.datebox.defaults.parser = function(s){
+	var t = Date.parse(s);
+	if (!isNaN(t)){
+		return new Date(t);
+	} else {
+		return new Date();
+	}
+}
+
+// for menu/resource  treegrid
+function maketree(value,row,index){
+	var intend = '<span class="tree-indent"></span>';
+	var blanks = '';
+	for(i=0; i<row.tp;++i){
+		blanks = blanks + intend;
+	}
+	var iconApp = '<i class="fa fa-sitemap fa-btn-icon-small fa-green fa-lg"></i>  ';
+	var iconMoudel = '<i class="fa fa-cubes fa-green fa-btn-icon-small fa-lg"></i>  ';
+	var iconFunc = '<i class="fa fa-code fa-btn-icon-small fa-green fa-lg "></i>  ';
+	
+	var retVal = '';
+	if(row.tp==0)
+		retVal = iconApp + value;
+	else if (row.tp==1)
+		retVal = iconMoudel + value;
+	else if (row.tp==2)
+		retVal = iconFunc + value;
+	
+	return retVal;
+}
+function formatType(value,row,index){
+	if(value==0)
+		return 'Application';
+	else if(value==1)
+		return 'Module';
+	else if(value==2)
+		return 'Button';
+	else if(value==3)
+		return 'Function';
 }
 
 function clockon() {

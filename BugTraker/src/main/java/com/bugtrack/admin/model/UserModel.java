@@ -196,4 +196,14 @@ public class UserModel {
 		this.skill = skill;
 	}
 	
+	@NotNull
+	private Integer fixed = 0;
+	public Integer getFixed() {
+		return fixed;
+	}
+	public void setFixed(Integer fixed) {
+		this.fixed = fixed;
+	}
+	
+	
 }

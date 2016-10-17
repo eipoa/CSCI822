@@ -6,6 +6,8 @@ package com.bugtrack.admin.security;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,8 @@ public class CustomUserDetailService implements UserDetailsService {
 //	private EntityManager em;
 	@Autowired
 	private UserRepository usersRepo;
+	@Autowired
+	HttpServletRequest request;
 
 	// get user's detial info via username
 	@Override

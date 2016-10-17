@@ -3,6 +3,9 @@
  */
 package com.bugtrack.admin.model;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,11 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
@@ -208,26 +213,48 @@ public class BugsModel {
 		this.rank = rank;
 	}
 	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="patch_id")
-	private BugPatchModel solution;
-	public BugPatchModel getSolution() {
-		return solution;
+//	@OneToOne(cascade=CascadeType.ALL)
+//	@JoinColumn(name="patch_id")
+//	private BugPatchModel solution;
+//	public BugPatchModel getSolution() {
+//		return solution;
+//	}
+//	public void setSolution(BugPatchModel solution) {
+//		this.solution = solution;
+//	}
+	
+	@OneToMany(cascade = { CascadeType.ALL },mappedBy ="bug")
+	@JsonBackReference
+	private Collection<BugPatchModel> solutions = new ArrayList<BugPatchModel>();
+	public Collection<BugPatchModel> getSolutions() {
+		return solutions;
 	}
-	public void setSolution(BugPatchModel solution) {
-		this.solution = solution;
+	public void setSolutions(Collection<BugPatchModel> solutions) {
+		this.solutions = solutions;
 	}
-
-
+	public void addSolution(BugPatchModel patch){  
+		patch.setBug(this);
+		solutions.add(patch);
+    } 
+	
+	@NotNull
+	private Integer vote = 0;
+	public Integer getVote() {
+		return vote;
+	}
+	public void setVote(Integer vote) {
+		this.vote = vote;
+	}
+	
 	public String getMsg(int s, int e){
 		String str = "";
 		str = "<h5><span class=\"label label-primary\">Bug ID: " + Integer.toString(this.getId()) + "</span></h5>";
 		if(this.getPriority().getId().equals(1))
-			str += "<h5><span class=\"label label-info\">Priority: " + this.getPriority().getDesc() + "</span></h5>";
+			str += "<h5><span class=\"label label-info\">Priority: " + this.getPriority().getDescp() + "</span></h5>";
 		if(this.getPriority().getId().equals(2))
-			str += "<h5><span class=\"label label-warning\">Priority: " + this.getPriority().getDesc() + "</span></h5>";
+			str += "<h5><span class=\"label label-warning\">Priority: " + this.getPriority().getDescp() + "</span></h5>";
 		if(this.getPriority().getId().equals(3))
-			str += "<h5><span class=\"label label-danger\">Priority: " + this.getPriority().getDesc() + "</span></h5>";
+			str += "<h5><span class=\"label label-danger\">Priority: " + this.getPriority().getDescp() + "</span></h5>";
 		if(s==1 && e==2){
 			str += "<h6>A new bug, please give out a solution.</h6>";
 		}else if(s==3 && e==2){
@@ -237,6 +264,19 @@ public class BugsModel {
 		}
 		return str;
 	}
+	
+//	public BugPatchModel getCurentSolution() {
+//		BugPatchModel curentSolution = new BugPatchModel();
+//		for (BugPatchModel p : solutions) {
+//            if(curentSolution.getCreation_ts()==null||(p.getCreation_ts().compareTo(curentSolution.getCreation_ts())>0))
+//            	curentSolution = p;
+//        }
+//		if(curentSolution.getId()!=null)
+//			return curentSolution;
+//		else
+//			return null;
+//	}
+	
 	
 //	@Override
 //	public String toString() {

@@ -3,7 +3,6 @@ package com.bugtrack.admin.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.PageRequest;
@@ -70,19 +69,20 @@ public class InboxController  extends CommonController {
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "status", method = RequestMethod.PUT)
 	public String msgSwitchStatus(HttpServletRequest request, 
-			@RequestParam(value = "id", required = true) Integer id,
+			@RequestParam(value = "ids", required = false) String mids,
 			@RequestParam(value = "st", required = true) Integer st)
 			throws Exception {
-		try {
-			MessageModel msg = msgRepo.findOne(id);
-			if (msg == null)
-				return ajaxReturn(false, "", "can not find the message!");
-			msg.setStatus(st);
-			msg.setReadts(this.getCurrentTime());
-			msg = msgRepo.saveAndFlush(msg);
-			return ajaxReturn(true, Integer.toString(msg.getStatus()), "Ok");
-		} catch (Exception e) {
-			return ajaxReturn(false, "", e.getMessage());
+		String[] ids = null;
+		if (mids != null && !mids.equals(""))
+			ids = mids.split(",");
+		for (int i = 0; i < ids.length; ++i) {
+			MessageModel msg = msgRepo.findOne(Integer.valueOf(ids[i]));
+			if (msg != null){
+				msg.setStatus(st);
+				msg.setReadts(this.getCurrentTime());
+				msg = msgRepo.saveAndFlush(msg);
+			}
 		}
+		return ajaxReturn(true, "", "Ok");
 	}
 }

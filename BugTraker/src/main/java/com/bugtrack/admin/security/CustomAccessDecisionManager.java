@@ -61,7 +61,6 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 		// org.springframework.security.web.authentication.WebAuthenticationDetails@b364:
 		// RemoteIpAddress: 0:0:0:0:0:0:0:1; SessionId: null; Granted
 		// Authorities: ROLE_ANONYMOUS
-		// try{
 		ResourceModel resources = resRepo.findByResourceAndStatus(url, 1);
 		if (resources != null) {
 			Collection<RoleModel> needRoles = resources.getRoles();
@@ -78,9 +77,6 @@ public class CustomAccessDecisionManager implements AccessDecisionManager {
 				}
 			}
 		}
-		// }catch(Exception e){
-		//
-		// }
 		logger.info("------------------permission denied, throw AccessDeniedException");
 		throw new AccessDeniedException("Access Denied");
 	}

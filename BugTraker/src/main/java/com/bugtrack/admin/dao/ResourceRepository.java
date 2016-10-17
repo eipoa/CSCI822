@@ -1,5 +1,6 @@
 package com.bugtrack.admin.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.springframework.data.domain.Sort;
@@ -12,5 +13,8 @@ public interface ResourceRepository extends JpaRepository<ResourceModel, Integer
 	ResourceModel findByResourceAndStatus(String url, int i);
 	ResourceModel findById(Integer id);
 	List<ResourceModel> findAllByStatus(int i, Sort sort);
-
+	List<ResourceModel> findAllByParentIsNullAndStatus(int i);
+	List<ResourceModel> findAllByParentIsNullAndStatus(Integer i, Sort s);
+	List<ResourceModel> findAllByParentAndStatus(int parent, int status, Sort sort);
+	Collection<ResourceModel> findAllByParentIsNull();
 }

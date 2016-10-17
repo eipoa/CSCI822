@@ -101,7 +101,15 @@ public class RoleModel {
 		this.status = status;
 	}
 
-
+	@NotNull
+	private Integer fixed = 0;
+	public Integer getFixed() {
+		return fixed;
+	}
+	public void setFixed(Integer fixed) {
+		this.fixed = fixed;
+	}
+	
 	
 
 //	@Override

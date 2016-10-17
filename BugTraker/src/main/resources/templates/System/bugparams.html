@@ -9,7 +9,7 @@
 <meta name="description" content="user admin">
 <meta name="author" content="Li baoxing">
 
-<title>Bugs Admin - Resources</title>
+<title>Bugs Admin - Roles</title>
 
 <!-- Bootstrap Core CSS -->
 <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -46,7 +46,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="/">Bug Tracker Admin</a>
+				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
@@ -90,20 +90,20 @@
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
 							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
-						<ul id="demo0" aria-expanded="true" class="nav navbar-nav">
+						<ul id="demo0" class="collapse">
 							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
 							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
 							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li class="active"><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
 						</ul>
 					</li>
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
-						<ul id="demo1" class="collapse">
+						<ul id="demo1" aria-expanded="true" class="nav navbar-nav">
 							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li class="active"><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
 							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
@@ -122,7 +122,7 @@
 						<ol class="breadcrumb">
 							<li class="active">
 								<li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
-								<li class="active"><i class="fa fa-fw fa-user"></i> Resource list</li>
+								<li class="active"><i class="fa fa-fw fa-user"></i> Role list</li>
 							</li>
 						</ol>
 					</div>
@@ -132,50 +132,35 @@
 				<!-- user list row -->
 				<div class="row">
 					<div class="col-lg-12">
-						<!-- easyui table for user list-->
-						<table id="dg" class="easyui-datagrid" title="Resource list"
-							style="width: auto; height: 500px"
-							data-options="rownumbers:true,singleSelect:true,pagination:true,
-									url:'/Auth/resources/list?sort=resource&order=asc',method:'get',
-									idField:'id',loadMsg:'',toolbar:'#tb',onSelect: dgResSelect">
-							<thead>
-								<tr>
-									<th data-options="field:'resource',width:180,formatter:formatUrlStatus">Resource URL</th>
-									<th data-options="field:'name',width:180">Resource Name</th>
-									<th data-options="field:'description',width:500">Description</th>
-									<th data-options="field:'status',width:80,align:'center',formatter:formatUserStatus">Status</th>
-								</tr>
-							</thead>
-						</table>
-
-						<!-- table tool bar-->
-						<div id="tb" style="padding: 2px 5px;">
-							<table class="edittable" cellspacing="0" cellpadding="0" style="margin:0px">
-								<tbody>
-									<tr>
-										<td>
-											<input id="e-id" type="hidden" />
-											<input id="e-resource" class="easyui-textbox"
-												data-options="label:'Resource URL', labelWidth:100, labelAlign:'right',width:320"></input>
-										</td>
-										<td>
-											<input id="e-name" class="easyui-textbox"
-												data-options="label:'Resource Name', labelWidth:100, labelAlign:'right',width:320"></input>
-										</td>
-										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create new resource" data-options="iconCls:'icon-add', plain:true" onClick=save(0)>New</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing resource" data-options="iconCls:'icon-edit', plain:true" onClick=save(1)>Modify</a>
-										</td>
-									</tr>
-									<tr>
-										<td colspan="3">
-											<input id="e-desc" class="easyui-textbox"
-												data-options="label:'Description', labelWidth:100, labelAlign:'right',width:'100%',onClickButton:search"></input>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+					<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
+						<div data-options="region:'west',title:'Bug priority list',collapsible:false" style="width:50%">
+						<div id="dlp" class="easyui-datalist" 
+								data-options="lines:true,textFormatter:formatdescStatus,idField:'id',toolbar:'#tb01',
+										valueField:'id', textField:'descp', border:false, fit:true, singleSelect: true"> </div>
+							<!-- table tool bar-->
+							<div id="tb01" style="padding: 2px 5px;">
+								<input id="e-priority-id" class="easyui-textbox" type="hidden" />
+								<input id="e-priority" class="easyui-textbox" data-options="label:'Priority', labelWidth: 80, labelAlign: 'right',width:300" >
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(1,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="iconCls:'icon-edit', plain:true" onClick=save(1,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dlp').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
+							</div>
 						</div>
+						<div data-options="region:'center',title:'Bug classfication list',collapsible:false" >
+							<div id="dlc" class="easyui-datalist" 
+								data-options="lines:true,textFormatter:formatdescStatus,idField:'id',toolbar:'#tb02',
+										valueField:'id', textField:'descp', border:false, fit:true, singleSelect: true"> </div>
+
+							<!-- table tool bar-->
+							<div id="tb02" style="padding: 2px 5px;">
+								<input id="e-class-id" class="easyui-textbox" type="hidden" />
+								<input id="e-class" class="easyui-textbox" data-options="label:'Classfication', labelWidth: 80, labelAlign: 'right',width:300" >
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(2,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(2,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dlc').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
+							</div>
+						</div>
+					</div>
 					</div>
 				</div>
 				<!-- /.row -->
@@ -252,50 +237,63 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Auth/resources';
-// 	// click new button
-// 	function add(){
-// 		$('#editw').dialog('open').dialog('setTitle','Create Account');
-// 		$('#e-username').textbox('readonly',false);
-// 		$('#e-username').focus();
-// 	}
-	
-// 	// click remove
-// 	function remove(){
-// 		var row = $('#dg').datagrid('getSelected',{});
-// 		if(row==null || row==undefined){
-// 			alert_('Please select a row to delete.');
-// 			return;
-// 		}
-// 		$.messager.confirm('Confirm', 'Are you confirm this?', function(r){
-// 			if (r){
-// 				var url= MODEL + '/delete';
-// 				var data= {"id":Number(row.id), "_method": 'DELETE'};
-// 				var dg= $('#dg');
-// 				console.log(data);
-// 				action(url, data, dg, "POST");
-// 			}
-// 		});
-// 	}
-	
-	// click save
-	function save(x){
-		var url= MODEL + '/save';
-		var data= {
-				id: (x==0?0:$('#e-id').val()),
-				resource: $('#e-resource').textbox('getValue'),
-				name: $('#e-name').textbox('getValue'),
-				description: $('#e-desc').textbox('getValue'),
-				status: (x==0?1:$('#e-status').val())
-		}
-		console.log(data);
-		var dg= $('#dg');
-		action(url, data, dg, "POST");
+	var MODEL = '/Bug';
+	function reload(y){
+		if(y==1)
+			$('#dlp').datalist('reload');
+		else if(y==2)
+			$('#dlc').datalist('reload');
 	}
-	
+	// click save
+	function save(y,x){
+		var url= MODEL + '/savepara';
+		var data= {
+				id: (x==0?0:(y==1?$('#e-priority-id').textbox('getValue'):$('#e-class-id').textbox('getValue'))),
+				desc : (y==1?$('#e-priority').textbox('getValue'):$('#e-class').textbox('getValue')),
+				ty : y
+		}
+		//res
+		//console.log(data);
+		$.ajax({
+		    type: "POST",
+		    url:url,
+		    data:data,
+		    datatype: "json",
+		    beforeSend:function(){
+		    	fullScreenMask('open');
+		    },
+		    success:function(result){
+				var result = eval('('+result+')');					
+				if (result.status){
+					reload(y);
+					show('Success',result.info);
+				} else {
+					show('Error', result.info);
+				}
+				fullScreenMask('close');
+			},
+		    complete: function(XMLHttpRequest, textStatus){
+		    	fullScreenMask('close');
+		    },
+		    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+		    error: function(result){
+		    	fullScreenMask('close');
+		    	//console.log(result.responseText);
+	        	result = result.responseText;
+	        	var result = eval('('+result+')');
+	        	show('Error',result.info);
+		    }        
+		 });
+	}
+	function formatdescStatus(value,row,index){
+		return "<code>" + row.descp + "</code>";
+	}
 	$(function() {
+		$('#cc').layout();
 		// dynamic bind datagrid
 		$('#dg').datagrid({
+			url:'/Auth/roles/list?sort=rolename&order=asc',
+			method:'get',
 			onBeforeLoad : function() {
 				// show fullscreen modal windows
 				fullScreenMask('open');
@@ -309,12 +307,28 @@
 				var row = $('#dg').datagrid('getSelected');
 				if (row != null || row != undefined)
 					$('#dg').datagrid('selectRecord', row.id);
-				$('#w').window('close', true);
+				fullScreenMask('close');
 			},
 			onLoadError : function(XMLHttpRequest) {
 				fullScreenMask('close');
 				//console.log(XMLHttpRequest);
 				ajaxerror(XMLHttpRequest.responseText);
+			}
+		});
+		$('#dlc').datalist({
+			url:'/Bug/bugclasslist',
+			method:'get',
+			onSelect:function(index,row){
+				$('#e-class-id').textbox('setValue', row.id);
+				$('#e-class').textbox('setValue', row.descp);
+			}
+		});
+		$('#dlp').datalist({
+			url:'/Bug/bugprioritylist',
+			method:'get',
+			onSelect:function(index,row){
+				$('#e-priority-id').textbox('setValue', row.id);
+				$('#e-priority').textbox('setValue', row.descp);
 			}
 		});
 	});

@@ -46,7 +46,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+				<a class="navbar-brand" href="/">Bug Tracker Admin</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
@@ -103,9 +103,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="#"> Product Admin</a></li>
-							<li><a href="#"> Bug Catalog</a></li>
-							<li><a href="#"> Mail system</a></li>
+							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -151,7 +151,7 @@
 								<tr>
 									<th data-options="field:'id',width:70">Bug ID</th>
 									<th data-options="field:'priority_id',width:70,formatter:formatBugPriority">Priority</th>
-									<th data-options="field:'title',width:300">title</th>
+									<th data-options="field:'title',width:300,formatter:formatBugtitle">title</th>
 									<th data-options="field:'classification',width:100,formatter:formatBugClass">Classification</th>
 									<th data-options="field:'product_id',width:100,formatter:formatBugProduct">Product</th>
 									<th data-options="field:'product_ver',width:100,formatter:formatBugVersion">Version</th>
@@ -172,19 +172,19 @@
 									<tr>
 										<td>
 											<input id="xtp" type="hidden" value=1 />
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true, onClick:edit">
-												 Edit
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:edit">
+												 <i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Edit
 											</a>
 										</td>
 										<td>
 											<span class="datagrid-btn-separator"></span>
 										</td>
 										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true, onClick:search">
-												 Search
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options=" plain:true, onClick:search">
+												<i class="fa fa-search fa-btn-icon fa-green fa-lg"></i> Search
 											</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-clear', plain:true, onClick:reset">
-												 Reset
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:reset">
+												<i class="fa fa-eraser fa-btn-icon fa-green fa-lg"></i> Reset
 											</a>
 										</td>
 									</tr>
@@ -225,7 +225,7 @@
            						<input id="s-priority" class="easyui-combobox"
 									data-options="
 					                    valueField: 'id',
-					                    textField: 'desc',
+					                    textField: 'descp',
 					                    label:'Priority',
 					                    labelWidth: 70,
 					                    labelAlign: 'right',
@@ -237,7 +237,7 @@
            						<input id="s-category" class="easyui-combobox"
 									data-options="
 					                    valueField: 'id',
-					                    textField: 'desc',
+					                    textField: 'descp',
 					                    label:'Category',
 					                    labelWidth: 70,
 					                    labelAlign: 'right',
@@ -376,7 +376,7 @@
 						<input id="e-priority" class="easyui-combobox"
 							data-options="
 			                    valueField: 'id',
-			                    textField: 'desc',
+			                    textField: 'descp',
 			                    label:'Priority',
 			                    labelWidth: 90,
 			                    labelAlign: 'right',
@@ -386,11 +386,11 @@
 			                    url:'/Bug/bugprioritylist',
 			                    panelHeight:150"></input>
 					</td>
-					<td colspan="2">
+					<td>
 						<input id="e-category" class="easyui-combobox"
 							data-options="
 			                    valueField: 'id',
-			                    textField: 'desc',
+			                    textField: 'descp',
 			                    label:'Category',
 			                    labelWidth: 100,
 			                    labelAlign: 'right',
@@ -399,6 +399,16 @@
 			                    formatter:comboxfm,
 			                    url:'/Bug/bugclasslist',
 			                    panelHeight:150"></input>
+					</td>
+					<td>
+						<input id="e-vote" class="easyui-textbox" 
+							data-options="								
+								label:'Vote',
+								labelWidth: 40,
+								labelAlign: 'right',
+								editable:false,
+			                    readonly:true,
+								width:170"></input>
 					</td>
 				</tr>
 				<tr>
@@ -525,10 +535,10 @@
 					<td colspan="3">
 					<div style="float:right">
 						<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
-							<i class="fa fa-check fa-btn-icon fa-green"></i> Save
+							<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save
 						</a>
 						<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
-							<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>								
+							<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>								
 					</div>
 					</td>
 				</tr>
@@ -542,7 +552,6 @@
 			data-options="
 					singleSelect:true,
 					pagination:true,
-					
 					method:'get',
 					idField:'id',
 					rowStyler:rowStatus,
@@ -553,7 +562,7 @@
 					<th data-options="field:'first_name',width:100">First Name</th>
 					<th data-options="field:'last_name',width:100">Last Name</th>
 					<th data-options="field:'email',width:100">E-mail</th>
-					<th data-options="field:'role_id',width:100,formatter:formatUserRole">Role</th>
+					<th data-options="field:'skill',width:100">Skill</th>
 				</tr>
 			</thead>
 		</table>    	
@@ -590,11 +599,11 @@
 					<tr>
 						<td style="text-align: center">
 							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
-								<i class="fa fa-check fa-btn-icon fa-green"></i> Save&nbsp;&nbsp;</a>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save&nbsp;&nbsp;</a>
 						</td>
 						<td style="text-align: center">
 							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
-								<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
+								<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>
 						</td>
 					</tr>
 	        	</tbody>
@@ -644,6 +653,7 @@
 		// select staff for developer or reviewer
 		$("#staffwd").dialog({
 			width:520,
+			hight:300,
 			closed:true,
 			modal:true,
 			shadow:false,

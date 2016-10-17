@@ -31,7 +31,7 @@ public class BugPriorityModel {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Integer id;
 	@NotNull
-	private String desc;
+	private String descp;
 	
 	public BugPriorityModel() {
 		super();
@@ -39,17 +39,17 @@ public class BugPriorityModel {
 	public Integer getId() {
 		return id;
 	}
-	public String getDesc() {
-		return desc;
+	public String getDescp() {
+		return descp;
 	}
-	public void setDesc(String desc) {
-		this.desc = desc;
+	public void setDescp(String desc) {
+		this.descp = desc;
 	}
 	public void setId(Integer id) {
 		this.id = id;
 	}
 	@Override
 	public String toString() {
-		return "BugPriorityModel [id=" + id + ", desc=" + desc + "]";
+		return "BugPriorityModel [id=" + id + ", desc=" + descp + "]";
 	}
 }

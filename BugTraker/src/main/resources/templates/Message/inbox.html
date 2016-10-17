@@ -46,42 +46,11 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+				<a class="navbar-brand" href="/">Bug Tracker Admin</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
-				<!-- <li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-envelope"></i> <b
-						class="caret"></b></a>
-					<ul class="dropdown-menu message-dropdown">
-						<li class="message-preview"><a href="#">
-								<div class="media">
-									<span class="pull-left"> <img class="media-object" src="http://placehold.it/50x50" alt=""> </span>
-									<div class="media-body">
-										<h5 class="media-heading">
-											<strong>John Smith</strong>
-										</h5>
-										<p class="small text-muted">
-											<i class="fa fa-clock-o"></i> Yesterday at 4:32 PM
-										</p>
-										<p>Lorem ipsum dolor sit amet, consectetur...</p>
-									</div>
-								</div>
-						</a></li>
-						<li class="message-footer"><a href="#">Read All New
-								Messages</a></li>
-					</ul>
-				</li>
-				<li class="dropdown"><a href="#" class="dropdown-toggle"
-					data-toggle="dropdown"><i class="fa fa-bell"></i> <b
-						class="caret"></b></a>
-					<ul class="dropdown-menu alert-dropdown">
-						<li><a href="#">Alert Name <span
-								class="label label-danger">Alert Badge</span></a></li>
-						<li class="divider"></li>
-						<li><a href="#">View All</a></li>
-					</ul>
-				</li> -->
+			
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
 						<i class="fa fa-user"></i> 
@@ -134,9 +103,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="#">Product Admin</a></li>
-							<li><a href="#">Bug Catalog</a></li>
-							<li><a href="#">Mail system</a></li>
+							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -151,9 +120,6 @@
                 <!-- Page Heading -->
                 <div class="row">
                     <div class="col-lg-12">
-<!--                         <h1 class="page-header"> -->
-<!--                             Wellcome <small>Have a nice day!</small> -->
-<!--                         </h1> -->
                         <ol class="breadcrumb">
                             <li class="active">
                                 <li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
@@ -170,21 +136,29 @@
 	                    <div id="cc" class="easyui-layout" style="width:100%; height:500px">
 	                    	<div data-options="region:'west',title:'Message list',collapsible:false" style="width:401px;">
 		                    	<table id="dg" class="easyui-datagrid" title=""  
-		                    		data-options=" singleSelect:true, pagination:true, method:'get', idField:'id', 
-		                    			fit:true, pageList:[16], pageSize:16, border:false, loadMsg:'', onSelect:msgSelect">
+		                    		data-options="singleSelect:true, pagination:true, idField:'id', checkbox:true , selectOnCheck:false,
+		                    			fit:true, pageList:[5,10,15,20,30], pageSize:10, border:false, loadMsg:'', onSelect:msgSelect,
+		                    			toolbar:'#tt'">
 									<thead>
 										<tr>
+											<th data-options="field:'ck',checkbox:true"></th>
 											<th data-options="field:'status',width:50,align:'center',formatter:formatMsgStatus">Status</th>
-											<th data-options="field:'title',width:223">title</th>
+											<th data-options="field:'title',width:180">title</th>
 											<th data-options="field:'creationts',width:125, formatter:formatTime">Creation time</th>											
 										</tr>
 									</thead>
 								</table>
+								<div id="tt">
+						        	<a id="btn-read" href="#" class="easyui-linkbutton" data-options="plain:true" onClick= dealMsg(1)>
+						        		<i class="fa fa-check fa-btn-icon fa-green fa-lg"></i> Set read</a>
+          							<a id="btn-del" href="#" class="easyui-linkbutton" data-options="plain:true" onClick= dealMsg(2)>
+          								<i class="fa fa-trash fa-btn-icon fa-green fa-lg"></i> Remove</a>
+					    		</div>
 							</div>
 	                    	<div data-options="region:'center',title:'Message Body',collapsible:false">
 								<table class="edittable" cellspacing="0" cellpadding="0">
 	                    			<tr>
-	                    				<td>
+	                    				<td colspan="2">
 											<input id="e-from" class="easyui-textbox"  
 												data-options=" label:'From', labelWidth: 40, labelAlign: 'right', 
 													editable:false, readonly:true, width:350"></input>
@@ -194,7 +168,7 @@
 										</td>
 	                    			</tr>
 	                    			<tr>
-	                    				<td>
+	                    				<td colspan="2">
 											<input id="e-to" class="easyui-textbox"  
 												data-options="label:'To', labelWidth: 40, labelAlign: 'right', 
 													editable:false, readonly:true, width:350"></input>
@@ -207,14 +181,14 @@
 												data-options="label:'Title', labelWidth: 40, labelAlign: 'right', 
 													editable:false, readonly:true, width:350"></input>
 										</td>
+										<td style="align:right">
+											
+										</td>
 	                    			</tr>
 	                    		</table>
 	                    		<div style="padding: 10px;">	                    			                 
-									<div id="p" class="easyui-panel" title="Date: " data-options="tools:'#tt'" style="padding: 10px;"></div>
-									<div id="tt">
-								        <a id="btn-read" href="#" class="easyui-tooltip" title="Read" class="icon-ok" onClick= dealMsg(1)></a>
-            							<a id="btn-del" href="#" class="easyui-tooltip" title="Remove" class="icon-remove" onClick= dealMsg(2)></a>
-								    </div>
+									<div id="p" class="easyui-panel" title="Date: " data-options="hight:300" style="padding: 10px;"></div>
+									
 							    </div>
 	                    	</div>
 	                    			<!-- <script id="editor" type="text/plain" style="width:auto;height:230px;"></script> -->
@@ -303,23 +277,38 @@
 </body>
 <script type="text/javascript">
 	//UploadController.java-->rootPath
-	var MODEL = '/Message/';
+	var MODEL = '/Message';
 	var ue;
+	
 	function dealMsg(st){
 		var msgid= $('#h-id').val();
-		var url=MODEL + "/";
+		//console.log($('#dg').datagrid('getChecked'));
+		var ids="";
+		rolRow = $('#dg').datagrid('getChecked');
+		rolRow.forEach(function(r){
+			ids = ids==""?"":ids + ",";
+			ids = ids+ r.id
+		})
+		if(ids==""){
+			alert_('Please select messages first.');
+			return;
+		}
+		
+		//var url=MODEL + "/";
 		if(msgid!=undefined && msgid!=""){
 			$.ajax({
 		        type: "PUT",
 		        url: MODEL+"/status",
-		        data: {id:msgid, st: st},
+		        data: {ids:ids, st: st},
 		        dataType: "json",
 		        success: function(result){
 		        	show('Success',result.info);
 		        	// lazy way
+		        	$('#dg').datagrid('uncheckAll');
 		        	$('#dg').datagrid('reload');
 		        	$('#h-status').val(1);
 		        	$('#btn-read').linkbutton('disable');
+		        	
 		         }
 		    });
 		}
@@ -328,8 +317,14 @@
 		
 	}
 	$(function(){
+		var pager = $('#dg').datagrid().datagrid('getPager');
+		pager.pagination({
+			layout:['first','prev','manual','next','last'],
+			displayMsg:'{from} to {to} of {total} items'
+		});
 		$('#dg').datagrid({
 			url:'/Message/list?sort=creationts&order=desc',
+			method:'get', 
 			onBeforeLoad : function() {
 				// show fullscreen modal windows
 				fullScreenMask('open');
@@ -346,11 +341,7 @@
 				ajaxerror(XMLHttpRequest.responseText);
 			}
 		});
-		var pager = $('#dg').datagrid().datagrid('getPager');
-		pager.pagination({
-			layout:['first','prev','manual','next','last'],
-			displayMsg:'{from} to {to} of {total} items'
-		});
+		
 		$('#cc').layout();
 		$('#p').panel();
 		

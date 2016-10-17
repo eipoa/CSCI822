@@ -5,17 +5,25 @@ package com.bugtrack.admin.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * @author Administrator
@@ -77,10 +85,32 @@ public class ResourceModel {
 		this.status = status;
 	}
 	
-//	@OneToMany(cascade = { CascadeType.ALL}, fetch = FetchType.LAZY)//
-//	@JoinTable(name="auth_roleresource",
-//    joinColumns={ @JoinColumn(name="resid",referencedColumnName="id")},
-//    inverseJoinColumns={@JoinColumn(name="roleid",referencedColumnName="id")})
+	
+	@ManyToOne 
+	@JoinColumn(name = "parentid")
+	@JsonBackReference
+	private ResourceModel parent;
+	public ResourceModel getParent() {
+		return parent;
+	}
+	public void setParent(ResourceModel parent) {
+		this.parent = parent;
+	}
+	
+	@OneToMany(mappedBy = "parent",cascade={CascadeType.ALL},fetch=FetchType.LAZY) 
+	@JsonManagedReference
+	@OrderBy("resource")
+	private List<ResourceModel> children;
+	public List<ResourceModel> getChildren() {
+		return children;
+	}
+	public void setChilderen(List<ResourceModel> children) {
+		this.children = children;
+	}
+
+//	public int compareTo(ResourceModel res) {
+//		return this.resource.compareTo(res.getResource());
+//	}
 	
 	@ManyToMany(mappedBy="resources")
 	@JsonBackReference
@@ -100,5 +130,13 @@ public class ResourceModel {
 		return str;
 	}
 
+
+	private Integer tp;// 0 application; 1 module; 2 button; 3 function
+	public Integer getTp() {
+		return tp;
+	}
+	public void setTp(Integer tp) {
+		this.tp = tp;
+	}
 
 }

@@ -49,7 +49,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+				<a class="navbar-brand" href="/">Bug Tracker Admin</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
@@ -106,9 +106,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="#">Product Admin</a></li>
-							<li><a href="#">Bug Catalog</a></li>
-							<li><a href="#">Mail system</a></li>
+							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -145,15 +145,13 @@
 								<tr>
 									<th data-options="field:'id',width:70">Bug ID</th>
 									<th data-options="field:'priority_id',width:70,formatter:formatBugPriority">Priority</th>
-									<th data-options="field:'title',width:300">title</th>
+									<th data-options="field:'title',width:300,formatter:formatBugtitle">title</th>
 									<th data-options="field:'classification',width:100,formatter:formatBugClass">Classification</th>
 									<th data-options="field:'product_id',width:100,formatter:formatBugProduct">Product</th>
 									<th data-options="field:'product_ver',width:100,formatter:formatBugVersion">Version</th>
 									<th data-options="field:'os_id',width:60,formatter:formatBugOS">OS</th>
 									<th data-options="field:'creation_ts',width:150">Creation time</th>
 									<th data-options="field:'status_id',width:80,formatter:formatBugStatus">Status</th>
-<!-- 									<th data-options="field:'developer_name',width:80,formatter:formatBugDev">Developer</th> -->
-<!-- 									<th data-options="field:'reviewer_name',width:80,formatter:formatBugRev">Reviewer</th> -->
 								</tr>
 							</thead>
 						</table>
@@ -166,14 +164,17 @@
 									<tr>
 										<td>
 											<input id="xtp" type="hidden" value=3 />
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true, onClick:edit">Edit</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:edit">
+											<i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Edit</a>
 										</td>
 										<td>
 											<span class="datagrid-btn-separator"></span>
 										</td>
 										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-search', plain:true, onClick:search">Search</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'icon-clear', plain:true, onClick:reset">Reset</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:search">
+											<i class="fa fa-search fa-btn-icon fa-green fa-lg"></i> Search</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:reset">
+											<i class="fa fa-eraser fa-btn-icon fa-green fa-lg"></i> Reset</a>
 										</td>
 									</tr>
 								</tbody>
@@ -213,7 +214,7 @@
            						<input id="s-priority" class="easyui-combobox"
 									data-options="
 					                    valueField: 'id',
-					                    textField: 'desc',
+					                    textField: 'descp',
 					                    label:'Priority',
 					                    labelWidth: 70,
 					                    labelAlign: 'right',
@@ -225,7 +226,7 @@
            						<input id="s-category" class="easyui-combobox"
 									data-options="
 					                    valueField: 'id',
-					                    textField: 'desc',
+					                    textField: 'descp',
 					                    label:'Category',
 					                    labelWidth: 70,
 					                    labelAlign: 'right',
@@ -304,7 +305,7 @@
     
     <!-- editor window -->
     <div id="editw"> <!--  style="padding:10px" -->
-	    <div class="easyui-tabs" style="width:auto;height:auto" option-data="border:false">
+	    <div class="easyui-tabs" style="width:auto;height:auto" data-options="border:false">
 		    <div title="Bug Detail">  
 		        <table class="edittable"  style="margin:0px" cellspacing="0" cellpadding="0">
 					<tbody>
@@ -364,11 +365,21 @@
 										method: 'get', width: 220, editable:false, readonly:true"></input>
 					            <input id="h-priority" type="hidden" />
 							</td>
-							<td colspan="2">
+							<td>
 								<input id="e-category" class="easyui-textbox"
 									data-options="label:'Category', labelWidth: 100, labelAlign: 'right',
 					                    method: 'get', width: 230, editable:false, readonly:true"></input>
 					            <input id="h-category" type="hidden" />
+							</td>
+							<td>
+								<input id="e-vote" class="easyui-textbox" 
+									data-options="								
+										label:'Vote',
+										labelWidth: 40,
+										labelAlign: 'right',
+										editable:false,
+					                    readonly:true,
+										width:170"></input>
 							</td>
 						</tr>
 						<tr>
@@ -432,41 +443,42 @@
 							<td colspan="3">
 							<div style="float:right">
 								<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
-									<i class="fa fa-check fa-btn-icon fa-green"></i> Save
+									<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save
 								</a>
 								<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
-									<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>								
+									<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>								
 							</div>
 							</td>
 						</tr>
 					</tbody>
 				</table>
 		    </div>
-		    <div title="Patch">
-		    	<div id="e-patch-list" style="width:auto;height:300px;">
+		    <div title="View solutions">
+		    	<div id="e-patch-list" class="easyui-panel" data-options="border:false,height:180">
 		    	
 		    	</div>
-		    </div>
-		    <div title="Reply">
-		    	<table class="edittable" style="margin:0px" cellspacing="0" cellpadding="0">
-					<tbody>
-						<tr>
-							<td>
-								<script id="editor" type="text/plain" style="width:640px;height:211px;"></script>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<div style="float:right">
-									<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
-										<i class="fa fa-check fa-btn-icon fa-green"></i> Save</a>
-									<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
-										<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>								
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+		    
+			    <div class="easyui-panel" data-options="border:false">
+			    	<table class="edittable" style="margin:0px" cellspacing="0" cellpadding="0">
+						<tbody>
+							<tr>
+								<td>
+									<script id="editor" type="text/plain" style="width:640px;height:151px;"></script>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<div style="float:right">
+										<a href="javascript:void(0)" class="easyui-linkbutton" onClick=reply()>
+											<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Reply</a>
+										<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
+											<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Close</a>								
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+			    </div>
 		    </div>
 	    </div>
     </div>
@@ -502,11 +514,11 @@
 					<tr>
 						<td style="text-align: center">
 							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
-								<i class="fa fa-check fa-btn-icon fa-green"></i> Save&nbsp;&nbsp;</a>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save&nbsp;&nbsp;</a>
 						</td>
 						<td style="text-align: center">
 							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
-								<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
+								<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>
 						</td>
 					</tr>
 	        	</tbody>
@@ -560,6 +572,44 @@
 		action(url, data, dg, "POST");
 	}
 	
+	function reply(){
+		var url= MODEL + 'reply';
+		SyntaxHighlighter.all();
+		var data= {
+				id : $('#cursol_id').textbox('getValue'),
+				reply : ue.getContent()
+		}
+		$.ajax({
+		    type: "POST",
+		    url:url,
+		    data:data,
+		    datatype: "json",
+		    beforeSend:function(){
+		    	fullScreenMask('open');
+		    },
+		    success:function(result){
+		    	fullScreenMask('close');
+				var result = eval('('+result+')');					
+				if (result.status){
+					$('#e-patch-list').panel('refresh', MODEL + 'solutions?id=' + $('#e-bid').textbox('getValue'));
+					show('Success',result.info);
+				} else {
+					show('Error', result.info);
+				}
+			},
+		    complete: function(XMLHttpRequest, textStatus){
+		    	fullScreenMask('close');
+		    },
+		    error: function(result){
+		    	fullScreenMask('close');
+		    	//console.log(result.responseText);
+	        	result = result.responseText;
+	        	var result = eval('('+result+')');
+	        	show('Error',result.info);
+		    }        
+		 });
+	}
+	
 	/*----------- initialize jqeasy elements -----------*/
 	$(function() {
 		// editor windows
@@ -569,7 +619,10 @@
 			modal:true,
 			shadow:false,
 			closable:true,
-			draggable:true
+			draggable:true,
+			onBeforeOpen:function(){
+				$('#e-patch-list').panel('refresh', MODEL + 'solutions?id=' + $('#e-bid').textbox('getValue'));
+			}
 		});
 		// dynamic bind datagrid
 		// it must be binded at the end because it will be not tiny if not
@@ -596,7 +649,7 @@
 		ue = UE.getEditor('editor', {
 	    	toolbars: [
 	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
-	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist', 'attachment','insertcode']/*, 'attachment'*/
+	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist','insertcode']/*, 'attachment'*/
 	    	],
 	    	autotypeset:{
 		    	mergeEmptyline: true,

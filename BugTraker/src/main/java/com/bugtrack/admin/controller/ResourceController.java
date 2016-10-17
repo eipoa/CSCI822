@@ -83,17 +83,36 @@ public class ResourceController extends CommonController {
 		return jsonString;
 	}
 
+	@RequestMapping(value = "resources/list02", method = RequestMethod.GET)
+	public String resList02(HttpServletRequest request) throws Exception {
+		List<ResourceModel> ress = resRepo.findAllByParentIsNullAndStatus(1, new Sort(Direction.ASC, "resource"));
+		//List<ResourceModel> ress = resRepo.findAllByParentIsNullAndStatusIs(1);
+		ObjectMapper om = new ObjectMapper();
+		String jsonString = om.writeValueAsString(ress);
+		return jsonString;
+	}
+	
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "resources/save", method = RequestMethod.POST)
-	public String addResources(HttpServletRequest request, ResourceModel res) throws Exception {
-		if (res.getId().equals(0)) {
+	public String addResources(HttpServletRequest request, ResourceModel res,
+			@RequestParam(value = "parentid", required = true) Integer pid) throws Exception {
+//		System.out.println(res.getId());
+//		System.out.println(pid);
+		if(res.getResource()==null || res.getResource().trim().equals("")){
+			throw new Exception("the resource must have a value");
+		}
+		if(pid==null || pid.equals(-1)){
+			res.setParent(null);
+		}else{
+			res.setParent(resRepo.findOne(pid));
+		}
+		
+		if (res.getId()==null) {
 			// new res
 			res.setId(null);
 			res.setRoles(null);
-			// ResourceModel res01 = resRepo.findByResource(res.getResource());
-			// if(res01!=null)
-			// throw new Exception("the resource is duplicated");
 		}
+		res.setResource(res.getResource().trim());
 		res = resRepo.saveAndFlush(res);
 		return ajaxReturn(true, Integer.toString(res.getId()), "OK");
 	}

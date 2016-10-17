@@ -46,7 +46,7 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+				<a class="navbar-brand" href="/">Bug Tracker Admin</a>
 			</div>
 			<!-- Top Menu Items -->
 			<ul class="nav navbar-right top-nav">
@@ -98,13 +98,13 @@
 						</ul>
 					</li>
 					<li>
-						<a href="#" data-toggle="collapse" data-target="#demo1">
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="#">Product Admin</a></li>
-							<li><a href="#">Bug Catalog</a></li>
-							<li><a href="#">Mail system</a></li>
+							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -133,7 +133,7 @@
 				<div class="row">
 					<div class="col-lg-12">
 					<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
-						<div data-options="region:'west',title:'Role list',collapsible:false" style="width:75%">
+						<div data-options="region:'west',title:'Role list',collapsible:false" style="width:73%">
 						<!-- easyui table for user list-->
 						<table id="dg" class="easyui-datagrid" 
 							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
@@ -164,8 +164,8 @@
 												data-options="label:'Description', labelWidth:90, labelAlign:'right',width:'420'"></input>
 										</td>
 										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create a new role" data-options="iconCls:'icon-add', plain:true" onClick=save(0)>New</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="iconCls:'icon-edit', plain:true" onClick=save(1)>Modify</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create a new role" data-options="plain:true" onClick=save(0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="plain:true" onClick=save(1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
 										</td>
 									</tr>
 								</tbody>
@@ -175,7 +175,7 @@
 						<div data-options="region:'center',title:'Authorited Resource list',collapsible:false" >
 							<div id="dl" class="easyui-datalist" 
 								data-options="lines:true,textFormatter:formatUrlStatus,idField:'id',toolbar:'#tb01',
-										valueField:'id', textField:'resource', border:false, fit:true, checkbox: true,singleSelect: false"> </div>
+										valueField:'id', textField:'name', border:false, fit:true, checkbox: true,singleSelect: false"> </div>
 
 							<!-- table tool bar-->
 							<div id="tb01" style="padding: 2px 5px;">
@@ -183,6 +183,8 @@
 								<i class="fa fa-check-square-o fa-btn-icon fa-green fa-lg"></i> Check All </a>
 								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Uncheck all items" data-options="plain:true" onClick="$('#dl').datalist('uncheckAll')">
 								<i class="fa fa-square-o fa-btn-icon fa-green fa-lg"></i> Clear All </a>
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Change resource for the selected role" data-options="plain:true" onClick=fastChangeResource()>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save Resource </a>
 							</div>
 						</div>
 					</div>
@@ -239,11 +241,11 @@
 					<tr>
 						<td style="text-align: center">
 							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
-								<i class="fa fa-check fa-btn-icon fa-green"></i> Save&nbsp;&nbsp;</a>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save&nbsp;&nbsp;</a>
 						</td>
 						<td style="text-align: center">
 							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
-								<i class="fa fa-close fa-btn-icon fa-default"></i> Cancel</a>
+								<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>
 						</td>
 					</tr>
 	        	</tbody>
@@ -286,6 +288,27 @@
 		//console.log(data);
 		var dg= $('#dg');
 		action(url, data, dg, "POST");
+	}
+	
+	function fastChangeResource(){
+		var url= MODEL + '/save';
+		var row = $('#dg').datagrid('getSelected',{});
+		if(row==null || row==undefined){
+			alert_('Please select a role to modify.');
+			return;
+		}
+		var ids="";
+		rolRow = $('#dl').datalist('getChecked');
+		rolRow.forEach(function(r){
+			ids = ids==""?"":ids + ",";
+			ids = ids+ r.id
+		})
+		console.log(row);
+		delete row.resources;
+		row.resids = ids;
+		console.log(row);
+		var dg= $('#dg');
+		action(url, row, dg, "POST");
 	}
 
 	function dgRoleSelect(index,row){

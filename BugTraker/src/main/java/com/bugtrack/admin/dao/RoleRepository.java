@@ -18,4 +18,6 @@ public interface RoleRepository  extends JpaRepository<RoleModel, Integer>{
 
 	List<RoleModel> findAllByStatus(int i, Sort sort);
 
+	RoleModel findByRolename(String string);
+
 }

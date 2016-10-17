@@ -3,6 +3,8 @@
  */
 package com.bugtrack.admin.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bugtrack.admin.model.BugPatchModel;
@@ -12,6 +14,9 @@ import com.bugtrack.admin.model.BugPatchModel;
  *
  */
 public interface BugPatchRepository  extends JpaRepository<BugPatchModel, Integer>{
+
+	List<BugPatchModel> findAllByBug_id(Integer id);
+
 
 	//BugPatchModel findByBug_id(Integer id);
 

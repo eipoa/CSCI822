@@ -76,8 +76,10 @@ public class PublicController extends CommonController {
     
 	@RequestMapping(value = "error", method = {RequestMethod.POST, RequestMethod.GET})//, method = RequestMethod.GET
 	public ModelAndView error(HttpServletRequest req, HttpServletResponse rep) {
-		logger.info("------------------------------ error error error error");
-		ModelAndView mv = new ModelAndView("Public/error");
+		String path = "Public/error";
+		if(this.isLogin())
+			path = "Public/erroronline";
+		ModelAndView mv = new ModelAndView(path);
 		mv.addObject("path", req.getRequestURI());
 		mv.addObject("timestamp", new Date().toString());
 		mv.addObject("status", this.getStatus(req));

@@ -160,7 +160,6 @@ a:active {
 	border-width:0px 0px 1px 0px;
 }
 .fa-btn-icon{
-	/*margin-top: -7px;*/
 	font-size:16px;
 	font-style:normal;
 }
@@ -190,7 +189,10 @@ a:active {
     border-left-width: 5px;
     border-radius: 3px;
 }
-.bs-callout-warning {
+.bs-callout-patch {
+    border-left-color: #4cae4c;/*#f0ad4e;*/
+}
+.bs-callout-reply {
     border-left-color: #4cae4c;/*#f0ad4e;*/
 }
 .dropdown-menu{
@@ -202,7 +204,10 @@ a:active {
 
 
 
-
+.bugprogressbar{
+	border:none;
+	border-bottom:3px solid #5cb85c;
+}
 
 .txt-default{
 	color:#777;
@@ -225,8 +230,14 @@ a:active {
 
 
 
-
-
+.tree-icon{
+	display:none;
+}
+.fa-btn-icon-small{
+	font-size:15px;
+	font-style:normal;
+	width:16px;height:18px;
+}
 .nav li{
 	width: 100%;
 }

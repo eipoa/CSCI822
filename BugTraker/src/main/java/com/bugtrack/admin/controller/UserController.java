@@ -40,6 +40,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RequestMapping("/Auth")
 public class UserController extends CommonController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	/**
 	 * the main view of users
 	 * 
@@ -64,8 +65,6 @@ public class UserController extends CommonController {
 	public Map<String, Object> userList(HttpServletRequest request, PageContent page,
 			@RequestParam(value = "role", required = false) String role,
 			@RequestParam(value = "username", required = false) String username) throws JsonProcessingException {
-//		double x = 100.1/0;
-//		x = x + 100;
 		// keyword
 		Map<String, String> keywords = new HashMap<String, String>();
 		if (role != null && !role.trim().equals(""))
@@ -106,63 +105,49 @@ public class UserController extends CommonController {
 	@RequestMapping(value = "user/save", method = RequestMethod.POST)
 	public String addUser(HttpServletRequest request, UserModel user,
 			@RequestParam(value = "roleids", required = false) String roleids) throws Exception {
-//		try {
-			UserModel tmpUser = userRepo.findByUsername(user.getUsername());
-			String[] ids=null;
-			if(roleids!=null && !roleids.equals(""))
-				ids = roleids.split(",");
-			Set<RoleModel> roles01= new HashSet<RoleModel>();
-			if (tmpUser == null) {
-				// new user / set password=1
-				user.setPassword(new Md5PasswordEncoder().encodePassword("1", null));
-				user.setCreate_ts(getCurrentTime());
-				user.setLogin_ts(null);
-			} else {
-				user.setPassword(tmpUser.getPassword());
-				user.setCreate_ts(tmpUser.getCreate_ts());
-				user.setLogin_ts(tmpUser.getLogin_ts());
-				Collection<RoleModel> roles = tmpUser.getRoles();
-				if(roles!=null){
-					for (RoleModel r : roles) {
-						if(r.getRolename().equals("ROLE_ADMIN")){
-							roles01.add(r);
-						}
-					}
-				}
+		UserModel tmpUser = userRepo.findByUsername(user.getUsername());
+		String[] ids = null;
+		if (roleids != null && !roleids.equals(""))
+			ids = roleids.split(",");
+		Set<RoleModel> roles01 = new HashSet<RoleModel>();
+		if (tmpUser == null) {
+			// new user / set password=1
+			user.setPassword(new Md5PasswordEncoder().encodePassword("1", null));
+			user.setCreate_ts(getCurrentTime());
+			user.setLogin_ts(null);
+		} else {
+			user.setPassword(tmpUser.getPassword());
+			user.setCreate_ts(tmpUser.getCreate_ts());
+			user.setLogin_ts(tmpUser.getLogin_ts());
+			Collection<RoleModel> roles = tmpUser.getRoles();
+			RoleModel admin = roleRepo.findByRolename("ROLE_ADMIN");
+			if(roles.contains(admin)){
+				// contains role_admin 
+				roles01.add(admin);
 			}
-			
-			//roles.clear();
-			if(ids!=null)
-				for(int i=0; i<ids.length;++i){
-					roles01.add(roleRepo.findOne(Integer.valueOf(ids[i])));
-				}
-			user.setRoles(roles01);
-			user = userRepo.saveAndFlush(user);
-			return ajaxReturn(true, Integer.toString(user.getId()), "OK");
-//		} catch (Exception e) {
-//			return ajaxReturn(false, "0", e.getMessage());
-//		}
+		}
+
+		if (ids != null)
+			for (int i = 0; i < ids.length; ++i) {
+				roles01.add(roleRepo.findOne(Integer.valueOf(ids[i])));
+			}
+		user.setRoles(roles01);
+		user = userRepo.saveAndFlush(user);
+		return ajaxReturn(true, Integer.toString(user.getId()), "OK");
 	}
 
-	@Transactional(readOnly=false)
+	@Transactional(readOnly = false)
 	@RequestMapping(value = "user/delete", method = RequestMethod.DELETE)
 	public String delUser(HttpServletRequest request, @RequestParam(value = "id", required = true) Integer id)
 			throws Exception {
-		try {
-			UserModel user = userRepo.findById(id);
-			if (user == null)
-				return ajaxReturn(false, "", "can not find the user!");
-			if (user.isAdmin())
-				return ajaxReturn(false, "", "can not remove an administrator!");
-			logger.debug("----------------------- delete " + user.toString());
-			//user.setRole(null);
-			//userRepo.delete(user);
-			user.setStatus(100);
-			userRepo.saveAndFlush(user);
-			return ajaxReturn(true, "", "OK");
-		} catch (Exception e) {
-			return ajaxReturn(false, "", e.getMessage());
-		}
+		UserModel user = userRepo.findById(id);
+		if (user == null)
+			return ajaxReturn(false, "", "can not find the user!");
+		if (user.getFixed().equals(1))
+			return ajaxReturn(false, "", "can not remove the user!");
+		user.setStatus(100);
+		userRepo.saveAndFlush(user);
+		return ajaxReturn(true, "", "OK");
 	}
 
 	@Transactional(readOnly = false)
@@ -180,7 +165,8 @@ public class UserController extends CommonController {
 			else
 				user.setStatus(1);
 			user = userRepo.saveAndFlush(user);
-//			logger.info("-----------------------status " + Integer.toString(user.getStatus()));
+			// logger.info("-----------------------status " +
+			// Integer.toString(user.getStatus()));
 			return ajaxReturn(true, Integer.toString(user.getStatus()), "OK");
 		} catch (Exception e) {
 			return ajaxReturn(false, "", e.getMessage());
