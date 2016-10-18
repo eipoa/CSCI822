@@ -37,8 +37,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-@RequestMapping("/Auth")
-public class UserController extends CommonController {
+@RequestMapping("/Admin/Auth")
+public class AdminUserController extends AdminCommonController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -48,7 +48,7 @@ public class UserController extends CommonController {
 	 */
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public ModelAndView userIndex() {
-		ModelAndView mv = new ModelAndView("Auth/users");
+		ModelAndView mv = new ModelAndView("Admin/Auth/users");
 		mv.addObject("fullname", this.getFullname());
 		return mv;
 	}

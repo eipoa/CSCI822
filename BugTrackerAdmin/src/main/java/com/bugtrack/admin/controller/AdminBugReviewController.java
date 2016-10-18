@@ -6,16 +6,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/Bug")
-public class BugProcessController  extends CommonController {
+@RequestMapping("/Admin/Bug")
+public class AdminBugReviewController  extends AdminCommonController {
 	
 	/**
-	 * the main view of process bugs
-	 * @return template of /Bug/process
+	 * the main view of review bugs
+	 * @return template of /Bug/review
 	 */
-	@RequestMapping(value="process", method=RequestMethod.GET)
+	@RequestMapping(value="review", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("Bug/process");
+		ModelAndView mv = new ModelAndView("Admin/Bug/review");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

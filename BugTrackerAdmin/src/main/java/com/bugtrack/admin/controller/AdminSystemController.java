@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/System")
-public class SystemController  extends CommonController {
+@RequestMapping("/Admin/System")
+public class AdminSystemController  extends AdminCommonController {
 	
 	/**
 	 * the main view of assign bugs
@@ -15,7 +15,7 @@ public class SystemController  extends CommonController {
 	 */
 	@RequestMapping(value="products", method=RequestMethod.GET)
 	public ModelAndView index01(){
-		ModelAndView mv = new ModelAndView("System/products");
+		ModelAndView mv = new ModelAndView("Admin/System/products");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());
@@ -25,7 +25,7 @@ public class SystemController  extends CommonController {
 	
 	@RequestMapping(value="bugparams", method=RequestMethod.GET)
 	public ModelAndView index02(){
-		ModelAndView mv = new ModelAndView("System/bugparams");
+		ModelAndView mv = new ModelAndView("Admin/System/bugparams");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());
@@ -36,7 +36,7 @@ public class SystemController  extends CommonController {
 	//
 	@RequestMapping(value="parameters", method=RequestMethod.GET)
 	public ModelAndView index03(){
-		ModelAndView mv = new ModelAndView("System/parameters");
+		ModelAndView mv = new ModelAndView("Admin/System/parameters");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

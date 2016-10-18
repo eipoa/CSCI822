@@ -3,6 +3,7 @@
  */
 package com.bugtrack.admin.controller;
 
+import java.io.IOException;
 import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,57 +29,52 @@ import com.bugtrack.admin.util.PublicFunction;
  *
  */
 @RestController
-@RequestMapping("/Public")
-public class PublicController extends CommonController {
+@RequestMapping("/Admin/Public")
+public class AdminPublicController extends AdminCommonController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private PublicFunction pf;
 
 	@RequestMapping(value = "login", method = RequestMethod.GET)
-	public ModelAndView login() {
-		if (!pf.isLogin()) {
-			ModelAndView mv = new ModelAndView("Public/login");
+	public ModelAndView login(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		if (!isLogin()) {
+			ModelAndView mv = new ModelAndView("Admin/Public/login");
 			return mv;
 		} else {
-			ModelAndView mv = new ModelAndView("index");
-			return mv;
+			response.sendRedirect("Admin/");
+			return null;
 		}
 	}
 
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "chpwd", method = RequestMethod.PUT)
-	public String changePassword(
-			@RequestParam(value = "oldpw", required = true) String oldpwd,
-			@RequestParam(value = "newpw", required = true) String newpwd) throws Exception{
-		try {
-			UserModel user = userRepo.findById(this.getUserId());
-			oldpwd = new Md5PasswordEncoder().encodePassword(oldpwd, null);
-			if(!user.getPassword().equals(oldpwd)){
-				return ajaxReturn(false, "1", "the old password is not correct");
-			}
-			newpwd = new Md5PasswordEncoder().encodePassword(newpwd, null);
-			user.setPassword(newpwd);
-			userRepo.saveAndFlush(user);
-			return ajaxReturn(true, "1", "OK");
-		}catch (Exception e){
-			return ajaxReturn(false, "1", "//////////////");//e.getMessage());
+	public String changePassword(@RequestParam(value = "oldpw", required = true) String oldpwd,
+			@RequestParam(value = "newpw", required = true) String newpwd) throws Exception {
+		UserModel user = userRepo.findById(this.getUserId());
+		oldpwd = new Md5PasswordEncoder().encodePassword(oldpwd, null);
+		if (!user.getPassword().equals(oldpwd)) {
+			return ajaxReturn(false, "1", "the old password is not correct");
 		}
+		newpwd = new Md5PasswordEncoder().encodePassword(newpwd, null);
+		user.setPassword(newpwd);
+		userRepo.saveAndFlush(user);
+		return ajaxReturn(true, "1", "OK");
 	}
 
-    private HttpStatus getStatus(HttpServletRequest request) {
-        Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
-        if (statusCode == null) {
-            return HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return HttpStatus.valueOf(statusCode);
-    }
-    
-	@RequestMapping(value = "error", method = {RequestMethod.POST, RequestMethod.GET})//, method = RequestMethod.GET
+	private HttpStatus getStatus(HttpServletRequest request) {
+		Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
+		if (statusCode == null) {
+			return HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		return HttpStatus.valueOf(statusCode);
+	}
+
+	@RequestMapping(value = "error", method = { RequestMethod.POST, RequestMethod.GET }) 
 	public ModelAndView error(HttpServletRequest req, HttpServletResponse rep) {
-		String path = "Public/error";
-		if(this.isLogin())
-			path = "Public/erroronline";
+		String path = "Admin/Public/error";
+		if (this.isLogin())
+			path = "Admin/Public/erroronline";
 		ModelAndView mv = new ModelAndView(path);
 		mv.addObject("path", req.getRequestURI());
 		mv.addObject("timestamp", new Date().toString());
@@ -91,19 +87,19 @@ public class PublicController extends CommonController {
 		ModelAndView mv = new ModelAndView();
 		mv.addObject("exception", "Access Denied/Forbidden");
 		logger.info("------------------------------ error error error error" + req.toString());
-		//req.getPathTranslated()
-//		String remoteAddress=request.getHeader("referer");
-//		String servletPath=request.getServletPath();  
-//		String remoteUser=request.getRemoteUser();  
-//		String requestURI=request.getRequestURI();
-//		Enumeration<String> aaa = request.getHeaderNames();
+		// req.getPathTranslated()
+		// String remoteAddress=request.getHeader("referer");
+		// String servletPath=request.getServletPath();
+		// String remoteUser=request.getRemoteUser();
+		// String requestURI=request.getRequestURI();
+		// Enumeration<String> aaa = request.getHeaderNames();
 		String forbiddenURI = request.getAttribute("oriurl").toString();
 		mv.addObject("path", req.getRequestURI());
 		mv.addObject("timestamp", new Date().toString());
 		mv.addObject("status", response.getStatus());
 		mv.addObject("path", forbiddenURI);
-		
-		if(this.isAjax()){
+
+		if (this.isAjax()) {
 			throw new CustomJsonException("403 Access Denied/Forbidden");
 		}
 		Integer num = this.getCountTask();
@@ -112,7 +108,7 @@ public class PublicController extends CommonController {
 		String fn = this.getFullname();
 		if (fn != null)
 			mv.addObject("fullname", fn);
-		mv.setViewName("Public/403");
+		mv.setViewName("Admin/Public/403");
 		return mv;
 	}
 }

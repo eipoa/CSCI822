@@ -41,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-public class CommonController{
+public class AdminCommonController{
 	@Autowired
 	UserRepository userRepo;
 

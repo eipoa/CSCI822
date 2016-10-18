@@ -21,8 +21,8 @@ import com.bugtrack.admin.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/Message")
-public class InboxController  extends CommonController {
+@RequestMapping("/Admin/Message")
+public class AdminInboxController  extends AdminCommonController {
 	
 	/**
 	 * the main view of assign bugs
@@ -30,7 +30,7 @@ public class InboxController  extends CommonController {
 	 */
 	@RequestMapping(value="inbox", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("Message/inbox");
+		ModelAndView mv = new ModelAndView("Admin/Message/inbox");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

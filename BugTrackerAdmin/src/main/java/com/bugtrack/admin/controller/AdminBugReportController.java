@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
-@RequestMapping("/Bug")
-public class BugReportController  extends CommonController {
+@RequestMapping("/Admin/Bug")
+public class AdminBugReportController  extends AdminCommonController {
 	
 	/**
 	 * the main view of assign bugs
@@ -15,7 +15,7 @@ public class BugReportController  extends CommonController {
 	 */
 	@RequestMapping(value="report", method=RequestMethod.GET)
 	public ModelAndView index(){
-		ModelAndView mv = new ModelAndView("Bug/report");
+		ModelAndView mv = new ModelAndView("Admin/Bug/report");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

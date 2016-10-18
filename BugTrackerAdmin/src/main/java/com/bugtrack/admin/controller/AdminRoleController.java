@@ -34,8 +34,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-@RequestMapping("/Auth")
-public class RoleController extends CommonController {
+@RequestMapping("/Admin/Auth")
+public class AdminRoleController extends AdminCommonController {
 
 	@Autowired
 	RoleRepository repo;
@@ -48,7 +48,7 @@ public class RoleController extends CommonController {
 	 */
 	@RequestMapping(value = "roles", method = RequestMethod.GET)
 	public ModelAndView roleIndex() throws Exception {
-		ModelAndView mv = new ModelAndView("Auth/roles");
+		ModelAndView mv = new ModelAndView("Admin/Auth/roles");
 		Integer num = this.getCountTask();
 		if (num.intValue() > 0)
 			mv.addObject("tasks", this.getCountTask());

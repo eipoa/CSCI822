@@ -1,3 +1,6 @@
+/**
+ * 
+ */
 package com.bugtrack.admin.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -5,17 +8,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * @author Administrator
+ *
+ */
 @RestController
-@RequestMapping("/Bug")
-public class BugAssignController extends CommonController {
-	/**
-	 * the main view of assign bugs
-	 * 
-	 * @return template of /Bug/assign
-	 */
-	@RequestMapping(value = "assign", method = RequestMethod.GET)
-	public ModelAndView index() {
-		ModelAndView mv = new ModelAndView("Bug/assign");
+@RequestMapping("/Admin/Auth")
+public class AdminMenuController extends AdminCommonController {
+	@RequestMapping(value = "menus", method = RequestMethod.GET)
+	public ModelAndView roleIndex() throws Exception {
+		ModelAndView mv = new ModelAndView("Admin/Auth/menus");
 		Integer num = this.getCountTask();
 		if(num.intValue()>0)
 			mv.addObject("tasks", this.getCountTask());

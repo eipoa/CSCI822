@@ -24,9 +24,9 @@ import com.bugtrack.admin.model.ProductNameModel;
  * @author Administrator
  *
  */
-@RequestMapping("/Product")
+@RequestMapping("/Admin/Product")
 @RestController
-public class ProductController extends CommonController {
+public class AdminProductController extends AdminCommonController {
 	@RequestMapping(value = "proc", method = RequestMethod.GET)
 	public ProductModel getProductById(HttpServletRequest request,
 			@RequestParam(value = "id", required = true) Integer id) {

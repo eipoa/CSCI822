@@ -82,10 +82,8 @@
 	})
 	$(function(){
 		$('#btn-login').bind('click', function(){
-			//$('#loginForm').form().submit();
-			//$.messager.alert("xx","click sunmit","info");
 			$('#loginForm').form('submit',{
-				url: '/j_spring_security_check',
+				url: '/Admin/j_spring_security_check',
 				method: 'POST',
 			    dataType: 'json',
 				onSubmit: function(){
@@ -94,7 +92,7 @@
 				success: function(result){
 					var result = eval('('+result+')');					
 					if (result.status){
-						location.href="/";
+						location.href=result.data;
 					} else {
 						$.messager.show({
 							title: 'Error',

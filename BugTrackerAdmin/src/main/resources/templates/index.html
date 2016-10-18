@@ -9,144 +9,255 @@
     <meta name="description" content="index">
     <meta name="author" content="Li baoxing">
 
-<title>Bugs Admin - Index</title>
-
-<!-- Bootstrap Core CSS -->
-<link href="/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Custom CSS -->
-<link href="/css/sb-admin.css" rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
-<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
-<link rel="stylesheet" type="text/css" href="/css/backend.css" />
-<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
-
-<!-- Custom Fonts -->
-<link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-<!--[if lt IE 9]>
+	<title>Bugs Admin - Error</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom CSS -->
+	<link href="/css/sb-admin.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
+	<link rel="stylesheet" type="text/css" href="/css/frontend.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    
+    <!-- Custom Fonts -->
+	<link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
 </head>
-
 <body>
-
-    <div id="wrapper">
-
+	<div id="wrapper" style="padding-left:0px">
         <!-- Navigation -->
+        
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
-			</div>
+			<div style="margin:auto;width:1060px">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/Admin/Public/login">Bug Tracker</a>
+				</div>
+			
 			<!-- Top Menu Items -->
-			<ul class="nav navbar-right top-nav">
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
-						<i class="fa fa-user"></i> 
-						<span th:text="${fullname}">Fullname </span> <span class="label label-primary" th:text="${tasks}">tasks</span>
-						<b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile </a></li>
-						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
-						<li class="divider"></li>
-						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
-					</ul>
-				</li>
-			</ul>
-			<div class="collapse navbar-collapse navbar-ex1-collapse">
-				<ul class="nav navbar-nav side-nav">
-					<li class="active">
-						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
-					</li>
-					<li>
-						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
-					</li>
-					<li>
-						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
-					</li>
-					<li>
-						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
-					</li>
-					<li>
-						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
-					</li>
-					<li>
-						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
-					</li>					
-					<li>
-						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
-							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
+				<ul class="nav navbar-right top-nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
+							<i class="fa fa-user"></i> 
+							<span th:text="${fullname}">Fullname</span> <span class="label label-primary" th:text="${tasks}">tasks</span>
+							<b class="caret"></b>
 						</a>
-						<ul id="demo0" class="collapse">
-							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
-							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
-							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
-						</a>
-						<ul id="demo1" class="collapse">
-							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
-							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+							<li class="divider"></li>
+							<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
 						</ul>
 					</li>
 				</ul>
 			</div>
-			<!-- /.navbar-collapse -->
 		</nav>
 
-        <div id="page-wrapper">
-
-            <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h1 class="page-header">
-                            Wellcome <small>Have a nice day!</small>
-                        </h1>
-                        <ol class="breadcrumb">
-                            <li class="active">
-                                <i class="fa fa-dashboard"></i> Dashboard
-                            </li>
-                        </ol>
-                    </div>
-                </div>
-                <!-- /.row -->
-
-            </div>
-            <!-- /.container-fluid -->
-
+        <div id="page-wrapper" style="margin-top:50px">
+        	<div style="margin:auto;width:1060px">
+	            <div class="container-fluid">
+					 <!-- Page Heading -->
+	                <div class="row">
+	                    <div class="col-lg-12">
+							<ul class="nav nav-tabs" role="tablist">
+							  <li role="presentation" class="active"><a href="/">Find issues</a></li>
+							  <li role="presentation"><a href="/App/Bugs/report" th:if="${fullname!=null}">Report issues</a></li>
+							  <li role="presentation"><a href="/Public/login" th:if="${fullname==null}">Log in</a></li>
+							  <li role="presentation"><a href="/Public/signup" th:if="${fullname==null}">Sign up</a></li>
+							</ul>
+						</div>
+	                </div>
+	                <!-- /.row -->
+					<!-- Search Bar -->
+	                <div class="row">	
+						<div id="searchformContainer">
+							<form id="search" role="form">
+								<div class="col-xs-10">
+									<input type="text" class="form-control" id="query1" placeholder="find solutions & issues">
+								</div>
+								<button type="submit" class="btn btn-primary bg-some">Search</button>					  	
+							</form>
+						</div>
+					</div>
+					<!-- Issues list -->
+					<div class="row">
+						<div class="col-lg-12">
+							<div id="issueContainer">
+								<ul class="nav  nav-pills" role="tablist">
+								  <li role="presentation" class="active"><a href="/">newest</a></li>
+								  <li role="presentation"><a href="/App/Bugs/report">frequent</a></li>
+								  <li role="presentation"><a href="/Public/login">votes</a></li>
+								  <li role="presentation" class="dropdown">
+								  	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Products<span class="caret"></span></a>
+								  	  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+								  	  	<!-- looply add menu -->
+									    <li role="presentation"  th:each="p,iterStat:${productList}"><a role="menuitem" tabindex="-1" th:href="@{/App/Bugs/search/(id=${p.id})}" th:text="${p.name}">pname</a></li>
+									  </ul>
+								  </li>
+								</ul>
+							</div>
+						</div>					
+			        </div>	
+			        
+			        <!-- bug list -->
+			        <div class="row">
+			        	<div class="col-lg-9">
+				        	<div class="bugContainer">
+				        		<div class="cp">
+				        			<div class="votes">
+				        				<div class="mini-counts"><span title="0 votes">0</span></div>
+				        				<div>votes</div>
+				        			</div>
+				        			<div class="status unanswered">
+							            <div class="mini-counts"><span title="0 answers">0</span></div>
+							            <div>answers</div>
+							        </div>
+							        <div class="views">
+							            <div class="mini-counts"><span title="2 views">2</span></div>
+							            <div>views</div>
+							        </div>
+				        		</div>
+				        		<div class="summary">
+							        <h4><a href="@{/App/Bugs/getit?(id=${})}" class="question-hyperlink" title="I'm using gulp.js and an optimization tool for requirejs (gulp-requirejs) it combines all scritps into one file. I have one define module with no name but it generates a name for it. The problem is I ...">RequireJS: optimizer generates name for define module</a></h4>
+							        <div class="tags t-javascript t-jquery t-gulp t-requirejs">
+							            <code>javascript jquery gulp</code>
+							        </div>
+							        <div class="started">
+							            <a href="@{/App/Bugs/getit?(id=${})}" class="started-link">asked <span title="${creation_ts}" class="relativetime">33 secs ago</span></a>
+							            <a href="@{/User/view?(id=${})}">mddev</a> <span class="reputation-score" title="reputation score " dir="ltr">13</span>
+							        </div>
+							    </div>
+				        	</div>
+			        	</div>
+			        	<div class="col-lg-3">
+				        	<div class="noteContainer">
+			        			<!-- <div class="jumbotron">
+									<h1>Hello, world!</h1>
+									<p>...</p>
+									<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+								</div> -->
+								<ul class="list-group">
+								  <li class="list-group-item active">
+								    <span class="badge"></span>
+								    <strong><h4 style="margin:0px">Top 10 users</h4></strong>
+								  </li>
+								  <li class="list-group-item">
+								    <span class="badge">14</span>
+								    Cras justo odio
+								  </li>
+								  <li class="list-group-item">
+								    <span class="badge">14</span>
+								    Cras justo odio
+								  </li>
+								  <li class="list-group-item">
+								    <span class="badge">14</span>
+								    Cras justo odio
+								  </li>
+								</ul>
+								<ul class="list-group" th:if="${news}">
+								  <li class="list-group-item active">
+								    <span class="badge"></span>
+								    <strong><h4 style="margin:0px">Important update</h4></strong>
+								  </li>
+								  <li class="list-group-item">
+								    Cras justo odio
+								    Cras justo odio
+								    Cras justo odio
+								    Cras justo odio
+								    Cras justo odio
+								    Cras justo odio
+								  </li>
+								</ul>
+				        	</div>
+			        	</div>
+			        </div>
+	            </div>
+	            <!-- /.container-fluid -->
+			</div>
         </div>
         <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
-
 	<!-- jQuery -->
 	<script src="/scripts/jquery.min.js"></script>
 
 	<!-- Bootstrap Core JavaScript -->
 	<script src="/scripts/bootstrap.min.js"></script>
-
+	
 	<script type="text/javascript" src="/scripts/jqeasyui/jquery.easyui.min.js"></script>
 	<script type="text/javascript" src="/scripts/backend.js"></script>
-
+	
+	<!-- Ueditor Core Javascript -->
+<!-- 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.config.js"></script> -->
+<!-- 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.all.min.js"> </script> -->
+<!-- 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/lang/en/en.js"></script> -->
+<!-- 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script> -->
+	
+<script type="text/javascript">
+	var MODEL = '/Bug/';
+	var ue;
+	
+	$(function() {	
+/* 		// init Baidu Ueditor
+		ue = UE.getEditor('editor', {
+	    	toolbars: [
+	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
+	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist','insertcode']//, 'attachment'
+	    	],
+	    	autotypeset:{
+		    	mergeEmptyline: true,
+		        removeClass: true,
+		        removeEmptyline: false,
+		        clearFontSize: false,
+		        clearFontFamily: false
+	    	},
+	    	zIndex:10000,
+	    	allowDivTransToP: false,
+	        autoHeightEnabled: true,
+	        autoFloatEnabled: true,
+		    serverUrl: "/Upload/init/", 
+		    UEDITOR_HOME_URL: "/scripts/ueditor/"
+		});
+		ue.ready(function() {
+			console.log('ueditor is ready');
+			this.setContent('');
+			this.execCommand( 'rowspacing', '5', 'top' );
+			this.execCommand( 'fontsize', '12px' );
+			this.addListener('afterExecCommand' , function (){
+				var files, item, i, urls = "";
+				if(arguments.length==3 && arguments[0]=='afterexeccommand' && arguments[1]=='insertfile'){
+					files = arguments[2][1];
+					if(files.length>0){
+						// write database;item.title/item.url
+						files.forEach(function(f){
+							urls = urls==""?"{{title:"+f.title+",url:"+f.url+"}":urls + ",{title:"+f.title+",url:"+f.url+"}";
+						})
+					}
+				}
+				urls = urls +"}";
+				//console.log(urls);
+				$('#e-url').textbox('setValue', urls);
+			});
+		}); */
+	});
+</script>	
+	
+	
 </body>
-
 </html>

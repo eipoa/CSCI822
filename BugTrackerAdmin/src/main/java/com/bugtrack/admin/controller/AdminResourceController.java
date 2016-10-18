@@ -29,11 +29,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  *
  */
 @RestController
-@RequestMapping("/Auth")
-public class ResourceController extends CommonController {
+@RequestMapping("/Admin/Auth")
+public class AdminResourceController extends AdminCommonController {
 	@RequestMapping(value = "resources", method = RequestMethod.GET)
 	public ModelAndView roleIndex() throws Exception {
-		ModelAndView mv = new ModelAndView("Auth/resources");
+		ModelAndView mv = new ModelAndView("Admin/Auth/resources");
 		Integer num = this.getCountTask();
 		if (num.intValue() > 0)
 			mv.addObject("tasks", this.getCountTask());

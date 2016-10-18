@@ -31,8 +31,8 @@ import com.bugtrack.admin.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
-@RequestMapping("/Bug")
-public class BugController extends CommonController {
+@RequestMapping("/Admin/Bug")
+public class AdminBugController extends AdminCommonController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**

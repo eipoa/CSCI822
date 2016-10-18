@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="index">
+    <meta name="author" content="Li baoxing">
+
+	<title>Bugs Admin - Error</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom CSS -->
+	<link href="/css/sb-admin.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
+	<link rel="stylesheet" type="text/css" href="/css/frontend.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    
+    <!-- Custom Fonts -->
+	<link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div id="wrapper" style="padding-left:0px">
+        <!-- Navigation -->
+        
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div style="margin:auto;width:1060px">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">Bug Tracker</a>
+				</div>
+			
+			<!-- Top Menu Items -->
+				<ul class="nav navbar-right top-nav">
+					<li class="dropdown">
+	<!-- 					<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}"> -->
+	<!-- 						<i class="fa fa-user"></i>  -->
+	<!-- 						<span th:text="${fullname}">Fullname</span> <span class="label label-primary" th:text="${tasks}">tasks</span> -->
+	<!-- 						<b class="caret"></b> -->
+	<!-- 					</a> -->
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							<i class="fa fa-fw fa-user"></i> 
+							<span>Fullname</span>
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+							<li class="divider"></li>
+							<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+        <div id="page-wrapper" style="margin-top:50px">
+        	<div style="margin:auto;width:1060px">
+	            <div class="container-fluid">
+					 <!-- Page Heading -->
+	                <div class="row">
+	                    <div class="col-lg-12">
+							<ul class="nav nav-tabs" role="tablist">
+							  <li role="presentation"><a href="/">Find issues</a></li>
+							  <li role="presentation" class="active"><a href="/App/Bugs/report" th:if="${fullname!=null}">Report issues</a></li>
+							  <li role="presentation"><a href="/Public/login" th:if="${fullname==null}">Log in</a></li>
+							  <li role="presentation"><a href="/Public/signup" th:if="${fullname==null}">Sign up</a></li>
+							</ul>
+						</div>
+	                </div>
+	                <!-- /.row -->
+				<!-- Page Heading -->
+                <div class="row">	
+					<div id="askformContainer">
+						<div id="editw"> <!--  style="padding:10px" -->
+					        <table class="edittable" cellspacing="0" cellpadding="0">
+								<tbody>
+									<tr>
+										<td>
+											<input id="e-priority" class="easyui-combobox"
+												data-options="valueField: 'id',textField: 'descp',label:'Severity',labelWidth: 90,
+												labelAlign: 'right',method: 'get',width: 220,formatter:comboxfm,url:'/Bug/bugprioritylist',panelHeight:150"></input>
+										</td>
+										<td>
+											<input id="e-category" class="easyui-combobox"
+												data-options="valueField: 'id',textField: 'descp',label:'Category',labelWidth: 100,
+												labelAlign: 'right',method: 'get',width: 230,formatter:comboxfm,url:'/Bug/bugclasslist',panelHeight:150"></input>
+										</td>
+										<td align="right" style="padding-right:26px">
+											<button type="submit" class="btn btn-primary bg-some">Report</button>
+										</td>
+									</tr>
+									<tr>
+										<td style="width:230px">
+											<input id="e-pname" class="easyui-combobox"
+												data-options="valueField: 'id',textField: 'name',label:'Product name',labelWidth: 90,
+												labelAlign: 'right',method: 'get',width:220,formatter:comboxfm,url:'/Product/namelist',onSelect:fillVersion01,panelHeight:150"></input>		
+										</td>
+										<td style="width:240px">
+										    <input id="e-pver" class="easyui-combobox"
+												data-options="valueField: 'text',textField: 'value',label:'Product version',labelWidth: 100,
+												labelAlign: 'right',method: 'get',width: 230,onSelect:fillOs01,panelHeight:150"></input>
+										</td>
+										<td style="width:180px">
+										    <input id="e-pos" class="easyui-combobox"
+												data-options="valueField: 'id',textField: 'osname',label:'OS',labelWidth: 40,labelAlign: 'right',
+												method: 'get',width: 170,formatter:comboxfm,panelHeight:150"></input>	
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3">
+											<input id="e-title" class="easyui-textbox" 
+												data-options="label:'Title', labelWidth: 90, labelAlign: 'right',
+													width:640"></input>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="left">
+											<script id="editor" type="text/plain" style="width: 640px; height: 160px;"></script>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+					    </div>						
+					</div>
+		        </div>	
+	            </div>
+	            <!-- /.container-fluid -->
+			</div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	<!-- jQuery -->
+	<script src="/scripts/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="/scripts/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="/scripts/jqeasyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/scripts/backend.js"></script>
+	
+	<!-- Ueditor Core Javascript -->
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.all.min.js"> </script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/lang/en/en.js"></script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script>
+	
+<script type="text/javascript">
+	var MODEL = '/Bug/';
+	var ue;
+	
+	$(function() {	
+		// init Baidu Ueditor
+		ue = UE.getEditor('editor', {
+	    	toolbars: [
+	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
+	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist','insertcode']//, 'attachment'
+	    	],
+	    	autotypeset:{
+		    	mergeEmptyline: true,
+		        removeClass: true,
+		        removeEmptyline: false,
+		        clearFontSize: false,
+		        clearFontFamily: false
+	    	},
+	    	zIndex:10000,
+	    	allowDivTransToP: false,
+	        autoHeightEnabled: true,
+	        autoFloatEnabled: true,
+		    serverUrl: "/Upload/init/", 
+		    UEDITOR_HOME_URL: "/scripts/ueditor/"
+		});
+		ue.ready(function() {
+			console.log('ueditor is ready');
+			this.setContent('');
+			this.execCommand( 'rowspacing', '5', 'top' );
+			this.execCommand( 'fontsize', '12px' );
+			this.addListener('afterExecCommand' , function (){
+				var files, item, i, urls = "";
+				if(arguments.length==3 && arguments[0]=='afterexeccommand' && arguments[1]=='insertfile'){
+					files = arguments[2][1];
+					if(files.length>0){
+						// write database;item.title/item.url
+						files.forEach(function(f){
+							urls = urls==""?"{{title:"+f.title+",url:"+f.url+"}":urls + ",{title:"+f.title+",url:"+f.url+"}";
+						})
+					}
+				}
+				urls = urls +"}";
+				//console.log(urls);
+				$('#e-url').textbox('setValue', urls);
+			});
+		});
+	});
+</script>	
+	
+	
+</body>
+</html>

@@ -17,8 +17,8 @@ import com.baidu.ueditor.ActionEnter;
  * @author Baoxing Li
  */  
 @RestController  
-@RequestMapping(value="/Upload")  
-public class UploadController extends CommonController{ 
+@RequestMapping(value="/Admin/Upload")  
+public class AdminUploadController extends AdminCommonController{ 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
     @RequestMapping(value="init") 
