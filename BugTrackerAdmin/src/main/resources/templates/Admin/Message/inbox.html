@@ -191,19 +191,6 @@
 									
 							    </div>
 	                    	</div>
-	                    			<!-- <script id="editor" type="text/plain" style="width:auto;height:230px;"></script> -->
-	                    			<!-- <tr>
-	                    				<td>
-											<div style="float:right">
-												<a id="btn-read" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', plain:true, onClick:read">
-													<i class="fa fa-check fa-btn-icon fa-green"></i> Set read
-												</a>
- 											<a id="btn-del" href="javascript:void(0)" class="easyui-linkbutton" data-options="iconCls:'', plain:true, onClick:reply">
-													<i class="fa fa-reply fa-btn-icon fa-green"></i> reply
-											</a>
-											</div>
-										</td>
-	                    			</tr> -->
 						</div>
                     </div>
                 </div>
@@ -277,7 +264,7 @@
 </body>
 <script type="text/javascript">
 	//UploadController.java-->rootPath
-	var MODEL = '/Message';
+	var MODEL = '/Admin/Message';
 	var ue;
 	
 	function dealMsg(st){
@@ -294,7 +281,6 @@
 			return;
 		}
 		
-		//var url=MODEL + "/";
 		if(msgid!=undefined && msgid!=""){
 			$.ajax({
 		        type: "PUT",

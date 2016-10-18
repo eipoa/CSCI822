@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
+
 @RestController
 @RequestMapping("/Admin/Bug")
-public class AdminBugReportController  extends AdminBugController {
+public class AdminBugReportController  extends CommonController {
 	
 	/**
 	 * the main view of assign bugs

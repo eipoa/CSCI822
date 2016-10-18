@@ -181,11 +181,7 @@
 													class="easyui-linkbutton easyui-tooltip"
 													title="create a new role"
 													data-options="plain:true"
-													onClick=save(1,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a> <!-- <a href="javascript:void(0)"
-													class="easyui-linkbutton easyui-tooltip"
-													title="modify existing roles"
-													data-options="iconCls:'icon-edit', plain:true"
-													onClick=save(1,1)>Modify</a> --></td>
+													onClick=save(1,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a></td>
 											</tr>
 										</tbody>
 									</table>
@@ -318,7 +314,7 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Product';
+	var MODEL = '/Admin/Product';
 	
 	function reload(y){
 		if(y==1)
@@ -420,7 +416,7 @@
 		
 		// dynamic bind datagrid
 		$('#dg').datagrid({
-			url:'/Product/plist',
+			url:'/Rest/productlist',
 			method:'get',
 			singleSelect:true,
 			onBeforeLoad : function() {
@@ -445,12 +441,12 @@
 			}
 		});
 		$('#dgpn').datalist({
-			url:'/Product/namelist',
+			url:'/Rest/productnamelist',
 			method:'get',
 			singleSelect:true
 		});
 		$('#dgos').datalist({
-			url:'/Product/oslist',
+			url:'/Rest/oslist',
 			method:'get',
 			singleSelect:true
 		});

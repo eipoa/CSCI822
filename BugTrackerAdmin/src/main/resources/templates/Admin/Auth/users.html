@@ -333,7 +333,7 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Auth/user';
+	var MODEL = '/Admin/Auth/user';
 
 	//clicks earch btn 
 	function search() {
@@ -474,10 +474,11 @@
 			draggable:true
 		});
 		$('#e-role_id').combobox({
-			url:'/Auth/roles/listname',method: 'get'
+			url:'/Rest/rolesnamelist',method: 'get',
+			// fill s-role
 		});
 		$('#s-role').combobox({
-			url:'/Auth/roles/listname',method: 'get'
+			url:'/Rest/rolesnamelist',method: 'get'
 		});
 		// dynamic bind datagrid
 		$('#dg').datagrid({
@@ -504,7 +505,7 @@
 			}
 		});
 		$('#dl').datalist({
-			url:'/Auth/roles/list01?sort=rolename&order=asc',
+			url:'/Rest/roleslist?sort=rolename&order=asc',
 			method:'get'
 		});
 	});

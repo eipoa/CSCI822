@@ -158,8 +158,6 @@
 									<th data-options="field:'os_id',width:60,formatter:formatBugOS">OS</th>
 									<th data-options="field:'creation_ts',width:150">Creation time</th>
 									<th data-options="field:'status_id',width:80,formatter:formatBugStatus">Status</th>
-<!-- 									<th data-options="field:'developer_name',width:80,formatter:formatBugDev">Developer</th> -->
-<!-- 									<th data-options="field:'reviewer_name',width:80,formatter:formatBugRev">Reviewer</th> -->
 								</tr>
 							</thead>
 						</table>
@@ -217,7 +215,7 @@
 					                    method: 'get',
 					                    width: 230,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugstatuslist',
+					                    url:'/Rest/bugstatuslist',
 					                    panelHeight:150"></input>
 							                    
 							</div>
@@ -232,7 +230,7 @@
 					                    method: 'get',
 					                    width: 200,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugprioritylist',
+					                    url:'/Rest/bugprioritylist',
 					                    panelHeight:150"></input>
            						<input id="s-category" class="easyui-combobox"
 									data-options="
@@ -244,7 +242,7 @@
 					                    method: 'get',
 					                    width: 200,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugclasslist',
+					                    url:'/Rest/bugclasslist',
 					                    panelHeight:150"></input>														
 								<input id="s-pname" class="easyui-combobox"
 									data-options="
@@ -256,7 +254,7 @@
 					                    method: 'get',
 					                    width: 220,
 					                    formatter:comboxfm,
-					                    url:'/Product/namelist',
+					                    url:'/Rest/productnamelist',
 					                    onSelect:fillVersion,
 					                    panelHeight:150"></input>
 							    <input id="s-pver" class="easyui-combobox"
@@ -340,16 +338,10 @@
 			                    method: 'get',
 			                    width: 230,
 			                    formatter:comboxfm,
-			                    url:'/Bug/bugstatuslist?typeid=1&sm=1',
+			                    url:'/Rest/bugstatuslist?typeid=1&sm=1',
 			                    panelHeight:150"></input>
 					</td>
 					<td>
-						<!-- <input id="e-rank" class="easyui-textbox" 
-							data-options="
-								label:'Rank',
-								labelWidth: 40,
-								labelAlign: 'right',
-								width:170"></input>  -->
 						<input id="e-rank" class="easyui-combobox"
 								data-options="
 									valueField: 'value',
@@ -383,7 +375,7 @@
 			                    method: 'get',
 			                    width: 220,
 			                    formatter:comboxfm,
-			                    url:'/Bug/bugprioritylist',
+			                    url:'/Rest/bugprioritylist',
 			                    panelHeight:150"></input>
 					</td>
 					<td>
@@ -397,7 +389,7 @@
 			                    method: 'get',
 			                    width: 230,
 			                    formatter:comboxfm,
-			                    url:'/Bug/bugclasslist',
+			                    url:'/Rest/bugclasslist',
 			                    panelHeight:150"></input>
 					</td>
 					<td>
@@ -423,7 +415,7 @@
 			                    method: 'get',
 			                    width:220,
 			                    formatter:comboxfm,
-			                    url:'/Product/namelist',
+			                    url:'/Rest/productnamelist',
 			                    onSelect:fillVersion01,
 			                    panelHeight:150"></input>		
 					</td>
@@ -621,7 +613,7 @@
 	
 </body>
 <script type="text/javascript">
-	var MODEL = '/Bug/';
+	var MODEL = '/Admin/Bug/';
 	
 	// save modification
 	function save(){

@@ -227,7 +227,7 @@
 					                    method: 'get',
 					                    width: 230,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugstatuslist?typeid=2&sm=0',
+					                    url:'/Rest/bugstatuslist?typeid=2&sm=0',
 					                    panelHeight:150"></input>
 
 							</div>
@@ -242,7 +242,7 @@
 					                    method: 'get',
 					                    width: 200,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugprioritylist',
+					                    url:'/Rest/bugprioritylist',
 					                    panelHeight:150"></input>
 								<input id="s-category" class="easyui-combobox"
 									data-options="
@@ -254,7 +254,7 @@
 					                    method: 'get',
 					                    width: 200,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugclasslist',
+					                    url:'/Rest/bugclasslis',
 					                    panelHeight:150"></input>
 								<input id="s-pname" class="easyui-combobox"
 									data-options="
@@ -266,7 +266,7 @@
 					                    method: 'get',
 					                    width: 220,
 					                    formatter:comboxfm,
-					                    url:'/Product/namelist',
+					                    url:'/Rest/productnamelist',
 					                    onSelect:fillVersion,
 					                    panelHeight:150"></input>
 								<input id="s-pver" class="easyui-combobox"
@@ -353,19 +353,11 @@
 					                    method: 'get',
 					                    width: 230,
 					                    formatter:comboxfm,
-					                    url:'/Bug/bugstatuslist?typeid=3&sm=1',
+					                    url:'/Rest/bugstatuslist?typeid=3&sm=1',
 					                    panelHeight:150"></input>
 							</td>
 							<td>
-								<!-- <input id="e-rank" class="easyui-textbox" 
-									data-options="
-										label:'Rank',
-										labelWidth: 40,
-										labelAlign: 'right',
-										editable:false,
-					                    readonly:true,
-										width:170,
-										onClickButton:search"></input>  --> <input id="e-rank"
+								<input id="e-rank"
 								class="easyui-combobox"
 								data-options="
 											valueField: 'value',
@@ -645,7 +637,7 @@
 		src="/scripts/ueditor/ueditor.parse.min.js"></script>
 </body>
 <script type="text/javascript">
-	var MODEL = '/Bug/';
+	var MODEL = '/Admin/Bug/';
 	var ue;
 	/*----------- serach area -----------*/
 	// save modification

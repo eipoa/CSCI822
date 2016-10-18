@@ -134,48 +134,6 @@
 				<!-- user list row -->
 				<div class="row">
 					<div class="col-lg-12">
-						<!-- <table id="dg" class="easyui-datagrid" title="Resource list"
-							style="width: auto; height: 500px"
-							data-options="rownumbers:true,singleSelect:true,pagination:true,
-									
-									idField:'id',loadMsg:'',toolbar:'#tb',onSelect: dgResSelect">
-							<thead>
-								<tr>
-									<th data-options="field:'name',width:200">Resource Name</th>
-									<th data-options="field:'resource',width:180,formatter:formatUrlStatus">Resource URL</th>
-									<th data-options="field:'description',width:500">Description</th>
-									<th data-options="field:'status',width:80,align:'center',formatter:formatUserStatus">Status</th>
-								</tr>
-							</thead>
-						</table>
-						<div id="tb" >
-							<table class="edittable" cellspacing="0" cellpadding="0" style="margin:0px">
-								<tbody>
-									<tr>
-										<td>
-											<input id="e-name" class="easyui-textbox"
-												data-options="label:'Resource Name', labelWidth:100, labelAlign:'right',width:420, prompt:'Select on to modify or enter a new resource...'"></input>
-										</td>
-										<td>
-											<input id="e-id" type="hidden" />
-											<input id="e-resource" class="easyui-textbox"
-												data-options="label:'Resource URL', labelWidth:100, labelAlign:'right',width:420"></input>
-										</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td colspan="2">
-											<input id="e-desc" class="easyui-textbox"
-												data-options="label:'Description', labelWidth:100, labelAlign:'right',width:'100%',onClickButton:search"></input>
-										</td>
-										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create new resource" data-options="plain:true" onClick=save(0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing resource" data-options="plain:true" onClick=save(1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div> -->
 						<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
 							<div data-options="region:'west',title:'Resource list',collapsible:false" style="width:73%">
 								<table id="dgt" class="easyui-treegrid" style="width: auto; height: 460px"
@@ -327,7 +285,7 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Auth/resources';
+	var MODEL = '/Admin/Auth/resources';
 	
 	// click save
 	function save(){
@@ -433,31 +391,6 @@
 	
 	$(function() {
 		// dynamic bind datagrid
-// 		$('#dg').datagrid({
-// 			url:'/Auth/resources/list?sort=resource&order=asc',method:'get',
-// 			pageList:[5, 13, 20, 30, 50], 
-// 			pageSize:13,
-// 			onBeforeLoad : function() {
-// 				// show fullscreen modal windows
-// 				fullScreenMask('open');
-// 			},
-// 			onLoadSuccess : function() {
-// 				// Get this datagrid's panel object
-// 				$(this).datagrid('getPanel')
-// 				// for all easyui-linkbutton <a>'s make them a switchbutton
-// 				.find('input.easyui-switchbutton').switchbutton();
-// 				// bug!! to refreash the value of edit window 
-// 				var row = $('#dg').datagrid('getSelected');
-// 				if (row != null || row != undefined)
-// 					$('#dg').datagrid('selectRecord', row.id);
-// 				$('#w').window('close', true);
-// 			},
-// 			onLoadError : function(XMLHttpRequest) {
-// 				fullScreenMask('close');
-// 				//console.log(XMLHttpRequest);
-// 				ajaxerror(XMLHttpRequest.responseText);
-// 			}
-// 		});
 	    $('#mm').menu({
 	        onClick:function(item){
 	            console.log(item);
@@ -471,7 +404,7 @@
 	        }
 	    });
 		$('#dgt').treegrid({
-			url:'/Auth/resources/list02',
+			url:'/Rest/reslist',
 			method:'get',
             idField: 'id',
             treeField: 'name'

@@ -237,7 +237,7 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Bug';
+	var MODEL = '/Admin/Syetem';
 	function reload(y){
 		if(y==1)
 			$('#dlp').datalist('reload');
@@ -316,7 +316,7 @@
 			}
 		});
 		$('#dlc').datalist({
-			url:'/Bug/bugclasslist',
+			url:'/Rest/bugclasslist',
 			method:'get',
 			onSelect:function(index,row){
 				$('#e-class-id').textbox('setValue', row.id);
@@ -324,7 +324,7 @@
 			}
 		});
 		$('#dlp').datalist({
-			url:'/Bug/bugprioritylist',
+			url:'/Rest/bugprioritylist',
 			method:'get',
 			onSelect:function(index,row){
 				$('#e-priority-id').textbox('setValue', row.id);
