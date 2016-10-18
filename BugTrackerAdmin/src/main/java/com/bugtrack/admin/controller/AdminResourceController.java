@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bugtrack.admin.model.ResourceModel;
-import com.bugtrack.admin.util.PageContent;
+import com.bugtrack.model.ResourceModel;
+import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**

@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bugtrack.admin.model.ProductOsModel;
-import com.bugtrack.admin.model.ProductModel;
-import com.bugtrack.admin.model.ProductNameModel;
+import com.bugtrack.model.ProductModel;
+import com.bugtrack.model.ProductNameModel;
+import com.bugtrack.model.ProductOsModel;
 
 /**
  * @author Administrator

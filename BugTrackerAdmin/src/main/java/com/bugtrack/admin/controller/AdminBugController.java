@@ -18,16 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bugtrack.admin.exception.CustomJsonException;
-import com.bugtrack.admin.model.BugClassModel;
-import com.bugtrack.admin.model.BugPatchModel;
-import com.bugtrack.admin.model.BugPriorityModel;
-import com.bugtrack.admin.model.BugStatusModel;
-import com.bugtrack.admin.model.BugsModel;
-import com.bugtrack.admin.model.MessageModel;
-import com.bugtrack.admin.model.ProductModel;
-import com.bugtrack.admin.model.UserModel;
-import com.bugtrack.admin.util.PageContent;
+import com.bugtrack.exception.CustomJsonException;
+import com.bugtrack.model.BugClassModel;
+import com.bugtrack.model.BugPatchModel;
+import com.bugtrack.model.BugPriorityModel;
+import com.bugtrack.model.BugStatusModel;
+import com.bugtrack.model.BugsModel;
+import com.bugtrack.model.MessageModel;
+import com.bugtrack.model.ProductModel;
+import com.bugtrack.model.UserModel;
+import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController

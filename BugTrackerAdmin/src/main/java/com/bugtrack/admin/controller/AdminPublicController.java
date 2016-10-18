@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bugtrack.admin.exception.CustomJsonException;
-import com.bugtrack.admin.model.UserModel;
-import com.bugtrack.admin.util.PublicFunction;
+import com.bugtrack.exception.CustomJsonException;
+import com.bugtrack.model.UserModel;
+import com.bugtrack.util.PublicFunction;
 
 /**
  * @author Administrator

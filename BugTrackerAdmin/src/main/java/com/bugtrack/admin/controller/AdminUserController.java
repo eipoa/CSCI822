@@ -26,9 +26,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bugtrack.admin.model.RoleModel;
-import com.bugtrack.admin.model.UserModel;
-import com.bugtrack.admin.util.PageContent;
+import com.bugtrack.model.RoleModel;
+import com.bugtrack.model.UserModel;
+import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
