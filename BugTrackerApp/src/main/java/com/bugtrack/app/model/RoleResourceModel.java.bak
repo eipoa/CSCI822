@@ -1,0 +1,44 @@
+/**
+ * 
+ */
+package com.bugtrack.admin.model;
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+/**
+ * @author Administrator
+ *
+ */
+@Entity
+@Table(name = "auth_roleresource")
+public class RoleResourceModel implements Serializable{
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	private int roleid;
+	
+	@Id
+	private int resid;
+
+	public int getRoleid() {
+		return roleid;
+	}
+
+	public void setRoleid(int roleid) {
+		this.roleid = roleid;
+	}
+
+	public int getResid() {
+		return resid;
+	}
+
+	public void setResid(int resid) {
+		this.resid = resid;
+	}
+	
+	
+}

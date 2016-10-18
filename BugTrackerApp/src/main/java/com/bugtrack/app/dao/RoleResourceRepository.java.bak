@@ -1,0 +1,15 @@
+package com.bugtrack.admin.dao;
+
+import java.util.ArrayList;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.bugtrack.admin.model.RoleResourceModel;
+
+public interface RoleResourceRepository extends JpaRepository<RoleResourceModel, Integer> {
+
+	@Query(value="SELECT r.rolename FROM auth_roleresource rs, auth_resource s, auth_role r "
+			+ "WHERE rs.roleid=r.id and rs.resid=s.id and s.resource=?1", nativeQuery=true)
+	ArrayList<String> findAllRolename(String url);
+
+}

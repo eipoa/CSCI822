@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="user admin">
+<meta name="author" content="Li baoxing">
+
+<title>Bugs Admin - Roles</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="/css/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
+<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
+<link rel="stylesheet" type="text/css" href="/css/backend.css" />
+<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+
+<!-- Custom Fonts -->
+<link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+	<div id="wrapper">
+
+		<!-- Navigation -->
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="index.html">Bug Tracker Admin</a>
+			</div>
+			<!-- Top Menu Items -->
+			<ul class="nav navbar-right top-nav">
+				<li class="dropdown">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
+						<i class="fa fa-user"></i> 
+						<span th:text="${fullname}">Fullname</span> <span class="label label-primary" th:text="${tasks}">tasks</span>
+						<b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li class="divider"></li>
+						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
+						<li class="divider"></li>
+						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+					</ul>
+				</li>
+			</ul>
+			<div class="collapse navbar-collapse navbar-ex1-collapse">
+				<ul class="nav navbar-nav side-nav">
+					<li>
+						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+					</li>
+					<li>
+						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
+					</li>
+					<li>
+						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
+					</li>
+					<li>
+						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
+					</li>
+					<li>
+						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
+					</li>
+					<li>
+						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
+					</li>					
+					<li>
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
+							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
+						</a>
+						<ul id="demo0" class="collapse">
+							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
+							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
+							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+						</ul>
+					</li>
+					<li>
+						<a href="javascript:;" data-toggle="collapse" data-target="#demo1">
+							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
+						</a>
+						<ul id="demo1" aria-expanded="true" class="nav navbar-nav">
+							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li class="active"><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+			<!-- /.navbar-collapse -->
+		</nav>
+
+		<div id="page-wrapper">
+
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="row">
+					<div class="col-lg-12">
+						<ol class="breadcrumb">
+							<li class="active">
+								<li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
+								<li class="active"><i class="fa fa-fw fa-user"></i> Role list</li>
+							</li>
+						</ol>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<!-- user list row -->
+				<div class="row">
+					<div class="col-lg-12">
+					<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
+						<div data-options="region:'west',title:'Role list',collapsible:false" style="width:75%">
+						<!-- easyui table for user list-->
+						<table id="dg" class="easyui-datagrid" 
+							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
+									onSelect: dgRoleSelect,
+									idField:'id',loadMsg:'',toolbar:'#tb', fit:true"><!-- ,onSelect: dgResSelect -->
+							<thead>
+								<tr>
+									<th data-options="field:'rolename',width:180">Role Name</th>
+									<th data-options="field:'description',width:500">Description</th>
+									<th data-options="field:'status',width:80,align:'center',formatter:formatUserStatus">Status</th>
+								</tr>
+							</thead>
+						</table>
+
+						<!-- table tool bar-->
+						<div id="tb" style="padding: 2px 5px;">
+							<table cellspacing="0" cellpadding="0" style="margin:0px">
+								<tbody>
+									<tr>
+										<td>
+											<input id="e-id" type="hidden" />
+											<input id="e-status" type="hidden" />
+											<input id="e-name" class="easyui-textbox"
+												data-options="label:'Role Name', labelWidth:90, labelAlign:'right',width:220"></input>
+										</td>
+										<td>
+											<input id="e-desc" class="easyui-textbox"
+												data-options="label:'Description', labelWidth:90, labelAlign:'right',width:'420'"></input>
+										</td>
+										<td>
+											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create a new role" data-options="iconCls:'icon-add', plain:true" onClick=save(0)>New</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="iconCls:'icon-edit', plain:true" onClick=save(1)>Modify</a>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						</div>
+						<div data-options="region:'center',title:'Authorited Resource list',collapsible:false" >
+							<div id="dl" class="easyui-datalist" 
+								data-options="lines:true,textFormatter:formatUrlStatus,idField:'id',toolbar:'#tb01',
+										valueField:'id', textField:'resource', border:false, fit:true, checkbox: true,singleSelect: false"> </div>
+
+							<!-- table tool bar-->
+							<div id="tb01" style="padding: 2px 5px;">
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Check all items" data-options="plain:true" onClick="$('#dl').datalist('checkAll')">
+								<i class="fa fa-check-square-o fa-btn-icon fa-green fa-lg"></i> Check All </a>
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Uncheck all items" data-options="plain:true" onClick="$('#dl').datalist('uncheckAll')">
+								<i class="fa fa-square-o fa-btn-icon fa-green fa-lg"></i> Clear All </a>
+								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Change resource for the selected role" data-options="plain:true" onClick=fastChangeResource()>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save Resource </a>
+							</div>
+						</div>
+					</div>
+					</div>
+				</div>
+				<!-- /.row -->
+
+				<!-- new row -->
+				<!-- <div class="row">
+                    <div class="col-lg-12">
+						
+                    </div>
+                </div> -->
+				<!-- /.row -->
+
+			</div>
+			<!-- /.container-fluid -->
+
+		</div>
+		<!-- /#page-wrapper -->
+
+	</div>
+	<!-- /#wrapper -->
+	
+	<!-- mask windows -->
+	<div id="w" class="easyui-window" title="loading..."
+		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 300px; height: 80px; padding: 10px;">Processing, please wait …</div>
+	<!-- change password -->
+	<div id="chpw" class="easyui-window" title="Change Password"
+		data-options="modal:true,closed:true,iconCls:'fa fa-fw fa-key',minimizable:false,maximizable:false,collapsible:false" 
+		style="padding:5px;">
+        <div>
+	        <table class="edittable" style="margin:0px" cellspacing="0" cellpadding="0">
+	        	<tbody>
+	        		<tr>
+						<td colspan="2">
+							<input id="e-oldpass" class="easyui-passwordbox"
+								data-options="label:'Old password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="e-newpass01" class="easyui-passwordbox"
+								data-options="label:'New password', labelWidth: 90, labelAlign: 'right',  width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input id="e-newpass02" class="easyui-passwordbox"
+								data-options="label:'New password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save&nbsp;&nbsp;</a>
+						</td>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
+								<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>
+						</td>
+					</tr>
+	        	</tbody>
+	        </table>
+        </div>
+    </div>
+	<!-- jQuery -->
+	<script src="/scripts/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="/scripts/bootstrap.min.js"></script>
+
+	<script type="text/javascript" src="/scripts/jqeasyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/scripts/backend.js"></script>
+
+</body>
+
+<script type="text/javascript">
+	var MODEL = '/Auth/roles';
+	
+	// click save
+	function save(x){
+		var url= MODEL + '/save';
+		var ids="";
+		resRow = $('#dl').datalist('getChecked');
+		resRow.forEach(function(r){
+			ids = ids==""?"":ids + ",";
+			ids = ids+ r.id
+		})
+		var data= {
+				id: (x==0?0:$('#e-id').val()),
+				rolename: $('#e-name').textbox('getValue'),
+				description: $('#e-desc').textbox('getValue'),
+				status: (x==0?1:$('#e-status').val()),
+				resids: ids
+		}
+		//res
+		console.log(data);
+		//data = Object.toJSON(data);
+		//console.log(data);
+		var dg= $('#dg');
+		action(url, data, dg, "POST");
+	}
+	
+	function fastChangeResource(){
+		var url= MODEL + '/save';
+		var row = $('#dg').datagrid('getSelected',{});
+		if(row==null || row==undefined){
+			alert_('Please select a role to modify.');
+			return;
+		}
+		var ids="";
+		rolRow = $('#dl').datalist('getChecked');
+		rolRow.forEach(function(r){
+			ids = ids==""?"":ids + ",";
+			ids = ids+ r.id
+		})
+		//console.log(row);
+		delete row.resources;
+		row.resources = ids;
+		//console.log(row);
+		var dg= $('#dg');
+		action(url, row, dg, "POST");
+	}
+
+	function dgRoleSelect(index,row){
+		$('#e-id').val(row.id);
+		$('#e-name').textbox('setValue', row.rolename);
+		$('#e-desc').textbox('setValue', row.description);
+		$('#e-status').val(row.status);
+		
+		$('#dl').datalist('uncheckAll');
+		row.resources.forEach(function(res){
+			//console.log(res);
+			var rid = res.id;
+			$('#dl').datalist('selectRecord',rid);
+		})
+	}
+	
+	$(function() {
+		$('#cc').layout();
+		// dynamic bind datagrid
+		$('#dg').datagrid({
+			url:'/Auth/roles/list?sort=rolename&order=asc',
+			method:'get',
+			onBeforeLoad : function() {
+				// show fullscreen modal windows
+				fullScreenMask('open');
+			},
+			onLoadSuccess : function() {
+				// Get this datagrid's panel object
+				$(this).datagrid('getPanel')
+				// for all easyui-linkbutton <a>'s make them a switchbutton
+				.find('input.easyui-switchbutton').switchbutton();
+				// bug!! to refreash the value of edit window 
+				var row = $('#dg').datagrid('getSelected');
+				if (row != null || row != undefined)
+					$('#dg').datagrid('selectRecord', row.id);
+				fullScreenMask('close');
+			},
+			onLoadError : function(XMLHttpRequest) {
+				fullScreenMask('close');
+				//console.log(XMLHttpRequest);
+				ajaxerror(XMLHttpRequest.responseText);
+			}
+		});
+		$('#dl').datalist({
+			url:'/Auth/resources/list01?sort=resource&order=asc',
+			method:'get'
+		});
+	});
+</script>
+
+
+</html>
