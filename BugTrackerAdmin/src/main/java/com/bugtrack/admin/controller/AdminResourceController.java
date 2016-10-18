@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
 import com.bugtrack.model.ResourceModel;
 import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -30,14 +31,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @RestController
 @RequestMapping("/Admin/Auth")
-public class AdminResourceController extends AdminCommonController {
+public class AdminResourceController extends CommonController {
 	@RequestMapping(value = "resources", method = RequestMethod.GET)
 	public ModelAndView roleIndex() throws Exception {
 		ModelAndView mv = new ModelAndView("Admin/Auth/resources");
-		Integer num = this.getCountTask();
-		if (num.intValue() > 0)
-			mv.addObject("tasks", this.getCountTask());
-		mv.addObject("fullname", this.getFullname());
+		if(isLogin()){
+			Integer num = this.getCountTask();
+			if (num.intValue() > 0)
+				mv.addObject("tasks", this.getCountTask());
+			mv.addObject("fullname", this.getFullname());
+		}
 		return mv;
 	}
 
@@ -68,36 +71,11 @@ public class AdminResourceController extends AdminCommonController {
 		String jsonString = om.writeValueAsString(map);
 		return jsonString;
 	}
-
-	@RequestMapping(value = "resources/list01", method = RequestMethod.GET)
-	public String resList01(HttpServletRequest request, PageContent page) throws Exception {
-		Sort sort = null;
-		if (page.getOrder().equals("asc")) {
-			sort = new Sort(Direction.ASC, page.getSort());
-		} else if (page.getOrder().equals("desc")) {
-			sort = new Sort(Direction.DESC, page.getSort());
-		}
-		List<ResourceModel> ress = resRepo.findAllByStatus(1, sort);
-		ObjectMapper om = new ObjectMapper();
-		String jsonString = om.writeValueAsString(ress);
-		return jsonString;
-	}
-
-	@RequestMapping(value = "resources/list02", method = RequestMethod.GET)
-	public String resList02(HttpServletRequest request) throws Exception {
-		List<ResourceModel> ress = resRepo.findAllByParentIsNullAndStatus(1, new Sort(Direction.ASC, "resource"));
-		//List<ResourceModel> ress = resRepo.findAllByParentIsNullAndStatusIs(1);
-		ObjectMapper om = new ObjectMapper();
-		String jsonString = om.writeValueAsString(ress);
-		return jsonString;
-	}
 	
 	@Transactional(readOnly = false)
 	@RequestMapping(value = "resources/save", method = RequestMethod.POST)
 	public String addResources(HttpServletRequest request, ResourceModel res,
 			@RequestParam(value = "parentid", required = true) Integer pid) throws Exception {
-//		System.out.println(res.getId());
-//		System.out.println(pid);
 		if(res.getResource()==null || res.getResource().trim().equals("")){
 			throw new Exception("the resource must have a value");
 		}

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;  
 import org.springframework.web.bind.annotation.RestController;
 import com.baidu.ueditor.ActionEnter;
+import com.bugtrack.common.CommonController;
 
 /** 
  * upload file controller for baidu Ueditor
@@ -18,7 +19,7 @@ import com.baidu.ueditor.ActionEnter;
  */  
 @RestController  
 @RequestMapping(value="/Admin/Upload")  
-public class AdminUploadController extends AdminCommonController{ 
+public class AdminUploadController extends CommonController{ 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
     @RequestMapping(value="init") 

@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
 import com.bugtrack.model.MessageModel;
 import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/Admin/Message")
-public class AdminInboxController  extends AdminCommonController {
+public class AdminInboxController  extends CommonController {
 	
 	/**
 	 * the main view of assign bugs
@@ -31,10 +32,12 @@ public class AdminInboxController  extends AdminCommonController {
 	@RequestMapping(value="inbox", method=RequestMethod.GET)
 	public ModelAndView index(){
 		ModelAndView mv = new ModelAndView("Admin/Message/inbox");
-		Integer num = this.getCountTask();
-		if(num.intValue()>0)
-			mv.addObject("tasks", this.getCountTask());
-		mv.addObject("fullname", this.getFullname());
+		if(isLogin()){
+			Integer num = this.getCountTask();
+			if(num.intValue()>0)
+				mv.addObject("tasks", this.getCountTask());
+			mv.addObject("fullname", this.getFullname());
+		}
 		return mv;
 	}
 	
@@ -66,7 +69,7 @@ public class AdminInboxController  extends AdminCommonController {
 		return jsonString;
 	}
 	
-	@Transactional(readOnly = false)
+//	@Transactional(readOnly = false)
 	@RequestMapping(value = "status", method = RequestMethod.PUT)
 	public String msgSwitchStatus(HttpServletRequest request, 
 			@RequestParam(value = "ids", required = false) String mids,

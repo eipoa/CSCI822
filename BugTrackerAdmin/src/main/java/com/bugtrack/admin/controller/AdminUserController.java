@@ -19,13 +19,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
 import com.bugtrack.model.RoleModel;
 import com.bugtrack.model.UserModel;
 import com.bugtrack.util.PageContent;
@@ -38,7 +38,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @RestController
 @RequestMapping("/Admin/Auth")
-public class AdminUserController extends AdminCommonController {
+public class AdminUserController extends CommonController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -49,7 +49,12 @@ public class AdminUserController extends AdminCommonController {
 	@RequestMapping(value = "user", method = RequestMethod.GET)
 	public ModelAndView userIndex() {
 		ModelAndView mv = new ModelAndView("Admin/Auth/users");
-		mv.addObject("fullname", this.getFullname());
+		if(isLogin()){
+			Integer num = this.getCountTask();
+			if(num.intValue()>0)
+				mv.addObject("tasks", this.getCountTask());
+			mv.addObject("fullname", this.getFullname());
+		}
 		return mv;
 	}
 
@@ -83,13 +88,6 @@ public class AdminUserController extends AdminCommonController {
 		int rows = Integer.parseInt(page.getRows());
 		Pageable pageable = new PageRequest(pageNum, rows, sort);
 
-		// result for easyui
-		/*
-		 * // query List<UserModel> list= null; Page<UserModel> list =
-		 * repo.findAll(pageable); Map<String, Object> map = new HashMap<String,
-		 * Object>(); map.put("total", list.getTotalElements());// count of data
-		 * map.put("rows", list.getContent());// data of this page
-		 */
 		Map<String, Object> map = userRepo.findAll(keywords, pageable);
 
 		// debug
@@ -173,13 +171,8 @@ public class AdminUserController extends AdminCommonController {
 		}
 	}
 
-	/**
-	 * 
-	 * @param id
-	 * @return json data of one user
-	 */
-	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
-	public UserModel getByID(@PathVariable int id) {
-		return userRepo.findOne(id);
-	}
+//	@RequestMapping(value = "user/{id}", method = RequestMethod.GET)
+//	public UserModel getByID(@PathVariable int id) {
+//		return userRepo.findOne(id);
+//	}
 }

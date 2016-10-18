@@ -5,9 +5,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
+
 @RestController
 @RequestMapping("/Admin/")
-public class AdminIndexController extends AdminCommonController {
+public class AdminIndexController extends CommonController {
 	@RequestMapping(value="", method=RequestMethod.GET)
 	public ModelAndView index(){
 		ModelAndView mv = new ModelAndView("Admin/index");

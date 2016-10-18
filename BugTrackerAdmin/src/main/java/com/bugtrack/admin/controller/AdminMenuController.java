@@ -8,13 +8,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
+
 /**
  * @author Administrator
  *
  */
 @RestController
 @RequestMapping("/Admin/Auth")
-public class AdminMenuController extends AdminCommonController {
+public class AdminMenuController extends CommonController {
 	@RequestMapping(value = "menus", method = RequestMethod.GET)
 	public ModelAndView roleIndex() throws Exception {
 		ModelAndView mv = new ModelAndView("Admin/Auth/menus");

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bugtrack.common.CommonController;
 import com.bugtrack.exception.CustomJsonException;
 import com.bugtrack.model.BugClassModel;
 import com.bugtrack.model.BugPatchModel;
@@ -32,7 +33,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RestController
 @RequestMapping("/Admin/Bug")
-public class AdminBugController extends AdminCommonController {
+public class AdminBugController extends CommonController {
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
@@ -231,31 +232,31 @@ public class AdminBugController extends AdminCommonController {
 		// }
 	}
 
-	@RequestMapping(value = "bugstatus", method = RequestMethod.GET)
-	public BugStatusModel getStatusById(HttpServletRequest request,
-			@RequestParam(value = "id", required = true) Integer id) {
-		return bugstatusRepo.findOne(id);
-	}
-
-	@RequestMapping(value = "bugstatuslist", method = RequestMethod.GET)
-	public List<BugStatusModel> getBugStatusList(HttpServletRequest request,
-			@RequestParam(value = "typeid", required = false) String typeid,
-			@RequestParam(value = "sm", required = false) String sm) {
-		if (typeid != null && !typeid.trim().equals("")) {
-			return bugRepo.findStatusList(typeid, sm);
-		} else
-			return bugstatusRepo.findAll();
-	}
-
-	@RequestMapping(value = "bugclasslist", method = RequestMethod.GET)
-	public List<BugClassModel> getBugClassList(HttpServletRequest request) {
-		return bugclassRepo.findAllByOrderByIdAsc();
-	}
-
-	@RequestMapping(value = "bugprioritylist", method = RequestMethod.GET)
-	public List<BugPriorityModel> getBugPriorityList(HttpServletRequest request) {
-		return bugpriorityRepo.findAllByOrderByIdAsc();
-	}
+//	@RequestMapping(value = "bugstatus", method = RequestMethod.GET)
+//	public BugStatusModel getStatusById(HttpServletRequest request,
+//			@RequestParam(value = "id", required = true) Integer id) {
+//		return bugstatusRepo.findOne(id);
+//	}
+//
+//	@RequestMapping(value = "bugstatuslist", method = RequestMethod.GET)
+//	public List<BugStatusModel> getBugStatusList(HttpServletRequest request,
+//			@RequestParam(value = "typeid", required = false) String typeid,
+//			@RequestParam(value = "sm", required = false) String sm) {
+//		if (typeid != null && !typeid.trim().equals("")) {
+//			return bugRepo.findStatusList(typeid, sm);
+//		} else
+//			return bugstatusRepo.findAll();
+//	}
+//
+//	@RequestMapping(value = "bugclasslist", method = RequestMethod.GET)
+//	public List<BugClassModel> getBugClassList(HttpServletRequest request) {
+//		return bugclassRepo.findAllByOrderByIdAsc();
+//	}
+//
+//	@RequestMapping(value = "bugprioritylist", method = RequestMethod.GET)
+//	public List<BugPriorityModel> getBugPriorityList(HttpServletRequest request) {
+//		return bugpriorityRepo.findAllByOrderByIdAsc();
+//	}
 
 	@RequestMapping(value = "solution", method = RequestMethod.GET)
 	public List<BugPatchModel> getCurSolution(@RequestParam(value = "id", required = true) Integer id) {
@@ -279,21 +280,6 @@ public class AdminBugController extends AdminCommonController {
 		return ret;
 	}
 
-	// @RequestMapping(value = "getreply", method = RequestMethod.GET)
-	// public String getReply01(@RequestParam(value = "id", required = true)
-	// Integer id) {
-	// String ret = "";
-	// List<BugPatchModel> patchs = patchRepo.findAllByBug_id(id);
-	// for (BugPatchModel p : patchs) {
-	// ret += p.getDescription();
-	// ret += p.getReply();
-	// ret += "<input id='cursol_id' class='easyui-textbox' type='hidden'
-	// value='"+p.getId()+"'>";
-	// break;
-	// }
-	// return ret;
-	// }
-
 	@RequestMapping(value = "reply", method = RequestMethod.POST)
 	public String savePatchReply(@RequestParam(value = "id", required = true) Integer id,
 			@RequestParam(value = "reply", required = false) String reply) throws Exception {
@@ -316,29 +302,29 @@ public class AdminBugController extends AdminCommonController {
 		}
 		return ajaxReturn(true, id.toString(), "OK");
 	}
-
-	@RequestMapping(value = "savepara", method = RequestMethod.POST)
-	public String saveParameter(@RequestParam(value = "id", required = true) Integer id,
-			@RequestParam(value = "desc", required = false) String desc,
-			@RequestParam(value = "ty", required = true) Integer ty) throws Exception {
-		if(ty.equals(1)){
-			BugPriorityModel obj = new BugPriorityModel();
-			if(!id.equals(0)){
-				obj = bugpriorityRepo.findOne(id);
-			}
-			obj.setDescp(desc);
-			obj = bugpriorityRepo.saveAndFlush(obj);
-		}else if(ty.equals(2)){
-			BugClassModel obj = new BugClassModel();
-			if(!id.equals(0)){
-				obj = bugclassRepo.findOne(id);
-			}
-			obj.setDescp(desc);
-			obj = bugclassRepo.saveAndFlush(obj);
-		}else
-			throw new Exception("Invalid parameter");
-		
-		return ajaxReturn(true, id.toString(), "OK");
-	}
+//
+//	@RequestMapping(value = "savepara", method = RequestMethod.POST)
+//	public String saveParameter(@RequestParam(value = "id", required = true) Integer id,
+//			@RequestParam(value = "desc", required = false) String desc,
+//			@RequestParam(value = "ty", required = true) Integer ty) throws Exception {
+//		if(ty.equals(1)){
+//			BugPriorityModel obj = new BugPriorityModel();
+//			if(!id.equals(0)){
+//				obj = bugpriorityRepo.findOne(id);
+//			}
+//			obj.setDescp(desc);
+//			obj = bugpriorityRepo.saveAndFlush(obj);
+//		}else if(ty.equals(2)){
+//			BugClassModel obj = new BugClassModel();
+//			if(!id.equals(0)){
+//				obj = bugclassRepo.findOne(id);
+//			}
+//			obj.setDescp(desc);
+//			obj = bugclassRepo.saveAndFlush(obj);
+//		}else
+//			throw new Exception("Invalid parameter");
+//		
+//		return ajaxReturn(true, id.toString(), "OK");
+//	}
 	
 }

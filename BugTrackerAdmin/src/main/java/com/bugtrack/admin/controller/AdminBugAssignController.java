@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @RestController
 @RequestMapping("/Admin/Bug")
-public class AdminBugAssignController extends AdminCommonController {
+public class AdminBugAssignController extends AdminBugController {
 	/**
 	 * the main view of assign bugs
 	 * 
@@ -16,10 +16,12 @@ public class AdminBugAssignController extends AdminCommonController {
 	@RequestMapping(value = "assign", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelAndView mv = new ModelAndView("Admin/Bug/assign");
-		Integer num = this.getCountTask();
-		if(num.intValue()>0)
-			mv.addObject("tasks", this.getCountTask());
-		mv.addObject("fullname", this.getFullname());
+		if(isLogin()){
+			Integer num = this.getCountTask();
+			if(num.intValue()>0)
+				mv.addObject("tasks", this.getCountTask());
+			mv.addObject("fullname", this.getFullname());
+		}
 		return mv;
 	}
 }

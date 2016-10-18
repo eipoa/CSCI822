@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bugtrack.app.controller;
+package com.bugtrack.common;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -43,48 +43,63 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @RestController
 public class CommonController{
 	@Autowired
+	protected
 	UserRepository userRepo;
 
 	@Autowired
+	protected
 	RoleRepository roleRepo;
 	
 	@Autowired
+	protected
 	ResourceRepository resRepo;
 	
 	@Autowired
+	protected
 	BugRepository bugRepo;
 
 	@Autowired
+	protected
 	HttpServletRequest request;
 
 	@Autowired
+	protected
 	HttpServletResponse response;
 
 	@Autowired
+	protected
 	BugStatusRepository bugstatusRepo;
 
 	@Autowired
+	protected
 	BugClassRepository bugclassRepo;
 
 	@Autowired
+	protected
 	BugPriorityRepository bugpriorityRepo;
 
 	@Autowired
+	protected
 	ProductRepository productRepo;
 
 	@Autowired
+	protected
 	ProductNameRepository productNameRepo;
 
 	@Autowired
+	protected
 	ProductOsRepository productOsRepo;
 
 	@Autowired
+	protected
 	MessageClassRepository msgRepo;
 
 	@Autowired
+	protected
 	BugPatchRepository patchRepo;
 
 	@Autowired
+	protected
 	BugTrackerProperty btProperty;
 
 	public String ajaxReturn(boolean statue, String data, String info) throws JsonProcessingException {

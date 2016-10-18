@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.bugtrack.common.CommonController;
 import com.bugtrack.exception.CustomJsonException;
 import com.bugtrack.model.UserModel;
 import com.bugtrack.util.PublicFunction;
@@ -30,7 +31,7 @@ import com.bugtrack.util.PublicFunction;
  */
 @RestController
 @RequestMapping("/Admin/Public")
-public class AdminPublicController extends AdminCommonController {
+public class AdminPublicController extends CommonController {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired

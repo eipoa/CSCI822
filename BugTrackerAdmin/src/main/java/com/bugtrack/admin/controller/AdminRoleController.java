@@ -11,7 +11,6 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.bugtrack.dao.RoleRepository;
+import com.bugtrack.common.CommonController;
 import com.bugtrack.model.ResourceModel;
 import com.bugtrack.model.RoleModel;
 import com.bugtrack.util.PageContent;
@@ -35,10 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @RestController
 @RequestMapping("/Admin/Auth")
-public class AdminRoleController extends AdminCommonController {
-
-	@Autowired
-	RoleRepository repo;
+public class AdminRoleController extends CommonController {
 
 	/**
 	 * the main view of users
@@ -49,21 +45,13 @@ public class AdminRoleController extends AdminCommonController {
 	@RequestMapping(value = "roles", method = RequestMethod.GET)
 	public ModelAndView roleIndex() throws Exception {
 		ModelAndView mv = new ModelAndView("Admin/Auth/roles");
-		Integer num = this.getCountTask();
-		if (num.intValue() > 0)
-			mv.addObject("tasks", this.getCountTask());
-		mv.addObject("fullname", this.getFullname());
+		if(isLogin()){
+			Integer num = this.getCountTask();
+			if(num.intValue()>0)
+				mv.addObject("tasks", this.getCountTask());
+			mv.addObject("fullname", this.getFullname());
+		}
 		return mv;
-	}
-
-	/**
-	 * 
-	 * @return json data of role name list for listbox or combox
-	 */
-	@RequestMapping(value = "roles/listname", method = RequestMethod.GET)
-	public List<RoleModel> listRoleName() {
-		List<RoleModel> result = repo.findAll();
-		return result;
 	}
 
 	@RequestMapping(value = "roles/list", method = RequestMethod.GET)
@@ -84,10 +72,6 @@ public class AdminRoleController extends AdminCommonController {
 		if (roles != null) {
 			map.put("total", roles.size());
 			roles = roleRepo.findAll(pageable).getContent();
-			// for (RoleModel r : roles) {
-			// Collection<ResourceModel> res = r.getResources();
-			// r.setResources(res);
-			// }
 			map.put("rows", roles);
 		} else {
 			map.put("total", 0);
@@ -95,21 +79,6 @@ public class AdminRoleController extends AdminCommonController {
 		}
 		ObjectMapper om = new ObjectMapper();
 		String jsonString = om.writeValueAsString(map);
-		return jsonString;
-	}
-
-	/* for user admin */
-	@RequestMapping(value = "roles/list01", method = RequestMethod.GET)
-	public String roleList01(HttpServletRequest request, PageContent page) throws Exception {
-		Sort sort = null;
-		if (page.getOrder().equals("asc")) {
-			sort = new Sort(Direction.ASC, page.getSort());
-		} else if (page.getOrder().equals("desc")) {
-			sort = new Sort(Direction.DESC, page.getSort());
-		}
-		List<RoleModel> ress = roleRepo.findAllByStatus(1, sort);
-		ObjectMapper om = new ObjectMapper();
-		String jsonString = om.writeValueAsString(ress);
 		return jsonString;
 	}
 
