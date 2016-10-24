@@ -1,4 +1,4 @@
-package com.bugtrack.admin.controller;
+package com.bugtrack.common;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,8 +18,8 @@ import com.bugtrack.common.CommonController;
  * @author Baoxing Li
  */  
 @RestController  
-@RequestMapping(value="/Admin/Upload")  
-public class AdminUploadController extends CommonController{ 
+@RequestMapping(value="/Upload")  
+public class UploadController extends CommonController{ 
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
     @RequestMapping(value="init") 

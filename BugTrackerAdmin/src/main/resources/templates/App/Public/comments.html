@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="index">
+    <meta name="author" content="Li baoxing">
+
+	<title>Bugs Admin - Comments</title>
+	
+	<!-- Bootstrap Core CSS -->
+	<link href="/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom CSS -->
+	<link href="/css/sb-admin.css" rel="stylesheet">
+	<link href="/scripts/bootstrap-star-rating-master/css/star-rating.css" media="all" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
+	<link rel="stylesheet" type="text/css" href="/css/frontend.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+    
+    <!-- Custom Fonts -->
+	<link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	
+	
+    
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+	<!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+	<div id="wrapper" style="padding-left:0px">
+        <!-- Navigation -->
+        
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div style="margin:auto;width:1060px">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/Admin/">Bug Tracker</a>
+				</div>
+			
+			<!-- Top Menu Items -->
+				<ul class="nav navbar-right top-nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
+							<i class="fa fa-user"></i> 
+							<span th:text="${fullname}">Fullname</span> <!-- <span class="label label-primary" th:text="${tasks}">tasks</span> -->
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<!-- <li><a href="/App/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+							<li class="divider"></li> -->
+							<li><a href="/App/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="/App/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+        <div id="page-wrapper" style="margin-top:50px">
+        	<div style="margin:auto;width:1060px">
+	            <div class="container-fluid">
+					 <!-- Page Heading -->
+	                <!-- <div class="row">
+	                    <div class="col-lg-12">
+							<ul class="nav nav-tabs" role="tablist">
+							  <li role="presentation" class="active"><a href="/">Find issues</a></li>
+							  <li role="presentation"><a href="/App/Bugs/report" th:if="${fullname!=null}">Report issues</a></li>
+							  <li role="presentation"><a href="/App/Public/login" th:if="${fullname==null}">Log in</a></li>
+							  <li role="presentation"><a href="/App/Public/signup" th:if="${fullname==null}">Sign up</a></li>
+							</ul>
+						</div>
+	                </div> -->
+	                <!-- /.row -->
+					<!-- Search Bar -->
+<!-- 	                <div class="row">	
+						<div id="searchformContainer">
+							<form id="search" role="form">
+								<div class="col-xs-10">
+									<input type="text" class="form-control" id="query1" placeholder="find solutions & issues">
+								</div>
+								<button type="submit" class="btn btn-primary bg-some">Search</button>					  	
+							</form>
+						</div>
+					</div> -->
+			        <!-- bug info -->
+			        <div class="row">
+			        	<div class="col-lg-9">
+							<div class="bugtitlecon">
+							<table>
+							<tr>
+								<td>
+									<div class="vote">
+										<input id="islogin01" type="hidden" th:value="${fullname}?'1':'0'">
+								        <span class="vote-up-off vote-up" title="This bug is useful" th:onclick="|vote1(${bug.id},1)|">up vote</span>
+								        <span id="upvoteCount" class="vote-count-post " th:text="${bug.vote}">6</span>
+								        <span class="vote-down-off vote-down" title="This bug is not useful"  th:onclick="|vote1(${bug.id},1)|">down vote</span>
+									</div>
+								</td>
+								<td>						
+									<h1 th:text="${bug.title}" style="margin: 0px 0px;"></h1>
+									
+									<table>
+									  <tr>
+									    <td style="padding-right:10px">
+									      <label for="input-3" class="control-label">Rating</label>
+									    </td>
+									    <td>
+									      <input id="input-3" name="input-3" th:value="${bug.rank}" class="rating-loading" style="font-size: 12px;">
+									    </td>
+									  </tr>
+									</table>
+									<code th:if="${bug.keywords!='' and bug.keywords!=null}" th:text="${bug.keywords}"></code>
+									<code th:text="${bug.product.name.name}"></code>
+									<code th:text="${bug.product.version}"></code>
+								</td>
+							</tr>
+							<tr><td colspan="2">
+								<div class="patch" th:if="${patch}">
+								
+								</div>
+							</td></tr>
+							</table>
+							</div>
+						</div>
+			        </div>
+			        
+			        <!-- bug list -->
+			        <div class="row">
+			        	<div class="col-lg-9">
+							<div id="answers" th:if="${pages!=null}">
+								<div class="answer" th:each="c,iterStat:${pages}">
+								    <table>
+								        <tbody>
+									        <tr>
+									            <!-- <td class="votecell">
+													<div class="vote">
+												        <input name="commentid" th:value="${c.id}" type="hidden">
+												        <span class="vote-up-off vote-up" title="This answer is useful">up vote</span>
+												        <span itemprop="upvoteCount" class="vote-count-post ">6</span>
+												        <span class="vote-down-off vote-down" title="This answer is not useful">down vote</span>
+													</div>
+									            </td> -->
+												<td class="answercell">
+												    <div class="post-text" itemprop="text">
+														<p th:utext="${c.thetext}">thetext</p>
+														<!-- <p th:text="${c.submitter.first_name}">first_name</p> -->
+												    </div>
+												    <table class="fw">
+													    <tbody>
+													    <tr>
+														    <td class="post-signature" align="right">   
+															    <div class="user-info fr">
+																    <div class="user-action-time">
+																        submitted <span th:text="${c.creationts}" class="relativetime">creation_ts</span>
+																    </div>
+																    <div class="user-details">
+																        <a style="cursor:help" th:text="${c.submitter.first_name}" th:onclick="'javascript:alert(\''+${c.submitter.first_name}+'\')'">first_name</a>
+																        <div class="-flair">
+																            <span class="reputation-score" title="reputation score " dir="ltr" th:text="${c.submitter.reputation}">reputation</span>
+																        </div>
+																    </div>
+																</div>
+														    </td>
+													    </tr>
+													    </tbody>
+												    </table>
+												</td>
+									        </tr>
+										</tbody>
+									</table>
+								</div>
+								<!-- <br style="clear:both"/>
+								<div class="page-sizer fr">
+									<ul class="pagination pd8">
+										<li th:class="${pages.size eq 5}?'active':''">
+											<a class="pagecur" th:onclick="|refcomments(1, 5)|" th:inline="text">5</a>
+										</li>
+										<li th:class="${pages.size eq 10}?'active':''">
+											<a class="pagecur" th:onclick="|refcomments(1, 10)|" th:inline="text">10</a>
+										</li>
+										<li th:class="${pages.size eq 20}?'active':''">
+											<a class="pagecur" th:onclick="|refcomments(1, 20)|" th:inline="text">20</a><span class="page-numbers desc">per page</span>
+										</li>
+									</ul>
+									
+								</div> -->
+								<div calss="pager fl">
+									<ul th:fragment="pagination" class="pagination pd8">
+									    <li th:class="${pages.number eq 0}?'disabled':'pagecur'">
+									        <a th:if="${pages.number eq 0}" href="javascript:void(0)" aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+									        <a th:unless="${pages.number eq 0}" th:onclick="|refcomments(${pages.number-1}, 5)|"  aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+									    </li>
+									
+									    <li th:each="no:${#numbers.sequence(0, pages.totalPages-1)}" th:class="${pages.number eq no}?'active':''">
+									    	<a class="pagecur" th:if="${no lt 5 or no eq pages.totalPages-1}" th:onclick="|refcomments(${no+1}, ${pages.size})|" th:inline="text">[[${no+1}]]</a>
+									    	<span th:if="${no eq 5 and pages.totalPages gt 5}" th:inline="text" class="page-numbers dots">…</span>
+									    	<!-- <a class="pagecur" th:if="${no eq pages.totalPages}" th:onclick="|refcomments(${no+1}, ${pages.size})|" th:inline="text">[[${no+1}]]</a> -->
+									    </li>
+									
+									    <li th:class="${pages.number+1 ge pages.totalPages}?'disabled':'pagecur'">
+									        <a th:if="${pages.number+1 ge pages.totalPages}" href="javascript:void(0)"   aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+									        <a th:unless="${pages.number+1 ge pages.totalPages}" th:onclick="|refcomments(${pages.number+1}, 5)|"  aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+									    </li>
+									</ul>
+								</div>
+							</div>
+							<!-- end Pagination Bar -->
+								
+							<!-- editor -->
+							<div id="e-comment" style="width:750" th:if="${fullname}">
+								<script id="editor" type="text/plain" style="width: 748px; height: 200px;"></script>
+								<div style="float:right; padding:5px 15px 15px 0;">
+									<a href="javascript:void(0)" class="easyui-linkbutton" onClick=subComment()>
+										<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Submit
+									</a>
+								</div>
+								<input id="e-bid" type="hidden" th:value="${bid}"">
+							</div>
+								
+							
+
+			        	</div>
+			        	<div class="col-lg-3">
+				        	<div class="noteContainer">
+								<ul class="list-group" th:if="${topusers}">
+								  <li class="list-group-item active">
+								    <span class="badge"></span>
+								    <strong><h4 style="margin:0px">Top 10 users</h4></strong>
+								  </li>
+								  <li class="list-group-item" th:each="u,iterStat:${topusers}">
+								    <span class="badge" th:text="${u.reputation}">0</span>
+								    <span th:text="${u.getFirst_name()}">name</span>
+								  </li>
+								</ul>
+								<ul class="list-group" th:if="${news}">
+								  <li class="list-group-item active">
+								    <span class="badge"></span>
+								    <strong><h4 style="margin:0px">Important update</h4></strong>
+								  </li>
+								  <li class="list-group-item" th:each="n,iterStat:${news}">
+								    <span th:utext="${n.descp}">name</span>
+								  </li>
+								</ul>
+				        	</div>
+			        	</div>
+			        </div>
+	            </div>
+	            <!-- /.container-fluid -->
+			</div>
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+	<!-- mask windows -->
+	<div id="w" class="easyui-window" title="loading..."
+		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 300px; height: 80px; padding: 10px;">Processing,
+		please wait …</div>
+	<!-- change password -->
+	<div id="chpw" class="easyui-window" title="Change Password"
+		data-options="modal:true,closed:true,iconCls:'fa fa-fw fa-key',minimizable:false,maximizable:false,collapsible:false"
+		style="padding: 5px;">
+		<div>
+			<table class="edittable" style="margin: 0px" cellspacing="0"
+				cellpadding="0">
+				<tbody>
+					<tr>
+						<td colspan="2"><input id="e-oldpass"
+							class="easyui-passwordbox"
+							data-options="label:'Old password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input id="e-newpass01"
+							class="easyui-passwordbox"
+							data-options="label:'New password', labelWidth: 90, labelAlign: 'right',  width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input id="e-newpass02"
+							class="easyui-passwordbox"
+							data-options="label:'New password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save&nbsp;&nbsp;</a>
+						</td>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
+								<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- jQuery -->
+	<script src="/scripts/jquery.min.js"></script>
+
+	<!-- Bootstrap Core JavaScript -->
+	<script src="/scripts/bootstrap.min.js"></script>
+	
+	<script type="text/javascript" src="/scripts/jqeasyui/jquery.easyui.min.js"></script>
+	<script type="text/javascript" src="/scripts/backend.js"></script>
+	
+	<script src="/scripts/bootstrap-star-rating-master/js/star-rating.js" type="text/javascript"></script>
+	
+	<!-- Ueditor Core Javascript -->
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.config.js"></script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.all.min.js"> </script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/lang/en/en.js"></script>
+	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script>
+	
+<script type="text/javascript">
+	var MODEL = '/App/Bug/';
+	var ue;
+	
+	function vote1(id, v){
+		var islogin = $('#islogin01').val();
+		if(islogin==0){
+			show('info','please login');
+			return;
+		}
+		
+		var curV=$('#upvoteCount').html();
+		var data = {
+				id:id,
+				v:v
+		}
+		$.ajax({
+		    type: "POST",
+		    url:MODEL + 'vote',
+		    data:data,
+		    datatype: "json",
+		    beforeSend:function(){
+		    	//fullScreenMask('open');
+		    },
+		    success:function(result){
+				var result = eval('('+result+')');					
+				if (result.status){
+					show('Success',result.info);
+					$('#upvoteCount').html(result.data);
+				} else {
+					show('Error', result.info);
+				}
+				//fullScreenMask('close');
+			},
+		    complete: function(XMLHttpRequest, textStatus){
+		    	//fullScreenMask('close');
+		    },
+		    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+		    error: function(result){
+		    	//fullScreenMask('close');
+		    	//console.log(result.responseText);
+	        	result = result.responseText;
+	        	var result = eval('('+result+')');
+	        	show('Error',result.info);
+		    }        
+		 });
+		
+	}
+	
+	function callback(){
+		location.reload();
+	}
+	
+	function subComment(){
+		var url= '/App/Bug/addcomment';
+		var data= {
+				id : $('#e-bid').val(),
+				descp : ue.getContent()
+		}
+		console.log(data);
+		doajax(url, data, "POST", callback);
+	}
+	$('#input-3').rating({displayOnly: true, step: 0.5});
+	$(function() {	
+ 		// init Baidu Ueditor
+		ue = UE.getEditor('editor', {
+	    	toolbars: [
+	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
+	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist','insertcode']//, 'attachment'
+	    	],
+	    	autotypeset:{
+		    	mergeEmptyline: true,
+		        removeClass: true,
+		        removeEmptyline: false,
+		        clearFontSize: false,
+		        clearFontFamily: false
+	    	},
+	    	zIndex:10000,
+	    	allowDivTransToP: false,
+	        autoHeightEnabled: true,
+	        autoFloatEnabled: true,
+		    serverUrl: "/Upload/init/", 
+		    UEDITOR_HOME_URL: "/scripts/ueditor/"
+		});
+		ue.ready(function() {
+			console.log('ueditor is ready');
+			this.setContent('');
+			this.execCommand( 'rowspacing', '5', 'top' );
+			this.execCommand( 'fontsize', '12px' );
+			this.addListener('afterExecCommand' , function (){
+				var files, item, i, urls = "";
+				if(arguments.length==3 && arguments[0]=='afterexeccommand' && arguments[1]=='insertfile'){
+					files = arguments[2][1];
+					if(files.length>0){
+						// write database;item.title/item.url
+						files.forEach(function(f){
+							urls = urls==""?"{{title:"+f.title+",url:"+f.url+"}":urls + ",{title:"+f.title+",url:"+f.url+"}";
+						})
+					}
+				}
+				urls = urls +"}";
+				//console.log(urls);
+				$('#e-url').textbox('setValue', urls);
+			});
+		}); 
+	});
+</script>	
+	
+	
+</body>
+</html>

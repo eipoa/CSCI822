@@ -57,9 +57,9 @@
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li><a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
@@ -69,32 +69,31 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li>
-						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+						<a href="/Admin/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
 					</li>
 					<li>
-						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
+						<a href="/Admin/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
+						<a href="/Admin/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
+						<a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
 					<li>
-						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
+						<a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
-						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
+						<a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
 							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo0" class="collapse">
-							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
-							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+							<li><a href="/Admin/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
+							<li><a href="/Admin/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Admin/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
 						</ul>
 					</li>
 					<li>
@@ -102,9 +101,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" aria-expanded="true" class="nav navbar-nav">
-							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li class="active"><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
-							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
+							<li><a href="/Admin/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/Admin/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li class="active"><a href="/Admin/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -132,18 +131,16 @@
 				<!-- user list row -->
 				<div class="row">
 					<div class="col-lg-12">
-					<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
-						<div data-options="region:'west',title:'Role list',collapsible:false" style="width:75%">
 						<!-- easyui table for user list-->
-						<table id="dg" class="easyui-datagrid" 
+						<table id="dg" class="easyui-datagrid" title="Note list"
+							style="width: auto; height: 500px"
 							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
-									onSelect: dgRoleSelect,
-									idField:'id',loadMsg:'',toolbar:'#tb', fit:true"><!-- ,onSelect: dgResSelect -->
+									idField:'id',loadMsg:'',toolbar:'#tb', onSelect:dgNoteSelect">
 							<thead>
 								<tr>
-									<th data-options="field:'rolename',width:180">Role Name</th>
-									<th data-options="field:'description',width:500">Description</th>
-									<th data-options="field:'status',width:80,align:'center',formatter:formatUserStatus">Status</th>
+									<th data-options="field:'descp',width:500">Note</th>
+									<th data-options="field:'start',width:100">Start Date</th>
+									<th data-options="field:'expire',width:100">Expired Date</th>
 								</tr>
 							</thead>
 						</table>
@@ -155,13 +152,24 @@
 									<tr>
 										<td>
 											<input id="e-id" type="hidden" />
-											<input id="e-status" type="hidden" />
-											<input id="e-name" class="easyui-textbox"
-												data-options="label:'Role Name', labelWidth:90, labelAlign:'right',width:220"></input>
+											<input id="e-desp" class="easyui-textbox"
+												data-options="label:'Note', multiline:true, labelWidth:90, labelAlign:'right',width:500"></input>
 										</td>
 										<td>
-											<input id="e-desc" class="easyui-textbox"
-												data-options="label:'Description', labelWidth:90, labelAlign:'right',width:'420'"></input>
+											<input id="s-begin" class="easyui-datebox"
+			           							data-options="
+			           								label:'Start Date',
+			           								labelWidth: 100,
+									                labelAlign: 'right',
+									                showSeconds:false,
+									                width:230"></input><br />
+			           						<input id="s-end" class="easyui-datebox"
+			           							data-options="
+			           								label:'Expired Date',
+			           								labelWidth: 100,
+									                labelAlign: 'right',
+			           								showSeconds:false, 
+			           								width:230"></input>
 										</td>
 										<td>
 											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create a new role" data-options="iconCls:'icon-add', plain:true" onClick=save(0)>New</a>
@@ -171,23 +179,6 @@
 								</tbody>
 							</table>
 						</div>
-						</div>
-						<div data-options="region:'center',title:'Authorited Resource list',collapsible:false" >
-							<div id="dl" class="easyui-datalist" 
-								data-options="lines:true,textFormatter:formatUrlStatus,idField:'id',toolbar:'#tb01',
-										valueField:'id', textField:'resource', border:false, fit:true, checkbox: true,singleSelect: false"> </div>
-
-							<!-- table tool bar-->
-							<div id="tb01" style="padding: 2px 5px;">
-								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Check all items" data-options="plain:true" onClick="$('#dl').datalist('checkAll')">
-								<i class="fa fa-check-square-o fa-btn-icon fa-green fa-lg"></i> Check All </a>
-								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Uncheck all items" data-options="plain:true" onClick="$('#dl').datalist('uncheckAll')">
-								<i class="fa fa-square-o fa-btn-icon fa-green fa-lg"></i> Clear All </a>
-								<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="Change resource for the selected role" data-options="plain:true" onClick=fastChangeResource()>
-								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save Resource </a>
-							</div>
-						</div>
-					</div>
 					</div>
 				</div>
 				<!-- /.row -->
@@ -264,23 +255,16 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Admin/Auth/roles';
+	var MODEL = '/Admin/System';
 	
 	// click save
 	function save(x){
-		var url= MODEL + '/save';
-		var ids="";
-		resRow = $('#dl').datalist('getChecked');
-		resRow.forEach(function(r){
-			ids = ids==""?"":ids + ",";
-			ids = ids+ r.id
-		})
+		var url= MODEL + '/savenote';
 		var data= {
 				id: (x==0?0:$('#e-id').val()),
-				rolename: $('#e-name').textbox('getValue'),
-				description: $('#e-desc').textbox('getValue'),
-				status: (x==0?1:$('#e-status').val()),
-				resids: ids
+				descp: $('#e-desp').textbox('getValue'),
+				start: $('#s-begin').datebox('getValue'),
+				expire: $('#s-end').datebox('getValue')
 		}
 		//res
 		console.log(data);
@@ -289,47 +273,18 @@
 		var dg= $('#dg');
 		action(url, data, dg, "POST");
 	}
-	
-	function fastChangeResource(){
-		var url= MODEL + '/save';
-		var row = $('#dg').datagrid('getSelected',{});
-		if(row==null || row==undefined){
-			alert_('Please select a role to modify.');
-			return;
-		}
-		var ids="";
-		rolRow = $('#dl').datalist('getChecked');
-		rolRow.forEach(function(r){
-			ids = ids==""?"":ids + ",";
-			ids = ids+ r.id
-		})
-		//console.log(row);
-		delete row.resources;
-		row.resources = ids;
-		//console.log(row);
-		var dg= $('#dg');
-		action(url, row, dg, "POST");
-	}
 
-	function dgRoleSelect(index,row){
+	function dgNoteSelect(index,row){
 		$('#e-id').val(row.id);
-		$('#e-name').textbox('setValue', row.rolename);
-		$('#e-desc').textbox('setValue', row.description);
-		$('#e-status').val(row.status);
-		
-		$('#dl').datalist('uncheckAll');
-		row.resources.forEach(function(res){
-			//console.log(res);
-			var rid = res.id;
-			$('#dl').datalist('selectRecord',rid);
-		})
+		$('#e-desp').textbox('setValue', row.descp);
+		$('#s-begin').datebox('setValue', row.start);	
+		$('#s-end').datebox('setValue', row.expire);
 	}
 	
 	$(function() {
-		$('#cc').layout();
 		// dynamic bind datagrid
 		$('#dg').datagrid({
-			url:'/Auth/roles/list?sort=rolename&order=asc',
+			url:'/Rest/sysnotelist',
 			method:'get',
 			onBeforeLoad : function() {
 				// show fullscreen modal windows
@@ -351,10 +306,6 @@
 				//console.log(XMLHttpRequest);
 				ajaxerror(XMLHttpRequest.responseText);
 			}
-		});
-		$('#dl').datalist({
-			url:'/Rest/reslist01?sort=resource&order=asc',
-			method:'get'
 		});
 	});
 </script>

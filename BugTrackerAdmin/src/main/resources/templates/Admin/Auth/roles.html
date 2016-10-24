@@ -57,44 +57,43 @@
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li><a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
-						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+						<li><a href="/Admin/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
 					</ul>
 				</li>
 			</ul>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li>
-						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+						<a href="/Admin/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
 					</li>
 					<li>
-						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
+						<a href="/Admin/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
+						<a href="/Admin/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
+						<a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
 					<li>
-						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
+						<a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
-						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
+						<a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
 							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo0" aria-expanded="true" class="nav navbar-nav">
-							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li class="active"><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
-							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+							<li><a href="/Admin/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
+							<li class="active"><a href="/Admin/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Admin/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
 						</ul>
 					</li>
 					<li>
@@ -102,9 +101,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
-							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
+							<li><a href="/Admin/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/Admin/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/Admin/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -329,7 +328,7 @@
 		$('#cc').layout();
 		// dynamic bind datagrid
 		$('#dg').datagrid({
-			url:'/Auth/roles/list?sort=rolename&order=asc',
+			url:'/Admin/Auth/roles/list?sort=rolename&order=asc',
 			method:'get',
 			onBeforeLoad : function() {
 				// show fullscreen modal windows

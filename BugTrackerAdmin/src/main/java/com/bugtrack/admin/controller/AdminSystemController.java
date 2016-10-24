@@ -1,9 +1,5 @@
 package com.bugtrack.admin.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,7 +9,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.bugtrack.common.CommonController;
 import com.bugtrack.model.BugClassModel;
 import com.bugtrack.model.BugPriorityModel;
-import com.bugtrack.model.BugStatusModel;
+import com.bugtrack.model.BugSeverityModel;
+import com.bugtrack.model.SysNoteModel;
 
 @RestController
 @RequestMapping("/Admin/System")
@@ -60,27 +57,40 @@ public class AdminSystemController  extends CommonController {
 		return mv;
 	}
 	
-	@RequestMapping(value = "savepara", method = RequestMethod.POST)
-	public String saveParameter(@RequestParam(value = "id", required = true) Integer id,
+	@RequestMapping(value = "savepara")
+	public String saveParameter(@RequestParam(value = "id", required = false) Integer id,
 			@RequestParam(value = "desc", required = false) String desc,
-			@RequestParam(value = "ty", required = true) Integer ty) throws Exception {
+			@RequestParam(value = "ty", required = false) Integer ty) throws Exception {
 		if(ty.equals(1)){
 			BugPriorityModel obj = new BugPriorityModel();
-			if(!id.equals(0)){
-				obj = bugpriorityRepo.findOne(id);
+			if(id!=null){
+				obj.setId(id);
 			}
 			obj.setDescp(desc);
 			obj = bugpriorityRepo.saveAndFlush(obj);
 		}else if(ty.equals(2)){
 			BugClassModel obj = new BugClassModel();
-			if(!id.equals(0)){
-				obj = bugclassRepo.findOne(id);
+			if(id!=null){
+				obj.setId(id);
 			}
 			obj.setDescp(desc);
 			obj = bugclassRepo.saveAndFlush(obj);
+		}else if(ty.equals(3)){
+			BugSeverityModel obj = new BugSeverityModel();
+			if(id!=null){
+				obj.setId(id);
+			}
+			obj.setSeverity(desc);
+			obj = sevRepo.saveAndFlush(obj);
 		}else
 			throw new Exception("Invalid parameter");
 		
-		return ajaxReturn(true, id.toString(), "OK");
+		return ajaxReturn(true, "", "OK");
+	}
+	
+	@RequestMapping(value = "savenote", method = RequestMethod.POST)
+	public String saveParameter(SysNoteModel note) throws Exception {
+		note = sysnRepo.saveAndFlush(note);
+		return ajaxReturn(true, note.getId().toString(), "OK");
 	}
 }

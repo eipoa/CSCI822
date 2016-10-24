@@ -111,6 +111,6 @@ public class ProductModel {
 //	@Override
 //	public String toString() {
 //		return "ProductModel [id=" + id + ", name=" + name + ", os=" + os + ", version=" + version + ", status="
-//				+ status + ", bugs=" + bugs + "]";
+//				+ status + "]";
 //	}
 }

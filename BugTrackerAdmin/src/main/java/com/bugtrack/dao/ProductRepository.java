@@ -23,4 +23,10 @@ public interface ProductRepository  extends JpaRepository<ProductModel, Integer>
 
 	ProductModel findByNameAndVersionAndOs(ProductNameModel nameById, String ver, ProductOsModel osById);
 
+	List<ProductModel> findAllByName_idAndVersion(Integer id, String ver);
+
+	ProductModel findTop1ByNameAndVersion(ProductNameModel pname, String product_version);
+
+	List<ProductModel> findAllByName(ProductNameModel findOne);
+
 }

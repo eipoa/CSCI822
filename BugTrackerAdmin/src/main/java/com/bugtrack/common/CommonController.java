@@ -20,9 +20,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bugtrack.dao.BugClassRepository;
+import com.bugtrack.dao.BugCommentRepository;
 import com.bugtrack.dao.BugPatchRepository;
 import com.bugtrack.dao.BugPriorityRepository;
 import com.bugtrack.dao.BugRepository;
+import com.bugtrack.dao.BugSeverityRepository;
 import com.bugtrack.dao.BugStatusRepository;
 import com.bugtrack.dao.MessageClassRepository;
 import com.bugtrack.dao.ProductNameRepository;
@@ -30,6 +32,7 @@ import com.bugtrack.dao.ProductOsRepository;
 import com.bugtrack.dao.ProductRepository;
 import com.bugtrack.dao.ResourceRepository;
 import com.bugtrack.dao.RoleRepository;
+import com.bugtrack.dao.SysNoteRepository;
 import com.bugtrack.dao.UserRepository;
 import com.bugtrack.model.UserModel;
 import com.bugtrack.util.BugTrackerProperty;
@@ -101,7 +104,19 @@ public class CommonController{
 	@Autowired
 	protected
 	BugTrackerProperty btProperty;
+	
+	@Autowired
+	protected
+	BugCommentRepository bugcommentRepo;
+	
+	@Autowired
+	protected
+	BugSeverityRepository sevRepo;
 
+	@Autowired
+	protected
+	SysNoteRepository sysnRepo;
+	
 	public String ajaxReturn(boolean statue, String data, String info) throws JsonProcessingException {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (statue) {

@@ -61,44 +61,43 @@
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li><a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
-						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+						<li><a href="/Admin/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
 					</ul>
 				</li>
 			</ul>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li>
-						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+						<a href="/Admin/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
 					</li>
 					<li>
-						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
+						<a href="/Admin/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
+						<a href="/Admin/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
 					</li>
 					<li class="active">
-						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
+						<a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
 					<li>
-						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
+						<a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
-						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
+						<a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
 							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo0" class="collapse">
-							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
-							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+							<li><a href="/Admin/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
+							<li><a href="/Admin/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Admin/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
 						</ul>
 					</li>
 					<li>
@@ -106,9 +105,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" class="collapse">
-							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
-							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
+							<li><a href="/Admin/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li><a href="/Admin/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/Admin/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -140,17 +139,18 @@
 						<table id="dg" class="easyui-datagrid" title="Bug list"
 							style="width: auto; height: 500px"
 							data-options="rownumbers:true, singleSelect:true, pagination:true, method:'get',
-									idField:'id', rowStyler:rowStatusBug, loadMsg:'', toolbar:'#tb'">
+									idField:'id', loadMsg:'', toolbar:'#tb'"><!-- , rowStyler:rowStatusBug -->
 							<thead>
 								<tr>
 									<th data-options="field:'id',width:70">Bug ID</th>
-									<th data-options="field:'priority_id',width:70,formatter:formatBugPriority">Priority</th>
+									<th data-options="field:'priority_id',width:80,formatter:formatBugPriority">Priority</th>
+									<th data-options="field:'severity_id',width:80,formatter:formatBugSeverity">Severity</th>
 									<th data-options="field:'title',width:300,formatter:formatBugtitle">title</th>
 									<th data-options="field:'classification',width:100,formatter:formatBugClass">Classification</th>
-									<th data-options="field:'product_id',width:100,formatter:formatBugProduct">Product</th>
-									<th data-options="field:'product_ver',width:100,formatter:formatBugVersion">Version</th>
-									<th data-options="field:'os_id',width:60,formatter:formatBugOS">OS</th>
-									<th data-options="field:'creation_ts',width:150">Creation time</th>
+									<th data-options="field:'product_id',width:150,formatter:formatBugProduct">Product</th>
+									<!-- <th data-options="field:'product_ver',width:100,formatter:formatBugVersion">Version</th>
+									<th data-options="field:'os_id',width:80,formatter:formatBugOS">OS</th> -->
+									<th data-options="field:'creationts',width:150">Creation time</th>
 									<th data-options="field:'status_id',width:80,formatter:formatBugStatus">Status</th>
 								</tr>
 							</thead>
@@ -171,6 +171,21 @@
 											<span class="datagrid-btn-separator"></span>
 										</td>
 										<td>
+											<input id="s-bid" class="easyui-textbox" 
+												data-options="								
+													label:'Bug ID',
+													labelWidth: 70,
+													labelAlign: 'right',
+													prompt:'Bug ID...',
+													width:200"></input>
+											<input id="s-title" class="easyui-textbox" 
+												data-options="
+													label:'Title',
+													labelWidth: 70,
+													labelAlign: 'right',
+													prompt:'Title like ...',
+													width:400,
+													onClickButton:search"></input>
 											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:search">
 											<i class="fa fa-search fa-btn-icon fa-green fa-lg"></i> Search</a>
 											<a href="javascript:void(0)" class="easyui-linkbutton" data-options="plain:true, onClick:reset">
@@ -180,99 +195,43 @@
 								</tbody>
 							</table>
 							<!-- fields -->
-							<div style="margin-top:5px">
-								<input id="s-bid" class="easyui-textbox" 
-									data-options="								
-										label:'Bug ID',
-										labelWidth: 70,
-										labelAlign: 'right',
-										prompt:'Bug ID...',
-										width:200"></input>	
-								<input id="s-title" class="easyui-textbox" 
-									data-options="
-										label:'Title',
-										labelWidth: 70,
-										labelAlign: 'right',
-										prompt:'Title like ...',
-										width:423,
-										onClickButton:search"></input>
-							    <input id="s-status" class="easyui-combobox"
+							<div style="margin-top: 5px">
+								<input id="s-status" class="easyui-combobox"
 									data-options="
 					                    valueField: 'id',
 					                    textField: 'desc',
 					                    label:'Status',
-					                    labelWidth: 100,
+					                    labelWidth: 70,
 					                    labelAlign: 'right',
 					                    method: 'get',
-					                    width: 230,
+					                    width: 200,
 					                    formatter:comboxfm,
 					                    url:'/Rest/bugstatuslist?typeid=3&sm=0',
 					                    panelHeight:150"></input>
-							                    
-							</div>
-							<div style="margin-top:5px">
-           						<input id="s-priority" class="easyui-combobox"
+					            <input id="s-priority" class="easyui-combobox"
 									data-options="
 					                    valueField: 'id',
 					                    textField: 'descp',
 					                    label:'Priority',
-					                    labelWidth: 70,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 200,
-					                    formatter:comboxfm,
-					                    url:'/Rest/bugprioritylist',
-					                    panelHeight:150"></input>
-           						<input id="s-category" class="easyui-combobox"
-									data-options="
-					                    valueField: 'id',
-					                    textField: 'descp',
-					                    label:'Category',
-					                    labelWidth: 70,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 200,
-					                    formatter:comboxfm,
-					                    url:'/Rest/bugclasslist',
-					                    panelHeight:150"></input>														
-								<input id="s-pname" class="easyui-combobox"
-									data-options="
-					                    valueField: 'id',
-					                    textField: 'name',
-					                    label:'Product name',
 					                    labelWidth: 90,
 					                    labelAlign: 'right',
 					                    method: 'get',
 					                    width: 220,
 					                    formatter:comboxfm,
-					                    url:'/Rest/productnamelist',
-					                    onSelect:fillVersion,
+					                    url:'/Rest/bugprioritylist',
 					                    panelHeight:150"></input>
-							    <input id="s-pver" class="easyui-combobox"
+					            <input id="s-severity" class="easyui-combobox"
 									data-options="
-					                    valueField: 'text',
-					                    textField: 'value',
-					                    label:'Product version',
+					                    valueField: 'id',
+					                    textField: 'severity',
+					                    label:'Severity',
 					                    labelWidth: 100,
 					                    labelAlign: 'right',
 					                    method: 'get',
 					                    width: 230,
-					                    onSelect:fillOs,
-					                    panelHeight:150"></input>
-							    <input id="s-pos" class="easyui-combobox"
-									data-options="
-					                    valueField: 'id',
-					                    textField: 'osname',
-					                    label:'OS',
-					                    labelWidth: 40,
-					                    labelAlign: 'right',
-					                    method: 'get',
-					                    width: 170,
 					                    formatter:comboxfm,
-					                    panelHeight:150"></input>							                    
-							                  
-							</div>
-							<div style="margin-top:5px">
+					                    url:'/Rest/bugseveritylist',
+					                    panelHeight:150"></input>   
 							    <input id="s-begin" class="easyui-datebox"
            							data-options="
            								label:'Start Date',
@@ -286,7 +245,59 @@
            								labelWidth: 70,
 						                labelAlign: 'right',
            								showSeconds:false, 
-           								width:200"></input>																				                    							                    
+           								width:200"></input>
+
+							</div>
+							<div style="margin-top: 5px">	
+								<input id="s-category" class="easyui-combobox"
+									data-options="
+					                    valueField: 'id',
+					                    textField: 'descp',
+					                    label:'Category',
+					                    labelWidth: 70,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 200,
+					                    formatter:comboxfm,
+					                    url:'/Rest/bugclasslist',
+					                    panelHeight:150"></input>
+								<input id="s-pname" class="easyui-combobox"
+									data-options="
+					                    valueField: 'id',
+					                    textField: 'name',
+					                    label:'Product name',
+					                    labelWidth: 90,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 220,
+					                    formatter:comboxfm,
+					                    url:'/Rest/productnamelist',
+					                    onSelect:fillVersion,
+					                    panelHeight:150"></input>
+								<input id="s-pver" class="easyui-combobox"
+									data-options="
+					                    valueField: 'text',
+					                    textField: 'value',
+					                    label:'Product version',
+					                    labelWidth: 100,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 230,
+					                    
+					                    panelHeight:150"></input><!-- onSelect:fillOs, -->
+								<input id="s-pos" class="easyui-combobox"
+									data-options="
+					                    valueField: 'id',
+					                    textField: 'osname',
+					                    label:'OS',
+					                    labelWidth: 70,
+					                    labelAlign: 'right',
+					                    url:'/Rest/oslistbyproduct',
+					                    method: 'get',
+					                    width: 200,
+					                    formatter:comboxfm,
+					                    panelHeight:150"></input>
+
 							</div>
 						</div>
 					</div>
@@ -306,43 +317,42 @@
     <!-- editor window -->
     <div id="editw"> <!--  style="padding:10px" -->
 	    <div class="easyui-tabs" style="width:auto;height:auto" data-options="border:false">
-		    <div title="Bug Detail">  
-		        <table class="edittable"  style="margin:0px" cellspacing="0" cellpadding="0">
+		    <div title="Bug Detail">
+				<table class="edittable" cellspacing="0" cellpadding="0">
 					<tbody>
 						<tr>
-							<td>
-								<input id="e-bid" class="easyui-textbox"
-									data-options="								
+							<td style="width:210px"><input id="e-bid" class="easyui-textbox"
+								data-options="								
 										label:'Bug ID',
-										labelWidth: 90,
+										labelWidth: 70,
 										labelAlign: 'right',
 										editable:false,
 					                    readonly:true,
-										width:220"></input>
+										width:200"></input>
 							</td>
-							<td>
-								<input id="e-status" class="easyui-combobox"
-									data-options="
+							<td style="width:220px"><input id="e-status" class="easyui-combobox"
+								data-options="
 					                    valueField: 'id',
 					                    textField: 'desc',
 					                    label:'Status',
-					                    labelWidth: 100,
+					                    labelWidth: 80,
 					                    labelAlign: 'right',
 					                    method: 'get',
-					                    width: 230,
+					                    width: 210,
 					                    formatter:comboxfm,
 					                    url:'/Rest/bugstatuslist?typeid=3&sm=1',
 					                    panelHeight:150"></input>
 							</td>
-							<td>
-								 <input id="e-rank" class="easyui-combobox"
-										data-options="
+							<td style="width:220px">
+								<input id="e-rank"
+								class="easyui-combobox"
+								data-options="
 											valueField: 'value',
 					                    	textField: 'text',
 											label:'Rate',
-											labelWidth: 40,
+											labelWidth: 80,
 											labelAlign: 'right',
-											width:170,
+											width:210,
 											formatter: formatItem,
 											editable:false,
 											readonly:true,
@@ -360,100 +370,173 @@
 						</tr>
 						<tr>
 							<td>
-								<input id="e-priority" class="easyui-textbox"
-									data-options="label:'Priority', labelWidth: 90, labelAlign: 'right', 
-										method: 'get', width: 220, editable:false, readonly:true"></input>
-					            <input id="h-priority" type="hidden" />
+								<input id="e-sev" class="easyui-textbox" 
+									data-options="								
+										label:'Severity',
+										labelWidth: 70,
+										labelAlign: 'right',
+					                    url:'/Rest/bugseveritylist',
+					                    method: 'get',
+					                    readonly:true,
+										width:200"></input><input id="h-sev" type="hidden" />
 							</td>
-							<td>
-								<input id="e-category" class="easyui-textbox"
-									data-options="label:'Category', labelWidth: 100, labelAlign: 'right',
-					                    method: 'get', width: 230, editable:false, readonly:true"></input>
-					            <input id="h-category" type="hidden" />
+							<td><input id="e-priority" class="easyui-textbox"
+								data-options="
+					                    label:'Priority',
+					                    labelWidth: 80,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 210,
+					                    editable:false,
+					                    readonly:true"></input>
+								<input id="h-priority" type="hidden" /></td>
+							<td><input id="e-category"
+								class="easyui-textbox"
+								data-options="
+					                    label:'Category',
+					                    labelWidth: 80,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 210,
+					                    editable:false,
+					                    readonly:true"></input>
+								<input id="h-category" type="hidden" /></td>
+						</tr>
+						<tr>
+							<td><input id="e-pname"
+								class="easyui-textbox"
+								data-options="
+					                    label:'Product name',
+					                    labelWidth: 70,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width:200,
+					                    editable:false,
+					                    readonly:true"></input>
+								<input id="h-pname" type="hidden" /></td>
+							<td><input id="e-pver"
+								class="easyui-textbox"
+								data-options="
+					                    label:'Product version',
+					                    labelWidth: 80,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 210,
+					                    editable:false,
+					                    readonly:true"></input>
+							</td>
+							<td><input id="e-pos"
+								class="easyui-textbox"
+								data-options="
+					                    label:'OS',
+					                    labelWidth: 80,
+					                    labelAlign: 'right',
+					                    method: 'get',
+					                    width: 210,
+					                    editable:false,
+					                    readonly:true"></input>
+								<input id="h-pos" type="hidden" /></td>
+						</tr>
+						
+						<tr>
+							<td colspan="3"><input id="e-desc" class="easyui-textbox"
+								data-options="
+										label:'Description',
+										labelWidth: 70,
+										labelAlign: 'right',
+										width:640,
+										editable:false,
+					                    readonly:true,
+										multiline:true,
+										onClickButton:search"></input>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="3"><input id="e-key" class="easyui-textbox"
+								data-options="
+										label:'Keywords',
+										labelWidth: 70,
+										labelAlign: 'right',
+										width:640,
+										editable:false,
+					                    readonly:true,
+										onClickButton:search"></input>
+							</td>
+						</tr>
+						<tr>
+							<td><input id="e-develop" class="easyui-textbox"
+								data-options="
+					                    label:'Developer',
+					                    labelWidth: 70,
+					                    labelAlign: 'right',
+					                    width: 200,
+					                    editable:false,
+					                    readonly:true"></input>
+							</td>
+							<td  colspan="2"><input id="e-review" class="easyui-textbox"
+								data-options="
+					                    label:'Reviewer',
+					                    labelWidth: 80,
+					                    labelAlign: 'right',
+					                    width: 210,
+					                    editable:false,
+					                    readonly:true"></input>
+							</td>
+							<!-- <td>
+								<label class="textbox-label textbox-label-before" style="text-align: right; width: 80px; 
+										height: 27px; line-height: 27px;" for="_easyui_textbox_input4">Pass</label>
+								<input id="e-pass" type="checkbox" checked="checked" />
+							</td> -->
+						</tr>
+						<tr>
+							<td><input id="e-reporter" class="easyui-textbox"
+								data-options="
+					                    label:'Reporter',
+					                    labelWidth: 70,
+					                    labelAlign: 'right',
+					                    width: 200,
+					                    editable:false,
+					                    readonly:true
+					                    "></input>
+							</td>
+							<td><input id="e-cdt" class="easyui-textbox"
+								data-options="
+					                    label:'Creation Date',
+					                    labelWidth: 80,
+					                    labelAlign: 'right',
+					                    width: 210,
+					                    editable:false,
+					                    readonly:true
+					                    "></input>
 							</td>
 							<td>
 								<input id="e-vote" class="easyui-textbox" 
 									data-options="								
 										label:'Vote',
-										labelWidth: 40,
+										labelWidth: 80,
 										labelAlign: 'right',
 										editable:false,
 					                    readonly:true,
-										width:170"></input>
-							</td>
-						</tr>
-						<tr>
-							<td style="width:230px">
-								<input id="e-pname" class="easyui-textbox"
-									data-options="label:'Product name', labelWidth: 90, labelAlign: 'right',
-					                    method: 'get', width:220, editable:false, readonly:true"></input>
-					            <input id="h-pname" type="hidden" />
-							</td>
-							<td style="width:240px">
-							    <input id="e-pver" class="easyui-textbox"
-									data-options="label:'Product version', labelWidth: 100, labelAlign: 'right',
-					                    method: 'get', width: 230, editable:false, readonly:true"></input>
-							</td>
-							<td style="width:180px">
-							    <input id="e-pos" class="easyui-textbox"
-									data-options="label:'OS', labelWidth: 40, labelAlign: 'right',
-					                    method: 'get', width: 170,  editable:false, readonly:true"></input>	
-								<input id="h-pos" type="hidden" />
+										width:210"></input>
 							</td>
 						</tr>
 						<tr>
 							<td colspan="3">
-								<input id="e-title" class="easyui-textbox" 
-									data-options="label:'Title', labelWidth: 90, labelAlign: 'right',
-										width:640, editable:false, readonly:true, onClickButton:search"></input>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<input id="e-desc" class="easyui-textbox" 
-									data-options="label:'Description', labelWidth: 90, labelAlign: 'right', width:640,
-										editable:false, readonly:true, multiline:true, onClickButton:search"></input>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input id="e-develop" class="easyui-textbox"
-									data-options="label:'Developer', labelWidth: 90,
-					                    labelAlign: 'right', width: 220, editable:false, readonly:true"></input>
-							</td>
-							<td colspan="2">
-								<input id="e-review" class="easyui-textbox"
-									data-options="label:'Reviewer', labelWidth: 100,
-					                    labelAlign: 'right', width: 230, editable:false, readonly:true"></input>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<input id="e-reporter" class="easyui-textbox"
-									data-options="label:'Reporter', labelWidth: 90,
-					                    labelAlign: 'right', width: 220, editable:false, readonly:true"></input>
-							</td>
-							<td colspan="2">
-								<input id="e-cdt" class="easyui-textbox"
-									data-options="label:'Creation Date', labelWidth: 100,
-					                    labelAlign: 'right', width: 230, editable:false, readonly:true"></input>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-							<div style="float:right">
-								<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
-									<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save
-								</a>
-								<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
-									<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>								
-							</div>
+								<div style="float: right">
+									<a href="javascript:void(0)" class="easyui-linkbutton"
+										onClick=save()> <i
+										class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save
+									</a> <a href="javascript:void(0)" class="easyui-linkbutton"
+										onClick="$('#editw').dialog('close')"> <i
+										class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel
+									</a>
+								</div>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-		    </div>
-		    <div title="View solutions">
+			</div>
+		    <div title="Check solutions">
 		    	<div id="e-patch-list" class="easyui-panel" data-options="border:false,height:180">
 		    	
 		    	</div>
@@ -463,12 +546,18 @@
 						<tbody>
 							<tr>
 								<td>
-									<script id="editor" type="text/plain" style="width:640px;height:151px;"></script>
+									<script id="editor" type="text/plain" style="width:660px;height:151px;"></script>
 								</td>
 							</tr>
 							<tr>
 								<td>
 									<div style="float:right">
+										<label class="textbox-label textbox-label-before" style="text-align: right; width: 80px; 
+										height: 27px; line-height: 27px;" for="_easyui_textbox_input4">Pass</label>
+										<span style="margin-right:15px">
+											<input id="e-pass" type="checkbox" checked="" 
+											style="vertical-align:text-bottom;margin-bottom:-1px;*margin-bottom:-4px;"/></span>
+										<input id="e-patch-id" type="hidden">
 										<a href="javascript:void(0)" class="easyui-linkbutton" onClick=reply()>
 											<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Reply</a>
 										<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
@@ -553,19 +642,21 @@
 				id : $('#e-bid').textbox('getValue'),
 				classification : $('#h-category').val(),
 				priority_id : $('#h-priority').val(),
+				sev : $('#h-sev').val(),
 				product_name_id : $('#h-pname').val(),
 				product_version : $('#e-pver').textbox('getValue'),
 				product_os_id : $('#h-pos').val(),
 				status_id : $('#e-status').combobox('getValue'),
-				title : $('#e-title').textbox('getValue'),
+				keyword : $('#e-key').textbox('getValue'),
 				short_desc : $('#e-desc').textbox('getValue'),
 				//reporter_id : 
 				//creation_ts :
 				developer_id : $('#e-develop').textbox('getValue'),
 				reviewer_id : $('#e-review').textbox('getValue'),
 				rank : $('#e-rank').combobox('getValue'),
-				typeid : '3',
-				patch_desc : ue.getContent()
+				typeid : '3'
+				//,
+				//patch_desc : ue.getContent()
 		}
 		var dg= $('#dg');
 		//console.log(data);
@@ -576,9 +667,11 @@
 		var url= MODEL + 'reply';
 		SyntaxHighlighter.all();
 		var data= {
-				id : $('#cursol_id').textbox('getValue'),
-				reply : ue.getContent()
+				id : $('#e-bid').textbox('getValue'),
+				reply : ue.getContent(),
+				pass : $('#e-pass').is(':checked')?1:0
 		}
+
 		$.ajax({
 		    type: "POST",
 		    url:url,
@@ -591,7 +684,7 @@
 		    	fullScreenMask('close');
 				var result = eval('('+result+')');					
 				if (result.status){
-					$('#e-patch-list').panel('refresh', MODEL + 'solutions?id=' + $('#e-bid').textbox('getValue'));
+					$('#e-patch-list').panel('refresh', MODEL + 'patchreplylist?id=' + $('#e-bid').textbox('getValue'));
 					show('Success',result.info);
 				} else {
 					show('Error', result.info);
@@ -614,20 +707,20 @@
 	$(function() {
 		// editor windows
 		$("#editw").dialog({
-			width:668,
+			width:684,
 			closed:true,
 			modal:true,
 			shadow:false,
 			closable:true,
 			draggable:true,
 			onBeforeOpen:function(){
-				$('#e-patch-list').panel('refresh', MODEL + 'solutions?id=' + $('#e-bid').textbox('getValue'));
+				$('#e-patch-list').panel('refresh', MODEL + 'patchreplylist?id=' + $('#e-bid').textbox('getValue'));
 			}
 		});
 		// dynamic bind datagrid
 		// it must be binded at the end because it will be not tiny if not
 		$('#dg').datagrid({
-			url:'/Bug/list?sort=creation_ts&order=desc&typeid=3',
+			url:'/Admin/Bug/list?sort=creation_ts&order=desc&typeid=3',
 			onBeforeLoad : function() {
 				// show fullscreen modal windows
 				fullScreenMask('open');

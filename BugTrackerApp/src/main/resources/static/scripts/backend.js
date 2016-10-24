@@ -746,3 +746,36 @@ function doajax(url, data, method, callback){
 	    }        
 	 });
 }
+
+function doajax01(url, data, method, callback){
+	$.ajax({
+	    type: method,
+	    url:url,
+	    data:data,
+	    datatype: "json",
+	    beforeSend:function(){
+	    	//fullScreenMask('open');
+	    },
+	    success:function(result){
+			//var result = eval('('+result+')');					
+			if (result.status){
+				show('Success',result.info);
+				callback();
+			} else {
+				show('Error', result.info);
+			}
+			//fullScreenMask('close');
+		},
+	    complete: function(XMLHttpRequest, textStatus){
+	    	//fullScreenMask('close');
+	    },
+	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+	    error: function(result){
+	    	//fullScreenMask('close');
+	    	//console.log(result.responseText);
+        	result = result.responseText;
+        	var result = eval('('+result+')');
+        	show('Error',result.info);
+	    }        
+	 });
+}

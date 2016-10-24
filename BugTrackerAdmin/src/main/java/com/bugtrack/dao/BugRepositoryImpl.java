@@ -90,6 +90,15 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 			isbpri = true;
 			tempSql = tempSql + " and b.priority_id=:pid ";
 		}
+		// severity
+		String sev="";
+		boolean issev=false;
+		if (keywords.containsKey("sev")) {
+			sev = keywords.get("sev");
+			issev = true;
+			tempSql = tempSql + " and b.severity_id=:ssid ";
+		}
+		
 		// bug id
 		if (keywords.containsKey("bid")) {
 			bid = keywords.get("bid");
@@ -129,6 +138,7 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 			tempSql = tempSql + " and b.reviewer_id=:breview  and (b.status_id=3 or b.status_id=4) ";
 		}
 
+		
 		// creation time
 		boolean iscts1 = false, iscts2 = false;
 		String cts1 = "", cts2 = "";
@@ -150,8 +160,8 @@ public class BugRepositoryImpl implements BugRepositoryCustom {
 			tempSql = tempSql + " and left(b.creation_ts,10) = :cts2 ";
 		}
 		
-System.out.println(cts1);
-System.out.println(cts2);
+//System.out.println(cts1);
+//System.out.println(cts2);
 		// bug status
 		if (keywords.containsKey("bstatus")) {
 			bstatus = keywords.get("bstatus");
@@ -164,6 +174,10 @@ System.out.println(cts2);
 			sql = sql.append(tempSql);
 		}
 
+		//sort
+		String sort = " order by "+pageable.getSort().toString();
+		sort = sort.replace(':', ' ');
+		sql = sql.append(sort);
 		Query query = em.createNativeQuery(sql.toString(), BugsModel.class);// "BugsMapping");
 
 		// product
@@ -207,9 +221,13 @@ System.out.println(cts2);
 		if (iscts2) {
 			query.setParameter("cts2", cts2);
 		}
+		if(issev){
+			query.setParameter("ssid", sev);
+		}
 		//System.out.println(query.toString());
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("total", query.getResultList().size());
+		//System.out.println(pageable.getSort().toString());
 		query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
 		query.setMaxResults(pageable.getPageSize());
 //		Collection<BugsModel> bugs = query.getResultList();

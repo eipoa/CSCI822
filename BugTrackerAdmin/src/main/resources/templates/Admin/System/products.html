@@ -61,11 +61,11 @@
 						<b class="caret"></b>
 				</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/Message/inbox"><i
+						<li><a href="/Admin/Message/inbox"><i
 								class="fa fa-fw fa-envelope"></i> Inbox <span
 								class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i>
+						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i>
 								Profile</a></li>
 						<li><a href="javascript:changepassword()"><i
 								class="fa fa-fw fa-key"></i> Change Password</a></li>
@@ -76,17 +76,17 @@
 			</ul>
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
-					<li><a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+					<li><a href="/Admin/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
 					</li>
-					<li><a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i>
+					<li><a href="/Admin/Bug/assign"><i class="fa fa-fw fa-tasks"></i>
 							Assign Bugs</a></li>
-					<li><a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i>
+					<li><a href="/Admin/Bug/process"><i class="fa fa-fw fa-medkit"></i>
 							Process Bugs</a></li>
-					<li><a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i>
+					<li><a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i>
 							Review Solutions</a></li>
-					<li><a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i>
+					<li><a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i>
 							Bug Reports</a></li>
-					<li><a href="/Message/inbox"><i
+					<li><a href="/Admin/Message/inbox"><i
 							class="fa fa-fw fa-envelope"></i> Inbox <span
 							class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 					<li><a href="javascript:;" data-toggle="collapse"
@@ -94,25 +94,23 @@
 							Authorization<i class="fa fa-fw fa-caret-down"></i>
 					</a>
 						<ul id="demo0" class="collapse">
-							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i>
+							<li><a href="/Admin/Auth/user"><i class="fa fa-fw fa-user"></i>
 									User Admin</a></li>
-							<li class="active"><a href="/Auth/roles"><i
+							<li class="active"><a href="/Admin/Auth/roles"><i
 									class="fa fa-fw fa-group"></i> Role</a></li>
-							<li><a href="/Auth/resources"><i
+							<li><a href="/Admin/Auth/resources"><i
 									class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i>
-									Menu</a></li>
 						</ul></li>
 					<li><a href="javascript:;" data-toggle="collapse"
 						data-target="#demo1"> <i class="fa fa-fw fa-reorder"></i>
 							System Admin<i class="fa fa-fw fa-caret-down"></i>
 					</a>
 						<ul id="demo1" aria-expanded="true" class="nav navbar-nav">
-							<li class="active"><a href="/System/products"><i
+							<li class="active"><a href="/Admin/System/products"><i
 									class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li><a href="/System/bugparams"><i
+							<li><a href="/Admin/System/bugparams"><i
 									class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
-							<li><a href="/System/parameters"><i
+							<li><a href="/Admin/System/parameters"><i
 									class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul></li>
 				</ul>
@@ -144,8 +142,7 @@
 						<div id="cc" class="easyui-layout" option-data=""
 							style="width: auto; height: 500px;">
 							<div
-								data-options="region:'west',title:'Role list',collapsible:false,minHeight:270"
-								style="width: 65%">
+								data-options="region:'center',title:'Product list',collapsible:false,minHeight:270">
 								<!-- easyui table for user list-->
 								<table id="dg" class="easyui-datagrid"
 									data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
@@ -181,21 +178,25 @@
 													class="easyui-linkbutton easyui-tooltip"
 													title="create a new role"
 													data-options="plain:true"
-													onClick=save(1,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a></td>
+													onClick=psave(1)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a><a href="javascript:void(0)"
+												class="easyui-linkbutton easyui-tooltip"
+												title="modify existing roles"
+												data-options="plain:true"
+												onClick=pmodify(1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a></td>
 											</tr>
 										</tbody>
 									</table>
 								</div>
 							</div>
 
-							<div data-options="region:'center',collapsible:false">
+							<div data-options="region:'west',collapsible:false" style="width: 35%">
 								<div class="easyui-layout" data-options="fit:true">
 									<div
 										data-options="region:'north',title:'Operating system list',border:false,collapsible:false"
 										style="height: 50%">
 										<div id="dgpn" class="easyui-datalist"
-											data-options="idField:'id',valueField:'id', textField:'name',
-										toolbar:'#tb02',border:false,checkbox: true,lines:true"></div>
+											data-options="idField:'id',valueField:'id', textField:'name',loadMsg:'',
+										toolbar:'#tb02',border:false,checkbox: true,lines:true,onSelect: dgPnSelect"></div>
 										<div id="tb02" style="padding: 2px 5px;">
 											<input id="e-pnid" type="hidden" /> <input id="e-pname"
 												class="easyui-textbox"
@@ -204,17 +205,17 @@
 												class="easyui-linkbutton easyui-tooltip"
 												title="create a new role"
 												data-options="plain:true"
-												onClick=save(2,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a> <a href="javascript:void(0)"
+												onClick=psave(2)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a> <a href="javascript:void(0)"
 												class="easyui-linkbutton easyui-tooltip"
 												title="modify existing roles"
 												data-options="plain:true"
-												onClick=save(2,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
+												onClick=pmodify(2)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
 										</div>
 									</div>
 									<div
 										data-options="region:'center',title:'Operating system list',border:false,collapsible:false">
 										<div id="dgos" class="easyui-datalist"
-											data-options="idField:'id',valueField:'id', textField:'osname',
+											data-options="idField:'id',valueField:'id', textField:'osname',loadMsg:'',onSelect: dgOsSelect,
 											toolbar:'#tb01',border:false,checkbox: true,lines:true"></div>
 										<div id="tb01" style="padding: 2px 5px;">
 											<input id="e-osid" type="hidden" /> <input id="e-osname"
@@ -224,11 +225,11 @@
 												class="easyui-linkbutton easyui-tooltip"
 												title="create a new role"
 												data-options="plain:true"
-												onClick=save(3,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a> <a href="javascript:void(0)"
+												onClick=psave(3)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a> <a href="javascript:void(0)"
 												class="easyui-linkbutton easyui-tooltip"
 												title="modify existing roles"
 												data-options="plain:true"
-												onClick=save(3,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
+												onClick=pmodify(3)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
 										</div>
 
 									</div>
@@ -324,28 +325,56 @@
 		else if(y==3)
 			$('#dgos').datalist('reload');
 	}
-	// click save
-	function save(y,x){
+	function psave(x){
 		var url= MODEL + '/save';
-		var ids="";
-		var prow = $('#dgpn').datalist('getChecked');
-		//console.log(prow);
-		var orow = $('#dgos').datalist('getChecked');
-		//console.log(orow);
-		var data= {
-				id: (x==0?0:$('#e-id').val()),
-				version: $('#e-ver').textbox('getValue'),
-				status: (x==0?1:$('#e-status').val()),
-				pn: prow[0].id,
-				pname: prow[0].name,
-				on: orow[0].id,
-				oname: orow[0].osname,
-				tp: y
+		var newver;
+		var prow, orow;
+		var pname, oname;
+		if(x==1){
+			newver = $('#e-ver').textbox('getValue');
+			if(newver==""){
+				show("error", "please enter version info");
+				return;
+			}
+			prow = $('#dgpn').datalist('getChecked');
+			orow = $('#dgos').datalist('getChecked');
+			if(prow.length==0 || orow.length==0){
+				show("error", "please select prodtct name and platform");
+				return;
+			}
+			var data ={
+					txt: newver,
+					nid: prow[0].id,
+					oid: orow[0].id,
+					tp: 1
+			}
+		}else if(x == 2){
+			pname = $('#e-pname').textbox('getValue');
+			if(pname == ""){
+				show("error", "please enter name info");
+				return;
+			}
+			var data ={
+					txt: pname,
+					tp: 2
+			}
+		}else{
+			oname = $('#e-osname').textbox('getValue');
+			if(oname == ""){
+				show("error", "please enter platform info");
+				return;
+			}
+			var data ={
+					txt: oname,
+					tp: 3
+			}
 		}
-		//console.log(data);
-		//console.log(data);
+		doajax01(url, data, 'POST', x);
+	}
+
+	function doajax01(url, data, method, y){
 		$.ajax({
-		    type: "POST",
+		    type: method,
 		    url:url,
 		    data:data,
 		    datatype: "json",
@@ -355,8 +384,8 @@
 		    success:function(result){
 				var result = eval('('+result+')');					
 				if (result.status){
-					reload(y);
 					show('Success',result.info);
+					reload(y);
 				} else {
 					show('Error', result.info);
 				}
@@ -365,15 +394,73 @@
 		    complete: function(XMLHttpRequest, textStatus){
 		    	fullScreenMask('close');
 		    },
-		    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
 		    error: function(result){
 		    	fullScreenMask('close');
-		    	//console.log(result.responseText);
 	        	result = result.responseText;
 	        	var result = eval('('+result+')');
 	        	show('Error',result.info);
 		    }        
 		 });
+		return 0;
+	}
+	
+	function pmodify(x){
+		var url= MODEL + '/modify';
+		var newver;
+		var prow, orow;
+		if(x==1){
+			newver = $('#e-ver').textbox('getValue');
+			if(newver==""){
+				show("error", "please enter version info");
+				return;
+			}
+			prow = $('#dgpn').datalist('getChecked');
+			orow = $('#dgos').datalist('getChecked');
+			if(prow.length==0 || orow.length==0){
+				show("error", "please select prodtct name and platform");
+				return;
+			}
+			var data ={
+					id: $('#e-id').val(),
+					txt: newver,
+					nid: prow[0].id,
+					oid: orow[0].id,
+					tp: 1
+			}
+		}else if(x == 2){
+			pname = $('#e-pname').textbox('getValue');
+			if(pname == ""){
+				show("error", "please enter name info");
+				return;
+			}
+			prow = $('#dgpn').datalist('getChecked');
+			if(prow.length==0){
+				show("error", "please select a name to modify");
+				return;
+			}
+			var data ={
+					id: prow[0].id,
+					txt: pname,
+					tp: 2
+			}
+		}else{
+			oname = $('#e-osname').textbox('getValue');
+			if(oname == ""){
+				show("error", "please enter platform info");
+				return;
+			}
+			orow = $('#dgos').datalist('getChecked');
+			if(orow.length==0){
+				show("error", "please select platform to modify");
+				return;
+			}
+			var data ={
+					id: orow[0].id,
+					txt: oname,
+					tp: 3
+			}
+		}
+		doajax01(url, data, 'POST', x);
 	}
 
 	function dgProdSelect(index,row){
@@ -385,6 +472,13 @@
 		$('#dgpn').datalist('selectRecord', row.name.id);
 		$('#dgos').datalist('uncheckAll');
 		$('#dgos').datalist('selectRecord', row.os.id);
+	}
+	
+	function dgPnSelect(index,row){
+		$('#e-pname').textbox('setValue', row.name);
+	}
+	function dgOsSelect(index,row){
+		$('#e-osname').textbox('setValue', row.osname);
 	}
 	
 	function formatProductStatus(value,row,index){

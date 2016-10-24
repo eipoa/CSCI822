@@ -13,5 +13,7 @@ import com.bugtrack.model.BugStatusModel;
  */
 public interface BugStatusRepository  extends JpaRepository<BugStatusModel, Integer>{
 
+	BugStatusModel findByDesc(String string);
+
 
 }

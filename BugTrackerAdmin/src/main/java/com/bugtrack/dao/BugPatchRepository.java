@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.bugtrack.model.BugPatchModel;
+import com.bugtrack.model.BugsModel;
 
 /**
  * @author Administrator
@@ -15,9 +16,9 @@ import com.bugtrack.model.BugPatchModel;
  */
 public interface BugPatchRepository  extends JpaRepository<BugPatchModel, Integer>{
 
-	List<BugPatchModel> findAllByBug_id(Integer id);
+	List<BugPatchModel> findAllByBugOrderByCreationts(BugsModel findOne);
 
+	BugPatchModel findTop1ByBugOrderByCreationtsDesc(BugsModel bug);
 
-	//BugPatchModel findByBug_id(Integer id);
 
 }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -85,6 +86,17 @@ public class BugsModel {
 	public void setPriority(BugPriorityModel priority) {
 		this.priority = priority;
 	}
+	
+	@NotNull
+	@OneToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="severity_id")// 1:normal/2:medium/3:high
+	private BugSeverityModel severity;
+	public BugSeverityModel getSeverity() {
+		return severity;
+	}
+	public void setSeverity(BugSeverityModel severity) {
+		this.severity = severity;
+	}
 
 	@NotNull
 	@OneToOne(cascade=CascadeType.ALL)
@@ -131,13 +143,14 @@ public class BugsModel {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-
-	private String short_desc;
-	public String getShort_desc() {
-		return short_desc;
+	
+	@Column(name="short_desc")
+	private String shortdesc;
+	public String getShortdesc() {
+		return shortdesc;
 	}
-	public void setShort_desc(String short_desc) {
-		this.short_desc = short_desc;
+	public void setShortdesc(String shortdesc) {
+		this.shortdesc = shortdesc;
 	}
 	
 	/**
@@ -187,12 +200,13 @@ public class BugsModel {
 	}
 
 	@NotNull
-	private String creation_ts;
-	public String getCreation_ts() {
-		return creation_ts;
+	@Column(name="creation_ts")
+	private String creationts;
+	public String getCreationts() {
+		return creationts;
 	}
-	public void setCreation_ts(String creation_ts) {
-		this.creation_ts = creation_ts;
+	public void setCreationts(String creationts) {
+		this.creationts = creationts;
 	}
 
 	@NotNull
@@ -223,20 +237,20 @@ public class BugsModel {
 //		this.solution = solution;
 //	}
 	
-	@OneToMany(cascade = { CascadeType.ALL },mappedBy ="bug")
-	@JsonBackReference
-	private Collection<BugPatchModel> solutions = new ArrayList<BugPatchModel>();
-	public Collection<BugPatchModel> getSolutions() {
-		return solutions;
-	}
-	public void setSolutions(Collection<BugPatchModel> solutions) {
-		this.solutions = solutions;
-	}
-	public void addSolution(BugPatchModel patch){  
-		patch.setBug(this);
-		solutions.add(patch);
-    } 
-	
+//	@OneToMany(cascade = { CascadeType.ALL },mappedBy ="bug")
+//	@JsonBackReference
+//	private Collection<BugPatchModel> solutions = new ArrayList<BugPatchModel>();
+//	public Collection<BugPatchModel> getSolutions() {
+//		return solutions;
+//	}
+//	public void setSolutions(Collection<BugPatchModel> solutions) {
+//		this.solutions = solutions;
+//	}
+//	public void addSolution(BugPatchModel patch){  
+//		patch.setBug(this);
+//		solutions.add(patch);
+//    } 
+//	
 	@NotNull
 	private Integer vote = 0;
 	public Integer getVote() {
@@ -265,10 +279,33 @@ public class BugsModel {
 		return str;
 	}
 	
-//	public BugPatchModel getCurentSolution() {
+	@OneToMany(cascade = { CascadeType.ALL },mappedBy ="bug")
+	@JsonBackReference
+	private Collection<BugCommentModel> comments = new ArrayList<BugCommentModel>();
+	public Collection<BugCommentModel> getComments() {
+		return comments;
+	}
+	public void setComments(Collection<BugCommentModel> comments) {
+		this.comments = comments;
+	}
+	public void addSolution(BugCommentModel comment){  
+		comment.setBug(this);
+		comments.add(comment);
+    }
+
+	private String keywords;
+	public String getKeywords() {
+		return keywords;
+	}
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+	
+//	public BugPatchModel getCurentsolution() {
 //		BugPatchModel curentSolution = new BugPatchModel();
 //		for (BugPatchModel p : solutions) {
-//            if(curentSolution.getCreation_ts()==null||(p.getCreation_ts().compareTo(curentSolution.getCreation_ts())>0))
+//            if(curentSolution.getCreationts()==null||(p.getCreationts().compareTo(curentSolution.getCreationts())>0))
 //            	curentSolution = p;
 //        }
 //		if(curentSolution.getId()!=null)
@@ -277,13 +314,12 @@ public class BugsModel {
 //			return null;
 //	}
 	
-	
-//	@Override
-//	public String toString() {
-//		return "BugsModel [id=" + id + ", priority=" + priority + ", classification=" + classification + ", product="
-//				+ product + ", status=" + status + ", title=" + title + ", short_desc=" + short_desc + ", reporter="
-//				+ reporter + ", creation_ts=" + creation_ts + ", developer=" + developer + ", reviewer=" + reviewer
-//				+ ", change_ts=" + change_ts + ", rank=" + rank + "]";
-//	}
+	@Override
+	public String toString() {
+		return "BugsModel [id=" + id + ", priority=" + priority + ", classification=" + classification + ", product="
+				+ product + ", status=" + status + ", title=" + title + ", short_desc=" + shortdesc + ", reporter="
+				+ reporter + ", creation_ts=" + creationts + ", developer=" + developer + ", reviewer=" + reviewer
+				+ ", change_ts=" + change_ts + ", rank=" + rank + "]";
+	}
 	
 }

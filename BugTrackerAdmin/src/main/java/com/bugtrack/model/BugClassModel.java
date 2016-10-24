@@ -35,4 +35,9 @@ public class BugClassModel {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	@Override
+	public String toString() {
+		return "BugClassModel [id=" + id + ", descp=" + descp + "]";
+	}
+	
 }

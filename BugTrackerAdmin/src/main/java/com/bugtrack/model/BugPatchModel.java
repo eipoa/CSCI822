@@ -4,6 +4,7 @@
 package com.bugtrack.model;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 /**
  * @author Administrator
@@ -29,7 +28,14 @@ public class BugPatchModel {
 	@NotNull
 	private String description;
 	private String url;
-	private String creation_ts;
+	@Column(name="creation_ts")
+	private String creationts;
+	@Column(name="reply_ts")
+	private String replyts;
+	
+	
+	
+	
 	public Integer getId() {
 		return id;
 	}
@@ -48,15 +54,21 @@ public class BugPatchModel {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	public String getCreation_ts() {
-		return creation_ts;
+	public String getCreationts() {
+		return creationts;
 	}
-	public void setCreation_ts(String creation_ts) {
-		this.creation_ts = creation_ts;
+	public void setCreationts(String creationts) {
+		this.creationts = creationts;
 	}
-	
+	public String getReplyts() {
+		return replyts;
+	}
+	public void setReplyts(String replyts) {
+		this.replyts = replyts;
+	}
+
 	@NotNull
-	private Integer status = 0;
+	private Integer status = 0;// 0 test 1 release
 	public Integer getStatus() {
 		return status;
 	}
@@ -67,7 +79,6 @@ public class BugPatchModel {
 	@NotNull
 	@ManyToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="bug_id")
-	@JsonManagedReference
 	private BugsModel bug;
 	public BugsModel getBug() {
 		return bug;
@@ -76,6 +87,19 @@ public class BugPatchModel {
 		this.bug = bug;
 	}
 	
+//	@NotNull
+//	@ManyToOne(cascade=CascadeType.ALL)
+//	@JoinColumn(name="commentid")
+//	@JsonManagedReference
+//	private BugCommentModel comment;
+//	public BugCommentModel getComment() {
+//		return comment;
+//	}
+//	public void setComment(BugCommentModel comment) {
+//		this.comment = comment;
+//	}
+	
+
 	private String reply = "";
 	public String getReply() {
 		return reply;
@@ -99,15 +123,25 @@ public class BugPatchModel {
 //	}
 
 	
-//	@NotNull
-//	@OneToOne(cascade=CascadeType.ALL)
-//	@JoinColumn(name="bug_id")
-//	private BugsModel bug;
-//	public BugsModel getBug() {
-//		return bug;
-//	}
-//	public void setBug(BugsModel bug) {
-//		this.bug = bug;
-//	}
+	@NotNull
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="submitter_id")
+	private UserModel submitter;
+	public UserModel getSubmitter() {
+		return submitter;
+	}
+	public void setSubmitter(UserModel submitter) {
+		this.submitter = submitter;
+	}
+	
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name="replier_id")
+	private UserModel replier;
+	public UserModel getReplier() {
+		return replier;
+	}
+	public void setReplier(UserModel replier) {
+		this.replier = replier;
+	}
 
 }

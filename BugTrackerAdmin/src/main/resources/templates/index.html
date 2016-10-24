@@ -9,7 +9,7 @@
     <meta name="description" content="index">
     <meta name="author" content="Li baoxing">
 
-	<title>Bugs Admin - Error</title>
+	<title>Bugs Admin - Index</title>
 	
 	<!-- Bootstrap Core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -18,6 +18,7 @@
 	<link href="/css/sb-admin.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
 	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="/css/backend.css" /> -->
 	<link rel="stylesheet" type="text/css" href="/css/frontend.css" />
 	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
     
@@ -44,7 +45,7 @@
 							class="icon-bar"></span> <span class="icon-bar"></span> <span
 							class="icon-bar"></span>
 					</button>
-					<a class="navbar-brand" href="/Admin/Public/login">Bug Tracker</a>
+					<a class="navbar-brand" href="/Admin/">Bug Tracker</a>
 				</div>
 			
 			<!-- Top Menu Items -->
@@ -52,16 +53,16 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
 							<i class="fa fa-user"></i> 
-							<span th:text="${fullname}">Fullname</span> <span class="label label-primary" th:text="${tasks}">tasks</span>
+							<span th:text="${fullname}">Fullname</span> <!-- <span class="label label-primary" th:text="${tasks}">tasks</span> -->
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
-							<li class="divider"></li>
-							<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+							<!-- <li><a href="/App/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+							<li class="divider"></li> -->
+							<li><a href="/App/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 							<li class="divider"></li>
-							<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+							<li><a href="/App/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -76,9 +77,9 @@
 	                    <div class="col-lg-12">
 							<ul class="nav nav-tabs" role="tablist">
 							  <li role="presentation" class="active"><a href="/">Find issues</a></li>
-							  <li role="presentation"><a href="/App/Bugs/report" th:if="${fullname!=null}">Report issues</a></li>
-							  <li role="presentation"><a href="/Public/login" th:if="${fullname==null}">Log in</a></li>
-							  <li role="presentation"><a href="/Public/signup" th:if="${fullname==null}">Sign up</a></li>
+							  <li role="presentation"><a href="/App/Bug/addbug" th:if="${fullname!=null}">Report issues</a></li>
+							  <li role="presentation"><a href="/App/Public/login" th:if="${fullname==null}">Log in</a></li>
+							  <li role="presentation"><a href="/App/Public/signup" th:if="${fullname==null}">Sign up</a></li>
 							</ul>
 						</div>
 	                </div>
@@ -94,19 +95,20 @@
 							</form>
 						</div>
 					</div>
-					<!-- Issues list -->
+					<!-- Issues catagory -->
 					<div class="row">
 						<div class="col-lg-12">
 							<div id="issueContainer">
 								<ul class="nav  nav-pills" role="tablist">
-								  <li role="presentation" class="active"><a href="/">newest</a></li>
-								  <li role="presentation"><a href="/App/Bugs/report">frequent</a></li>
-								  <li role="presentation"><a href="/Public/login">votes</a></li>
-								  <li role="presentation" class="dropdown">
+								  <li role="presentation" th:class="${idx==1}?'active':''"><a href="/">Newest</a></li>
+								  <li role="presentation" th:class="${idx==2}?'active':''"><a href="/?idx=2">Votes</a></li>
+								  <li role="presentation" th:class="${idx==3}?'dropdown active':'dropdown'">
 								  	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Products<span class="caret"></span></a>
 								  	  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
 								  	  	<!-- looply add menu -->
-									    <li role="presentation"  th:each="p,iterStat:${productList}"><a role="menuitem" tabindex="-1" th:href="@{/App/Bugs/search/(id=${p.id})}" th:text="${p.name}">pname</a></li>
+									    <li role="presentation"  th:each="p,iterStat:${productList}">
+									    	<a role="menuitem" tabindex="-1" th:href="@{/(idx=3, pn=${p.id})}" th:text="${p.name}">pname</a>
+									    </li>
 									  </ul>
 								  </li>
 								</ul>
@@ -116,57 +118,69 @@
 			        
 			        <!-- bug list -->
 			        <div class="row">
-			        	<div class="col-lg-9">
-				        	<div class="bugContainer">
-				        		<div class="cp">
+			        	<div class="col-lg-9" style="padding-right: 0px;">
+				        	<div class="bugContainer" th:if="${pages}" th:each="b,iterStat:${pages}">
+				        		<div class="cp" >
 				        			<div class="votes">
-				        				<div class="mini-counts"><span title="0 votes">0</span></div>
+				        				<div class="mini-counts"><span title="0 votes" th:text="${b.vote}">0</span></div>
 				        				<div>votes</div>
 				        			</div>
 				        			<div class="status unanswered">
-							            <div class="mini-counts"><span title="0 answers">0</span></div>
-							            <div>answers</div>
+							            <div class="mini-counts"><span title="0 answers" th:text="${b.getComments().size()}">0</span></div>
+							            <div>comments</div>
 							        </div>
-							        <div class="views">
+							        <!-- <div class="views">
 							            <div class="mini-counts"><span title="2 views">2</span></div>
 							            <div>views</div>
-							        </div>
+							        </div> -->
 				        		</div>
 				        		<div class="summary">
-							        <h4><a href="@{/App/Bugs/getit?(id=${})}" class="question-hyperlink" title="I'm using gulp.js and an optimization tool for requirejs (gulp-requirejs) it combines all scritps into one file. I have one define module with no name but it generates a name for it. The problem is I ...">RequireJS: optimizer generates name for define module</a></h4>
+							        <h4><a th:href="@{/App/Public/comments(id=${b.id},page=0,rows=50)}" target="blank" class="question-hyperlink" th:text="${b.title}"></a></h4>
 							        <div class="tags t-javascript t-jquery t-gulp t-requirejs">
-							            <code>javascript jquery gulp</code>
+							            <code th:text="${b.product.name.name}">pname</code>
+							            <code th:text="${b.product.version}">pname</code>
+							            <code th:text="${b.product.os.osname}">osname</code>
 							        </div>
 							        <div class="started">
-							            <a href="@{/App/Bugs/getit?(id=${})}" class="started-link">asked <span title="${creation_ts}" class="relativetime">33 secs ago</span></a>
-							            <a href="@{/User/view?(id=${})}">mddev</a> <span class="reputation-score" title="reputation score " dir="ltr">13</span>
+							            <a th:href="@{/App/Public/comments(id=${b.id},page=0,rows=50)}" target="blank" class="started-link">asked 
+							            <span title="" class="relativetime" th:text="${b.creationts}"></span>
+							            </a>
+							            <a href="javascript:void(0)" th:text="${b.reporter.first_name}">first_name</a> 
+							            <span class="reputation-score" title="reputation score " dir="ltr" th:text="${b.reporter.reputation}">13</span>
 							        </div>
 							    </div>
 				        	</div>
+				        	
+							<div calss="pager fl" th:if="${pages}" >
+								<ul th:fragment="pagination" class="pagination pd8">
+								    <li th:class="${!pages.hasPrevious()}?'disabled':'pagecur'">
+								        <a th:if="${pages.number eq 0}" href="javascript:void(0)" aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+								        <a th:unless="${pages.number eq 0}" th:href="@{/(page=${pages.number}, rows=${pages.size})}"  aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+								    </li>
+								
+								    <li th:each="no:${#numbers.sequence(0, pages.totalPages-1)}" th:class="${pages.number eq no}?'active':''">
+								    	<a class="pagecur" th:if="${no lt 5 or no eq pages.totalPages-1}" th:href="@{/(page=${no+1}, rows=${pages.size})}" th:inline="text">[[${no+1}]]</a>
+								    	<span th:if="${no eq 5 and pages.totalPages gt 5}" th:inline="text" class="page-numbers dots">…</span>
+								    </li>
+								
+								    <li th:class="${!pages.hasNext()}?'disabled':'pagecur'">
+								        <a th:if="${pages.number+1 ge pages.totalPages}" href="javascript:void(0)"   aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+								        <a th:unless="${pages.number+1 ge pages.totalPages}" th:href="@{/(page=${pages.number+2}, rows=${pages.size})}"  aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+								    </li>
+								</ul>
+							</div>
+				        	
 			        	</div>
-			        	<div class="col-lg-3">
+			        	<div class="col-lg-3" style="padding-left: 2px;padding-right: 2px;>
 				        	<div class="noteContainer">
-			        			<!-- <div class="jumbotron">
-									<h1>Hello, world!</h1>
-									<p>...</p>
-									<p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
-								</div> -->
-								<ul class="list-group">
+								<ul class="list-group" th:if="${topusers}">
 								  <li class="list-group-item active">
 								    <span class="badge"></span>
 								    <strong><h4 style="margin:0px">Top 10 users</h4></strong>
 								  </li>
-								  <li class="list-group-item">
-								    <span class="badge">14</span>
-								    Cras justo odio
-								  </li>
-								  <li class="list-group-item">
-								    <span class="badge">14</span>
-								    Cras justo odio
-								  </li>
-								  <li class="list-group-item">
-								    <span class="badge">14</span>
-								    Cras justo odio
+								  <li class="list-group-item" th:each="u,iterStat:${topusers}">
+								    <span class="badge" th:text="${u.reputation}">0</span>
+								    <span th:text="${u.getFirst_name()}">name</span>
 								  </li>
 								</ul>
 								<ul class="list-group" th:if="${news}">
@@ -174,13 +188,8 @@
 								    <span class="badge"></span>
 								    <strong><h4 style="margin:0px">Important update</h4></strong>
 								  </li>
-								  <li class="list-group-item">
-								    Cras justo odio
-								    Cras justo odio
-								    Cras justo odio
-								    Cras justo odio
-								    Cras justo odio
-								    Cras justo odio
+								  <li class="list-group-item" th:each="n,iterStat:${news}">
+								    <span th:utext="${n.descp}">name</span>
 								  </li>
 								</ul>
 				        	</div>
@@ -194,6 +203,51 @@
 
     </div>
     <!-- /#wrapper -->
+	<!-- mask windows -->
+	<div id="w" class="easyui-window" title="loading..."
+		data-options="modal:true,closed:true,closable:false,minimizable:false,maximizable:false,collapsible:false"
+		style="width: 300px; height: 80px; padding: 10px;">Processing,
+		please wait …</div>
+	<!-- change password -->
+	<div id="chpw" class="easyui-window" title="Change Password"
+		data-options="modal:true,closed:true,iconCls:'fa fa-fw fa-key',minimizable:false,maximizable:false,collapsible:false"
+		style="padding: 5px;">
+		<div>
+			<table class="edittable" style="margin: 0px" cellspacing="0"
+				cellpadding="0">
+				<tbody>
+					<tr>
+						<td colspan="2"><input id="e-oldpass"
+							class="easyui-passwordbox"
+							data-options="label:'Old password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input id="e-newpass01"
+							class="easyui-passwordbox"
+							data-options="label:'New password', labelWidth: 90, labelAlign: 'right',  width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2"><input id="e-newpass02"
+							class="easyui-passwordbox"
+							data-options="label:'New password', labelWidth: 90, labelAlign: 'right', width: 220 "></input>
+						</td>
+					</tr>
+					<tr>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick=chpw()>
+								<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save&nbsp;&nbsp;</a>
+						</td>
+						<td style="text-align: center">
+							<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#chpw').dialog('close')">
+								<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
 	<!-- jQuery -->
 	<script src="/scripts/jquery.min.js"></script>
 
@@ -210,7 +264,7 @@
 <!-- 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script> -->
 	
 <script type="text/javascript">
-	var MODEL = '/Bug/';
+	var MODEL = '/App/';
 	var ue;
 	
 	$(function() {	

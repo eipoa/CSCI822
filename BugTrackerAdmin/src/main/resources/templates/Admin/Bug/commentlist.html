@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="assign bugs">
+    <meta name="author" content="Li baoxing">
+
+<title>Bugs Admin - Bug Report</title>
+
+<!-- Bootstrap Core CSS -->
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Custom CSS -->
+<link href="/css/sb-admin.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/backend.css" />
+
+
+</head>
+<body>
+	<div id="answers" th:if="${pages!=null}">
+		<div class="answer" th:each="c,iterStat:${pages}">
+		    <table>
+		        <tbody>
+			        <tr>
+			            <td class="votecell">
+							<div class="vote">
+						        <input name="commentid" th:value="${c.id}" type="hidden">
+						        <span class="vote-up-off vote-up" title="This answer is useful (only for frontend)">up vote</span>
+						        <span itemprop="upvoteCount" class="vote-count-post ">6</span>
+						        <span class="vote-down-off vote-down" title="This answer is not useful (only for frontend)">down vote</span>
+							</div>
+			            </td>
+						<td class="answercell">
+						    <div class="post-text" itemprop="text">
+								<p th:text="${c.thetext}">thetext</p>
+								<p th:text="${c.submitter.first_name}">first_name</p>
+						    </div>
+						    <table class="fw">
+							    <tbody>
+							    <tr>
+								    <td class="post-signature" align="right">   
+									    <div class="user-info fr">
+										    <div class="user-action-time">
+										        submitted <span th:text="${c.creationts}" class="relativetime">creation_ts</span>
+										    </div>
+										    <div class="user-details">
+										        <a style="cursor:help" th:text="${c.submitter.first_name}" th:onclick="'javascript:alert(\''+${c.submitter.first_name}+'\')'">first_name</a>
+										        <div class="-flair">
+										            <span class="reputation-score" title="reputation score " dir="ltr" th:text="${c.submitter.reputation}">reputation</span>
+										        </div>
+										    </div>
+										</div>
+								    </td>
+							    </tr>
+							    </tbody>
+						    </table>
+						</td>
+			        </tr>
+				</tbody>
+			</table>
+		</div>
+		<br style="clear:both"/>
+		<div class="page-sizer fr">
+			<ul class="pagination pd8">
+				<li th:class="${pages.size eq 5}?'active':''">
+					<a class="pagecur" th:onclick="|refcomments(1, 5)|" th:inline="text">5</a>
+				</li>
+				<li th:class="${pages.size eq 10}?'active':''">
+					<a class="pagecur" th:onclick="|refcomments(1, 10)|" th:inline="text">10</a>
+				</li>
+				<li th:class="${pages.size eq 20}?'active':''">
+					<a class="pagecur" th:onclick="|refcomments(1, 20)|" th:inline="text">20</a><span class="page-numbers desc">per page</span>
+				</li>
+			</ul>
+			
+		</div>
+		<div calss="pager fl">
+			<ul th:fragment="pagination" class="pagination pd8">
+			    <li th:class="${pages.number eq 0}?'disabled':'pagecur'">
+			        <a th:if="${pages.number eq 0}" href="javascript:void(0)" aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+			        <a th:unless="${pages.number eq 0}" th:onclick="|refcomments(${pages.number-1}, 5)|"  aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+			    </li>
+			
+			    <li th:each="no:${#numbers.sequence(0, pages.totalPages-1)}" th:class="${pages.number eq no}?'active':''">
+			    	<a class="pagecur" th:if="${no lt 5 or no eq pages.totalPages-1}" th:onclick="|refcomments(${no+1}, ${pages.size})|" th:inline="text">[[${no+1}]]</a>
+			    	<span th:if="${no eq 5 and pages.totalPages gt 5}" th:inline="text" class="page-numbers dots">…</span>
+			    	<!-- <a class="pagecur" th:if="${no eq pages.totalPages}" th:onclick="|refcomments(${no+1}, ${pages.size})|" th:inline="text">[[${no+1}]]</a> -->
+			    </li>
+			
+			    <li th:class="${pages.number+1 ge pages.totalPages}?'disabled':'pagecur'">
+			        <a th:if="${pages.number+1 ge pages.totalPages}" href="javascript:void(0)"   aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+			        <a th:unless="${pages.number+1 ge pages.totalPages}" th:onclick="|refcomments(${pages.number+1}, 5)|"  aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+			    </li>
+			</ul>
+		</div>
+	</div>
+		<!-- Pagination Bar -->
+	<div style="float:right; padding:5px 15px 15px 0;">
+		<a href="javascript:void(0)" class="easyui-linkbutton" onClick=save()>
+			<i class="fa fa-save fa-btn-icon fa-green fa-lg"></i> Save
+		</a>
+		<a href="javascript:void(0)" class="easyui-linkbutton" onClick="$('#editw').dialog('close')">
+			<i class="fa fa-close fa-btn-icon fa-default fa-lg"></i> Cancel</a>	
+	</div>
+
+
+
+</body>
+
+</html>

@@ -58,8 +58,8 @@
 							<ul class="nav nav-tabs" role="tablist">
 							  <li role="presentation"><a href="/">Find issues</a></li>
 							  <li role="presentation"><a href="/App/Bugs/report" th:if="${fullname!=null}">Report issues</a></li>
-							  <li role="presentation" class="active"><a href="/Public/login" th:if="${fullname==null}">Log in</a></li>
-							  <li role="presentation"><a href="/Public/signup" th:if="${fullname==null}">Sign up</a></li>
+							  <li role="presentation" class="active"><a href="/App/Public/login" th:if="${fullname==null}">Log in</a></li>
+							  <li role="presentation"><a href="/App/Public/signup" th:if="${fullname==null}">Sign up</a></li>
 							</ul>
 						</div>
 	                </div>
@@ -99,7 +99,7 @@
 	<script type="text/javascript" src="/scripts/backend.js"></script>
 </body>
 <script type="text/javascript">
-	var MODEL = '/j_spring_security_check';
+	var MODEL = '/App/j_spring_security_check';
 	var ue;
 	function callback(){
 		location.href="/";
@@ -111,7 +111,7 @@
 				password: $('#Password1').val()
 		}
 		console.log(data);
-		doajax(url, data, 'POST', callback);
+		doajax01(url, data, 'POST', callback);
 	}
 </script>
 </html>

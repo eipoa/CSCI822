@@ -99,13 +99,13 @@ public class WebSecurityConfig{// extends WebSecurityConfigurerAdapter
         	http.antMatcher("/App/**").authorizeRequests().anyRequest().authenticated().accessDecisionManager(customAccessDecisionManager());
     		// define login pages
     		http.csrf().disable();
-    		http.formLogin().loginPage("/App/Public/login").loginProcessingUrl("/j_spring_security_check")
+    		http.formLogin().loginPage("/App/Public/login").loginProcessingUrl("/App/j_spring_security_check")
     				.usernameParameter("username").passwordParameter("password").permitAll();
     		http.formLogin().successHandler(authSuccessHandler);
     		http.formLogin().failureHandler(authFailureHandler);
     
     		// define logout pages***
-    		http.logout().logoutUrl("/j_spring_security_logout")
+    		http.logout().logoutUrl("/App/j_spring_security_logout")
     				.deleteCookies("JSESSIONID").logoutSuccessUrl("/").invalidateHttpSession(true);
     
     		// session manage***

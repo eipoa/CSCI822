@@ -9,7 +9,7 @@
     <meta name="description" content="index">
     <meta name="author" content="Li baoxing">
 
-	<title>Bugs Admin - Error</title>
+	<title>Bugs Admin - Report New Bugs</title>
 	
 	<!-- Bootstrap Core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -61,8 +61,8 @@
 							<b class="caret"></b>
 						</a>
 						<ul class="dropdown-menu" role="menu">
-							<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
-							<li class="divider"></li>
+							<!-- <li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+							<li class="divider"></li> -->
 							<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 							<li class="divider"></li>
@@ -95,34 +95,21 @@
 					        <table class="edittable" cellspacing="0" cellpadding="0">
 								<tbody>
 									<tr>
-										<td>
-											<input id="e-priority" class="easyui-combobox"
-												data-options="valueField: 'id',textField: 'descp',label:'Severity',labelWidth: 90,
-												labelAlign: 'right',method: 'get',width: 220,formatter:comboxfm,url:'/Bug/bugprioritylist',panelHeight:150"></input>
-										</td>
-										<td>
-											<input id="e-category" class="easyui-combobox"
-												data-options="valueField: 'id',textField: 'descp',label:'Category',labelWidth: 100,
-												labelAlign: 'right',method: 'get',width: 230,formatter:comboxfm,url:'/Bug/bugclasslist',panelHeight:150"></input>
-										</td>
-										<td align="right" style="padding-right:26px">
-											<button type="submit" class="btn btn-primary bg-some">Report</button>
-										</td>
-									</tr>
-									<tr>
 										<td style="width:230px">
 											<input id="e-pname" class="easyui-combobox"
 												data-options="valueField: 'id',textField: 'name',label:'Product name',labelWidth: 90,
-												labelAlign: 'right',method: 'get',width:220,formatter:comboxfm,url:'/Product/namelist',onSelect:fillVersion01,panelHeight:150"></input>		
+												labelAlign: 'right',method: 'get',width:220,formatter:comboxfm,
+												url:'/Rest/productnamelist',onSelect:fillVersion01,panelHeight:150"></input>		
 										</td>
 										<td style="width:240px">
 										    <input id="e-pver" class="easyui-combobox"
 												data-options="valueField: 'text',textField: 'value',label:'Product version',labelWidth: 100,
-												labelAlign: 'right',method: 'get',width: 230,onSelect:fillOs01,panelHeight:150"></input>
+												labelAlign: 'right',method: 'get',width: 230,panelHeight:150,onSelect:fillVersion009"></input>
 										</td>
 										<td style="width:180px">
 										    <input id="e-pos" class="easyui-combobox"
-												data-options="valueField: 'id',textField: 'osname',label:'OS',labelWidth: 40,labelAlign: 'right',
+												data-options="valueField: 'id',textField: 'osname',label:'OS',
+												labelWidth: 40,labelAlign: 'right',url:'/Rest/oslistbyproduct',
 												method: 'get',width: 170,formatter:comboxfm,panelHeight:150"></input>	
 										</td>
 									</tr>
@@ -136,6 +123,11 @@
 									<tr>
 										<td colspan="3" align="left">
 											<script id="editor" type="text/plain" style="width: 640px; height: 160px;"></script>
+										</td>
+									</tr>
+									<tr>
+										<td colspan="3" align="right" style="padding-right:0px">
+											<button type="button" class="btn btn-primary bg-some" onClick=submitbug()>Report</button>
 										</td>
 									</tr>
 								</tbody>
@@ -167,8 +159,56 @@
 	<script type="text/javascript" charset="utf-8" src="/scripts/ueditor/ueditor.parse.min.js"></script>
 	
 <script type="text/javascript">
-	var MODEL = '/Bug/';
+	var MODEL = '/App/Bug/';
 	var ue;
+	
+	function submitbug(){
+		var data = {
+			product_name_id:$('#e-pname').combobox('getValue'),
+			product_version:$('#e-pver').combobox('getValue'),
+			product_os_id:$('#e-pos').combobox('getValue'),
+			product_class_id:1,
+			title: $('#e-title').textbox('getValue'),
+			short_desc: ue.getContent()
+		};
+		$.ajax({
+		    type: "POST",
+		    url:MODEL + 'submit',
+		    data:data,
+		    datatype: "json",
+		    beforeSend:function(){
+		    	//fullScreenMask('open');
+		    },
+		    success:function(result){
+				var result = eval('('+result+')');					
+				if (result.status){
+					show('Success',result.info);
+
+				} else {
+					show('Error', result.info);
+				}
+				//fullScreenMask('close');
+			},
+		    complete: function(XMLHttpRequest, textStatus){
+		    	//fullScreenMask('close');
+		    },
+		    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+		    error: function(result){
+		    	//fullScreenMask('close');
+		    	//console.log(result.responseText);
+	        	result = result.responseText;
+	        	var result = eval('('+result+')');
+	        	show('Error',result.info);
+		    }        
+		 });
+		
+	}
+	
+	function fillVersion009(record){
+		$('#e-pos').combobox({
+			url:'/Rest/oslistbyproduct01?id='+$('#e-pname').combobox('getValue')+'&ver='+record.text
+		});
+	}
 	
 	$(function() {	
 		// init Baidu Ueditor

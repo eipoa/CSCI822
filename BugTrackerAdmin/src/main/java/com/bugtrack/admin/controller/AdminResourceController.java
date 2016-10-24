@@ -44,6 +44,7 @@ public class AdminResourceController extends CommonController {
 		return mv;
 	}
 
+	// ?? for roles?
 	@RequestMapping(value = "resources/list", method = RequestMethod.GET)
 	public String resList(HttpServletRequest request, PageContent page) throws Exception {
 		// page
@@ -91,6 +92,10 @@ public class AdminResourceController extends CommonController {
 			res.setRoles(null);
 		}
 		res.setResource(res.getResource().trim());
+		if(res.getParent().getTp()!=null)
+			res.setTp(res.getParent().getTp()+1);
+		else
+			res.setTp(1);
 		res = resRepo.saveAndFlush(res);
 		return ajaxReturn(true, Integer.toString(res.getId()), "OK");
 	}

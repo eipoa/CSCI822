@@ -57,9 +57,9 @@
 						<b class="caret"></b>
 					</a>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+						<li><a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
@@ -69,32 +69,31 @@
 			<div class="collapse navbar-collapse navbar-ex1-collapse">
 				<ul class="nav navbar-nav side-nav">
 					<li>
-						<a href="/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
+						<a href="/Admin/"><i class="fa fa-fw fa-dashboard"></i>Dashboard</a>
 					</li>
 					<li>
-						<a href="/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
+						<a href="/Admin/Bug/assign"><i class="fa fa-fw fa-tasks"></i> Assign Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
+						<a href="/Admin/Bug/process"><i class="fa fa-fw fa-medkit"></i> Process Bugs</a>
 					</li>
 					<li>
-						<a href="/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
+						<a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
 					<li>
-						<a href="/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
+						<a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
-						<a href="/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
+						<a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a>
 					</li>					
 					<li>
 						<a href="javascript:;" data-toggle="collapse" data-target="#demo0">
 							<i class="fa fa-fw fa-reorder"></i> Authorization<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo0" class="collapse">
-							<li><a href="/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
-							<li><a href="/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
-							<li><a href="/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
-							<li><a href="/Auth/menus"><i class="fa fa-fw fa-reorder"></i> Menu</a></li>
+							<li><a href="/Admin/Auth/user"><i class="fa fa-fw fa-user"></i> User Admin</a></li>
+							<li><a href="/Admin/Auth/roles"><i class="fa fa-fw fa-group"></i> Role</a></li>
+							<li><a href="/Admin/Auth/resources"><i class="fa fa-fw fa-cogs"></i> Resource</a></li>
 						</ul>
 					</li>
 					<li>
@@ -102,9 +101,9 @@
 							<i class="fa fa-fw fa-reorder"></i> System Admin<i class="fa fa-fw fa-caret-down"></i>
 						</a>
 						<ul id="demo1" aria-expanded="true" class="nav navbar-nav">
-							<li><a href="/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
-							<li class="active"><a href="/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
-							<li><a href="/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
+							<li><a href="/Admin/System/products"><i class="fa fa-fw fa-product-hunt"></i> Product Admin</a></li>
+							<li class="active"><a href="/Admin/System/bugparams"><i class="fa fa-fw fa-bug"></i> Bug Parameter</a></li>
+							<li><a href="/Admin/System/parameters"><i class="fa fa-fw fa-support"></i> Others</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -132,9 +131,9 @@
 				<!-- user list row -->
 				<div class="row">
 					<div class="col-lg-12">
-					<div id="cc" class="easyui-layout" option-data="" style="width:auto;height:500px;">
-						<div data-options="region:'west',title:'Bug priority list',collapsible:false" style="width:50%">
-						<div id="dlp" class="easyui-datalist" 
+					<div id="cc" class="easyui-tabs" option-data="" style="width:auto;height:500px;">
+						<div title="Maintain priority">
+							<div id="dlp" class="easyui-datalist" 
 								data-options="lines:true,textFormatter:formatdescStatus,idField:'id',toolbar:'#tb01',
 										valueField:'id', textField:'descp', border:false, fit:true, singleSelect: true"> </div>
 							<!-- table tool bar-->
@@ -143,22 +142,34 @@
 								<input id="e-priority" class="easyui-textbox" data-options="label:'Priority', labelWidth: 80, labelAlign: 'right',width:300" >
 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(1,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="iconCls:'icon-edit', plain:true" onClick=save(1,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
-								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dlp').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
-							</div>
+<!-- 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dlp').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
+ -->							</div>
 						</div>
-						<div data-options="region:'center',title:'Bug classfication list',collapsible:false" >
+						<div title="Maintain classification">
 							<div id="dlc" class="easyui-datalist" 
 								data-options="lines:true,textFormatter:formatdescStatus,idField:'id',toolbar:'#tb02',
 										valueField:'id', textField:'descp', border:false, fit:true, singleSelect: true"> </div>
-
 							<!-- table tool bar-->
 							<div id="tb02" style="padding: 2px 5px;">
 								<input id="e-class-id" class="easyui-textbox" type="hidden" />
 								<input id="e-class" class="easyui-textbox" data-options="label:'Classfication', labelWidth: 80, labelAlign: 'right',width:300" >
 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(2,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(2,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
-								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dlc').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
-							</div>
+<!-- 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dlc').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
+ -->							</div>
+						</div>
+						<div title="Maintain severity">
+							<div id="dls" class="easyui-datalist" 
+								data-options="lines:true,textFormatter:formatdescStatus1,idField:'id',toolbar:'#tb03',
+										valueField:'id', textField:'severity', border:false, fit:true, singleSelect: true"> </div>
+							<!-- table tool bar-->
+							<div id="tb03" style="padding: 2px 5px;">
+								<input id="e-serv-id" class="easyui-textbox" type="hidden" />
+								<input id="e-serv" class="easyui-textbox" data-options="label:'Classfication', labelWidth: 80, labelAlign: 'right',width:300" >
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(3,0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
+								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick=save(3,1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
+<!-- 								<a href="javascript:void(0)" class="easyui-linkbutton " data-options="plain:true" onClick="$('#dls').datalist('reload');"><i class="fa fa-refresh fa-btn-icon fa-green fa-lg"></i> Refresh</a>
+ -->							</div>
 						</div>
 					</div>
 					</div>
@@ -237,20 +248,48 @@
 </body>
 
 <script type="text/javascript">
-	var MODEL = '/Admin/Syetem';
+	var MODEL = '/Admin/System';
 	function reload(y){
 		if(y==1)
 			$('#dlp').datalist('reload');
 		else if(y==2)
 			$('#dlc').datalist('reload');
+		else if(y==3)
+			$('#dls').datalist('reload');
 	}
 	// click save
 	function save(y,x){
 		var url= MODEL + '/savepara';
+		var id, txt;
+		if(x==1){
+			switch(y){
+				case 1:
+					id = $('#e-priority-id').textbox('getValue');
+					break;
+				case 2:
+					id = $('#e-class-id').textbox('getValue');
+				 	break;
+				case 3:
+					id = $('#e-serv-id').textbox('getValue');
+				 	break;
+			}
+		}
+		switch(y){
+			case 1:
+				txt = $('#e-priority').textbox('getValue');
+				break;
+			case 2:
+				txt = $('#e-class').textbox('getValue');
+			 	break;
+			case 3:
+				txt = $('#e-serv').textbox('getValue');
+			 	break;
+		}
+		
 		var data= {
-				id: (x==0?0:(y==1?$('#e-priority-id').textbox('getValue'):$('#e-class-id').textbox('getValue'))),
-				desc : (y==1?$('#e-priority').textbox('getValue'):$('#e-class').textbox('getValue')),
-				ty : y
+				id: id,
+				desc : txt,
+				ty : y+0
 		}
 		//res
 		//console.log(data);
@@ -275,7 +314,6 @@
 		    complete: function(XMLHttpRequest, textStatus){
 		    	fullScreenMask('close');
 		    },
-		    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
 		    error: function(result){
 		    	fullScreenMask('close');
 		    	//console.log(result.responseText);
@@ -287,6 +325,9 @@
 	}
 	function formatdescStatus(value,row,index){
 		return "<code>" + row.descp + "</code>";
+	}
+	function formatdescStatus1(value,row,index){
+		return "<code>" + row.severity + "</code>";
 	}
 	$(function() {
 		$('#cc').layout();
@@ -329,6 +370,14 @@
 			onSelect:function(index,row){
 				$('#e-priority-id').textbox('setValue', row.id);
 				$('#e-priority').textbox('setValue', row.descp);
+			}
+		});
+		$('#dls').datalist({
+			url:'/Rest/bugseveritylist',
+			method:'get',
+			onSelect:function(index,row){
+				$('#e-serv-id').textbox('setValue', row.id);
+				$('#e-serv').textbox('setValue', row.severity);
 			}
 		});
 	});

@@ -169,14 +169,25 @@ function formatUserRole(value,row,index){
 /*---------------bug list---------------*/
 function formatBugtitle(value,row,index){
 	var percent = 100;
-	if(row.status.id==1)
+	var cls = 'label label-success';
+	var bar = 'bugprogressbarSu';
+	if(row.status.id==1){
 		percent = 0;
-	if(row.status.id==2)
+		cls = 'label label-danger';
+		bar = 'bugprogressbarDn';
+	}
+	if(row.status.id==2){
 		percent = 30;
-	if(row.status.id==3)
+		cls = 'label label-info';
+		bar = 'bugprogressbarIf';
+	}
+	if(row.status.id==3){
 		percent = 60;
-	var s = '<div class="bugprogressbar" style="width:'+percent +'%;">'+value;
-	s = s + '<span class="label label-success" style="float:right">';
+		cls = 'label label-primary';
+		bar = 'bugprogressbarPr';
+	}
+	var s = '<div class="'+bar+'" style="width:'+percent +'%;">'+value;
+	s = s + '<span class="'+cls+'" style="float:right">';
 	s = s + percent+'% </span></div>'
 	return s;
 }
@@ -186,11 +197,14 @@ function formatTime(value,row,index){
 function formatBugPriority(value,row,index){
 	return row.priority.descp;
 }
+function formatBugSeverity(value,row,index){
+	return row.severity.severity;
+}
 function formatBugClass(value,row,index){
 	return row.classification.descp;
 }
 function formatBugProduct(value,row,index){
-	return row.product.name.name;	
+	return row.product.name.name + '/' + row.product.version + '/' + row.product.os.osname;	
 }
 function formatBugVersion(value,row,index){
 	return row.product.version;
@@ -256,13 +270,13 @@ function comboxfm(row){
 function fillVersion(record){
 	//console.log(record);
 	$('#s-pver').combobox({
-		url:'/Product/verlist?id='+record.id
+		url:'/Rest/verlist?id='+record.id
 	});
 }
 function fillOs(record){
 	//console.log(record);
 	$('#s-pos').combobox({
-		url:'/Product/oslist001?id='+$('#s-pname').combobox('getValue')+'&ver='+record.text
+		url:'/Rest/oslistbyproduct?id='+$('#s-pname').combobox('getValue')+'&ver='+record.text
 	});
 }
 //clicks search btn 
@@ -277,7 +291,8 @@ function search() {
 		bend : $('#s-end').datebox('getValue'),
 		bpriority : $('#s-priority').combobox('getValue'),
 		bcategory : $('#s-category').combobox('getValue'),
-		bid : $('#s-bid').textbox('getValue')
+		bid : $('#s-bid').textbox('getValue'),
+		sev : $('#s-severity').combobox('getValue')
 	};
 	$("#dg").datagrid('load', query);
 }
@@ -307,7 +322,7 @@ function fillVersion01(record){
 	$('#e-pver').combobox('clear');
 	$('#e-pos').combobox('clear');
 	$('#e-pver').combobox({
-		url:'/Product/verlist?id='+record.id
+		url:'/Rest/verlist?id='+record.id
 	});
 }
 function fillOs01(record){
@@ -335,33 +350,34 @@ function edit(){
 	
 	var tp=$("#xtp").val();
 	
-	if(tp==1 && (row.status.id==2 || row.status.id==3 || row.status.id==4)){
-		alert_('the bug has been '+ row.status.desc +'.');
-		return;
-	}
-	if(tp==2 && (row.status.id==3 || row.status.id==4 || row.status.id==5)){
-		alert_('the bug has been '+ row.status.desc +'.');
-		return;
-	}
-	if(tp==3 && (row.status.id==4 || row.status.id==5)){
-		alert_('the bug has been '+ row.status.desc +'.');
-		return;
-	}
+//	if(tp==1 && (row.status.id==2 || row.status.id==3 || row.status.id==4)){
+//		alert_('the bug has been '+ row.status.desc +'.');
+//		return;
+//	}
+//	if(tp==2 && (row.status.id==3 || row.status.id==4 || row.status.id==5)){
+//		alert_('the bug has been '+ row.status.desc +'.');
+//		return;
+//	}
+//	if(tp==3 && (row.status.id==4 || row.status.id==5)){
+//		alert_('the bug has been '+ row.status.desc +'.');
+//		return;
+//	}
 	// initialize fields of windows
 	$('#e-vote').textbox('setValue', row.vote);
 	if(tp==1){
 		$('#e-bid').textbox('setValue', row.id);
-		$('#e-title').textbox('setValue', row.title);
-		$('#e-desc').textbox('setValue', row.short_desc);
+		$('#e-key').textbox('setValue', row.keywords);
+		$('#e-desc').textbox('setValue', row.shortdesc);
 		$('#e-rank').combobox('setValue', row.rank);
 		$('#e-status').combobox('setValue', row.status.id);
 		$('#e-priority').combobox('setValue', row.priority.id);
+		$('#e-sev').combobox('setValue', row.severity.id);
 		$('#e-category').combobox('setValue', row.classification.id);
-		$('#e-pname').combobox('setValue', row.product.id);
+		$('#e-pname').combobox('setValue', row.product.name.id);
 		$('#e-pver').combobox('setValue', row.product.version);
 		$('#e-pos').combobox('setValue', row.product.os.id);
 		$('#e-reporter').textbox('setValue', row.reporter.username);
-		$('#e-cdt').textbox('setValue', row.creation_ts.substr(0, 19));
+		$('#e-cdt').textbox('setValue', row.creationts.substr(0, 19));
 		if(row.developer!=null){
 			$('#e-develop').textbox('setValue', row.developer.username);
 		}else{
@@ -374,21 +390,23 @@ function edit(){
 		}
 	}else{
 		$('#e-bid').textbox('setValue', row.id);
-		$('#e-title').textbox('setValue', row.title);
-		$('#e-desc').textbox('setValue', row.short_desc);
+		$('#e-key').textbox('setValue', row.keywords);
+		$('#e-desc').textbox('setValue', row.shortdesc);
 		$('#e-rank').combobox('setValue', row.rank);
 		$('#e-status').combobox('setValue', row.status.id);
+		$('#e-sev').textbox('setValue', row.severity.severity);
+		$('#h-sev').val(row.severity.id);
 		$('#e-priority').textbox('setValue', row.priority.descp);
 		$('#h-priority').val(row.priority.id);
 		$('#e-category').textbox('setValue', row.classification.descp);
 		$('#h-category').val(row.classification.id);
 		$('#e-pname').textbox('setValue', row.product.name.name);
-		$('#h-pname').val(row.product.id);
+		$('#h-pname').val(row.product.name.id);
 		$('#e-pver').textbox('setValue', row.product.version);
 		$('#e-pos').textbox('setValue', row.product.os.osname);
 		$('#h-pos').val(row.product.os.id);
 		$('#e-reporter').textbox('setValue', row.reporter.username);
-		$('#e-cdt').textbox('setValue', row.creation_ts.substr(0, 19));
+		$('#e-cdt').textbox('setValue', row.creationts.substr(0, 19));
 		if(row.developer!=null){
 			$('#e-develop').textbox('setValue', row.developer.username);
 		}else{
@@ -403,13 +421,14 @@ function edit(){
 			$('#e-patch-list').html(row.solution.description);
 		if(ue!==undefined) ue.setContent('');
 	}
-	if(tp==1)	
+	if(tp==1){
 		$('#editw').dialog('open').dialog('setTitle','Modify and assign the bugs');
-	else if(tp==2)
+		
+	}else if(tp==2){
 		$('#editw').dialog('open').dialog('setTitle','Submit the bugs to check');
-	else
+	}else{
 		$('#editw').dialog('open').dialog('setTitle','Close or return the bugs');
-	
+	}
 }
 // cancel modification
 function cancel(){
@@ -443,7 +462,9 @@ function rowStatus(index,row){
 function rowStatusBug(index,row){
 	// fixed or merged
 	if(row.status!=undefined && (row.status.id==4 || row.status.id==5)){
-		return 'color:#5cb85c;font-style: italic';
+		return 'color:#777;font-style: italic';//#5cb85c
+	}else{
+		return 'color:#DC143C;';
 	}
 
 	// unfixed and high priority
@@ -500,6 +521,38 @@ function checkUrl(){
 	};
 }
 
+function action01(url, data,method){
+	$.ajax({
+	    type: method,
+	    url:url,
+	    data:data,
+	    datatype: "json",
+	    beforeSend:function(){
+	    	fullScreenMask('open');
+	    },
+	    success:function(result){	
+	    	var result = eval('('+result+')');
+			if (result.status){
+				show('Success',result.info);
+			} else {
+				show('Error', result.info);
+			}
+			fullScreenMask('close');
+		},
+	    complete: function(XMLHttpRequest, textStatus){
+	    	fullScreenMask('close');
+	    },
+	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+	    error: function(result){
+	    	fullScreenMask('close');
+	    	//console.log(result.responseText);
+        	result = result.responseText;
+        	var result = eval('('+result+')');
+        	show('Error',result.info);
+	    }        
+	 });
+}
+
 // editing form operation
 function action(url, data, dg, method){
 	$.ajax({
@@ -552,7 +605,7 @@ function changepassword(){
 	$('#chpw').dialog('open');
 	$('#e-oldpass').focus();
 }
-function chpw(){
+function chpw(x){
 	var p1 = $('#e-oldpass').textbox('getValue');
 	var p2 = $('#e-newpass01').textbox('getValue');
 	var p3 = $('#e-newpass02').textbox('getValue');
@@ -573,9 +626,10 @@ function chpw(){
 		oldpw: p1,
 		newpw: p2
 	}
+	var url = x==undefined?'/Admin':'/App'
 	$.ajax({
 		type:'PUT',
-		url:'../Public/chpwd',
+		url:url+'/Public/chpwd',
 	    data:data,
 	    datatype: "json",
 	    success:function(result){
@@ -657,6 +711,7 @@ function maketree(value,row,index){
 	}
 	var iconApp = '<i class="fa fa-sitemap fa-btn-icon-small fa-green fa-lg"></i>  ';
 	var iconMoudel = '<i class="fa fa-cubes fa-green fa-btn-icon-small fa-lg"></i>  ';
+	var iconMenu = '<i class="fa fa-bars fa-green fa-btn-icon-small fa-lg"></i>  ';
 	var iconFunc = '<i class="fa fa-code fa-btn-icon-small fa-green fa-lg "></i>  ';
 	
 	var retVal = '';
@@ -665,6 +720,8 @@ function maketree(value,row,index){
 	else if (row.tp==1)
 		retVal = iconMoudel + value;
 	else if (row.tp==2)
+		retVal = iconMenu + value;
+	else if(row.tp==3)
 		retVal = iconFunc + value;
 	
 	return retVal;
@@ -675,7 +732,7 @@ function formatType(value,row,index){
 	else if(value==1)
 		return 'Module';
 	else if(value==2)
-		return 'Button';
+		return 'Menu';
 	else if(value==3)
 		return 'Function';
 }
@@ -708,4 +765,70 @@ function clockon() {
 
 function ueCallback(json){
 	console.log(json);
+}
+
+//frontend
+function doajax(url, data, method, callback){
+	$.ajax({
+	    type: method,
+	    url:url,
+	    data:data,
+	    datatype: "json",
+	    beforeSend:function(){
+	    	//fullScreenMask('open');
+	    },
+	    success:function(result){
+			var result = eval('('+result+')');					
+			if (result.status){
+				show('Success',result.info);
+				callback();
+			} else {
+				show('Error', result.info);
+			}
+			//fullScreenMask('close');
+		},
+	    complete: function(XMLHttpRequest, textStatus){
+	    	//fullScreenMask('close');
+	    },
+	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+	    error: function(result){
+	    	//fullScreenMask('close');
+	    	//console.log(result.responseText);
+        	result = result.responseText;
+        	var result = eval('('+result+')');
+        	show('Error',result.info);
+	    }        
+	 });
+}
+
+function doajax01(url, data, method, callback){
+	$.ajax({
+	    type: method,
+	    url:url,
+	    data:data,
+	    datatype: "json",
+	    beforeSend:function(){
+	    	//fullScreenMask('open');
+	    },
+	    success:function(result){
+			if (result.status){
+				show('Success',result.info);
+				callback();
+			} else {
+				show('Error', result.info);
+			}
+			//fullScreenMask('close');
+		},
+	    complete: function(XMLHttpRequest, textStatus){
+	    	//fullScreenMask('close');
+	    },
+	    //{"timestamp":1472308671570,"status":500,"error":"Internal Server Error","exception":"org.springframework.transaction.TransactionSystemException","message":"Could not commit JPA transaction; nested exception is javax.persistence.RollbackException: Transaction marked as rollbackOnly","path":"/Auth/user/add"}
+	    error: function(result){
+	    	//fullScreenMask('close');
+	    	//console.log(result.responseText);
+        	result = result.responseText;
+        	var result = eval('('+result+')');
+        	show('Error',result.info);
+	    }        
+	 });
 }

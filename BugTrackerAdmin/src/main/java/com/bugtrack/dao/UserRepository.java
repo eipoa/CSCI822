@@ -3,6 +3,8 @@
  */
 package com.bugtrack.dao;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +20,5 @@ public interface UserRepository extends JpaRepository<UserModel, Integer>, UserR
 	public UserModel findByUsername(String username);
 	public Page<UserModel> findAll(Pageable pageable);
 	public UserModel findById(Integer id);
+	public List<UserModel> findTop10ByOrderByReputationDesc();
 }
