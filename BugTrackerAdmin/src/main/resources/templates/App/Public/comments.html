@@ -166,7 +166,7 @@
 										</tbody>
 									</table>
 								</div>
-								<div calss="pager fl">
+								<div calss="pager fl" th:if="${pages!=null and pages.totalPages gt 1}">
 									<ul th:fragment="pagination" class="pagination pd8">
 									    <li th:class="${pages.number eq 0}?'disabled':'pagecur'">
 									        <a th:if="${pages.number eq 0}" href="javascript:void(0)" aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>

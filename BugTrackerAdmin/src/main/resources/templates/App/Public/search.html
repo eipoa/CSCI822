@@ -108,7 +108,7 @@
 			        <!-- bug list -->
 			        <div class="row">
 			        	<div class="col-lg-9" style="padding-right: 0px;">
-				        	<div class="bugContainer" th:if="${pages}" th:each="b,iterStat:${pages}">
+				        	<div class="bugContainer" th:if="${pages!=null}" th:each="b,iterStat:${pages}">
 				        		<div class="cp" >
 				        			<div class="votes">
 				        				<div class="mini-counts"><span title="0 votes" th:text="${b.vote}">0</span></div>

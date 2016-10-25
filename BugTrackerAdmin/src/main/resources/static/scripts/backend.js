@@ -473,7 +473,7 @@ function cancel(){
 var whichStaff = 0;
 function findStaff(idx){
 	whichStaff = idx;
-	var role_id = '2';
+	var role_id = '3';
 	var title = 'Choose the developer';
 	if(idx==1){
 		role_id = '4';

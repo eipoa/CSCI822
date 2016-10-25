@@ -141,7 +141,7 @@
 			        <!-- bug list -->
 			        <div class="row">
 			        	<div class="col-lg-9" style="margin-left: 120px;">
-							<div class="bugContainer" th:if="${pages}" th:each="b,iterStat:${pages}">
+							<div class="bugContainer" th:if="${pages!=null}" th:each="b,iterStat:${pages}">
 				        		<div class="cp" >
 				        			<div class="votes">
 				        				<div class="mini-counts"><span title="0 votes" th:text="${b.vote}">0</span></div>
@@ -173,7 +173,7 @@
 							    </div>
 				        	</div>
 							<!-- end Pagination Bar -->
-							<div calss="pager fl" th:if="${pages.totalPages gt 1}" >
+							<div calss="pager fl" th:if="${pages!=null and pages.totalPages gt 1}" >
 								<ul th:fragment="pagination" class="pagination pd8">
 								    <li th:class="${!pages.hasPrevious()}?'disabled':'pagecur'">
 								        <a th:if="${pages.number eq 0}" href="javascript:void(0)" aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
