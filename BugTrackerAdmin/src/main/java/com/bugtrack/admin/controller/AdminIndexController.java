@@ -36,7 +36,12 @@ public class AdminIndexController extends CommonController {
 			Map<String, Object> repTmp = new HashMap<String, Object>();
 			repTmp.put("name", abc01.get(i)[0].toString());
 			repTmp.put("value1",  Integer.parseInt(abc01.get(i)[1].toString()));
-			repTmp.put("value2",  Integer.parseInt(abc02.get(i)[1].toString()));
+			for(int j=0; j<abc02.size();++j){
+				if(abc01.get(i)[0].toString().equals(abc02.get(j)[0].toString())){
+					repTmp.put("value2",  Integer.parseInt(abc02.get(j)[1].toString()));
+					break;
+				}
+			}
 			//System.out.println(repTmp.toString());
 			rep01.add(repTmp);
 		}
@@ -69,9 +74,11 @@ public class AdminIndexController extends CommonController {
 		mv.addObject("alltask", allTasks);
 		Integer allsTasks = bugRepo.findReportAllSTask();
 		mv.addObject("allstask", allsTasks);
+		Integer monthAvgTask = bugRepo.findMonthAvgTask();
+		mv.addObject("avgtask", monthAvgTask);
 
 		DateFormat df = new SimpleDateFormat("MMM",Locale.ENGLISH);
-        System.out.println(df.format(new Date()));
+        //System.out.println(df.format(new Date()));
         mv.addObject("mon", df.format(new Date()));
 
 		return mv;

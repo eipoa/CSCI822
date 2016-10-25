@@ -121,7 +121,7 @@
 						<ol class="breadcrumb">
 							<li class="active">
 								<li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
-								<li class="active"><i class="fa fa-fw fa-user"></i> Role list</li>
+								<li class="active"><i class="fa fa-fw fa-user"></i> Bug Parameters</li>
 							</li>
 						</ol>
 					</div>
@@ -330,7 +330,7 @@
 		return "<code>" + row.severity + "</code>";
 	}
 	$(function() {
-		$('#cc').layout();
+		$('#cc').tabs();
 		// dynamic bind datagrid
 		$('#dg').datagrid({
 			url:'/Auth/roles/list?sort=rolename&order=asc',

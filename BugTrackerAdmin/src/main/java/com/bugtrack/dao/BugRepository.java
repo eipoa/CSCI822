@@ -66,6 +66,13 @@ public interface BugRepository extends JpaRepository<BugsModel, Integer>, BugRep
 			" from bug b  where " +
 			" date_format(b.creation_ts,'%Y-%m')=date_format(now(),'%Y-%m') and (b.status_id=4 or b.status_id=5)", nativeQuery = true)
 	Integer findReportAllSTask();
+	
+	@Query(value="select avg(a.num) " +
+			" from " +
+			" (select substr(b.creation_ts,1,7) as ts, count(b.id) as num " +
+			" from bug b " +
+			" group by ts) a", nativeQuery = true)
+	Integer findMonthAvgTask();
 
 	public Page<BugsModel> findAllByTitleContainingIgnoreCaseOrTitleContainingIgnoreCase(String string,
 			String string2, Pageable pageable);

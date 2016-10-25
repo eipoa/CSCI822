@@ -121,7 +121,7 @@
 						<ol class="breadcrumb">
 							<li class="active">
 								<li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
-								<li class="active"><i class="fa fa-fw fa-user"></i> Role list</li>
+								<li class="active"><i class="fa fa-fw fa-user"></i> System Parameters</li>
 							</li>
 						</ol>
 					</div>
@@ -132,14 +132,35 @@
 				<div class="row">
 					<div class="col-lg-12">
 					<div id="cc" class="easyui-tabs" option-data="" style="width:auto;height:500px;">
-						<div title="Sysytem notice">
+						
+					<div title="Rules of reputation">
+						<table id="dg1" class="easyui-datagrid" title=""
+							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
+									idField:'id',loadMsg:'',fit:true,toolbar:'#tb1', onSelect:dgRuSelect">
+							<thead>
+								<tr>
+									<th data-options="field:'action',width:150">Rating</th>
+									<th data-options="field:'reputation',width:100">Reputation</th>
+								</tr>
+							</thead>
+						</table>
+						
+						<!-- table tool bar-->
+						<div id="tb1" style="padding: 2px 5px;">
+							<input id="e-rid" type="hidden" />
+							<input id="e-rep" class="easyui-textbox"
+									data-options="label:'Reputation',  labelWidth:90, labelAlign:'right',width:150"></input>
+							<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options=" plain:true" onClick=modrepu()><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
+						</div>
+					</div>
+					<div title="Sysytem notice">
 						<!-- easyui table for user list-->
 						<table id="dg" class="easyui-datagrid" title=""
 							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
 									idField:'id',loadMsg:'',fit:true,toolbar:'#tb', onSelect:dgNoteSelect">
 							<thead>
 								<tr>
-									<th data-options="field:'descp',width:500">Note</th>
+									<th data-options="field:'descp',width:500">Notice</th>
 									<th data-options="field:'start',width:100">Start Date</th>
 									<th data-options="field:'expire',width:100">Expired Date</th>
 								</tr>
@@ -154,7 +175,7 @@
 										<td>
 											<input id="e-id" type="hidden" />
 											<input id="e-desp" class="easyui-textbox"
-												data-options="label:'Note', multiline:true, labelWidth:90, labelAlign:'right',width:500"></input>
+												data-options="label:'Notice', multiline:true, labelWidth:60, labelAlign:'right',width:500"></input>
 										</td>
 										<td>
 											<input id="s-begin" class="easyui-datebox"
@@ -173,32 +194,12 @@
 			           								width:230"></input>
 										</td>
 										<td>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create a new role" data-options="iconCls:'icon-add', plain:true" onClick=save(0)>New</a>
-											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="iconCls:'icon-edit', plain:true" onClick=save(1)>Modify</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="create a new role" data-options="plain:true" onClick=save(0)><i class="fa fa-plus-square fa-btn-icon fa-green fa-lg"></i> New</a>
+											<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="plain:true" onClick=save(1)><i class="fa fa-edit fa-btn-icon fa-green fa-lg"></i> Modify</a>
 										</td>
 									</tr>
 								</tbody>
 							</table>
-						</div>
-					</div>
-					<div title="Rules of reputation">
-						<table id="dg1" class="easyui-datagrid" title=""
-							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
-									idField:'id',loadMsg:'',fit:true,toolbar:'#tb1', onSelect:dgRuSelect">
-							<thead>
-								<tr>
-									<th data-options="field:'action',width:150">Description</th>
-									<th data-options="field:'reputation',width:100">Reputation</th>
-								</tr>
-							</thead>
-						</table>
-						
-						<!-- table tool bar-->
-						<div id="tb1" style="padding: 2px 5px;">
-							<input id="e-rid" type="hidden" />
-							<input id="e-rep" class="easyui-textbox"
-									data-options="label:'Reputation',  labelWidth:90, labelAlign:'right',width:150"></input>
-							<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="iconCls:'icon-edit', plain:true" onClick=modrepu()>Modify</a>
 						</div>
 					</div>
 					</div>
@@ -324,6 +325,7 @@
 	}
 	
 	$(function() {
+		$('#cc').tabs();
 		// dynamic bind datagrid
 		$('#dg').datagrid({
 			url:'/Rest/sysnotelist',
@@ -364,6 +366,7 @@
 				ajaxerror(XMLHttpRequest.responseText);
 			}
 		});
+		$('#cc').tabs();
 	});
 </script>
 

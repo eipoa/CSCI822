@@ -128,8 +128,7 @@
 						<ol class="breadcrumb">
 							<li class="active">
 							<li><i class="fa fa-fw fa-dashboard"></i> <a href="/">Dashboard</a></li>
-							<li class="active"><i class="fa fa-fw fa-user"></i> Role
-								list</li>
+							<li class="active"><i class="fa fa-fw fa-user"></i> Produce management</li>
 							</li>
 						</ol>
 					</div>
@@ -192,7 +191,7 @@
 							<div data-options="region:'west',collapsible:false" style="width: 35%">
 								<div class="easyui-layout" data-options="fit:true">
 									<div
-										data-options="region:'north',title:'Operating system list',border:false,collapsible:false"
+										data-options="region:'north',title:'Product name list',border:false,collapsible:false"
 										style="height: 50%">
 										<div id="dgpn" class="easyui-datalist"
 											data-options="idField:'id',valueField:'id', textField:'name',loadMsg:'',
@@ -506,7 +505,7 @@
 	}
 	
 	$(function() {
-		//$('#cc').layout();
+		
 		
 		// dynamic bind datagrid
 		$('#dg').datagrid({
@@ -544,7 +543,7 @@
 			method:'get',
 			singleSelect:true
 		});
-		//$('#cc1').layout();
+		$('#cc').layout();
 	});
 </script>
 

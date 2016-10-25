@@ -78,7 +78,7 @@
 			        <!-- bug info -->
 			        <div class="row">
 			        	<div class="col-lg-9" style="margin-left: 120px;">
-			        		<i class="fa fa-user fa-6" style="font-size: 20em;float:left" aria-hidden="true"></i>
+			        		<i class="fa fa-user fa-6" style="border:2px solid #ddd;font-size: 20em;float:left;padding:5px;box-shadow:5px 2px 6px #888888;" aria-hidden="true"></i>
 							<div id="editw" > <!-- style="padding:10px" -->
 					    	<input id="e-id" class="easyui-textbox" name="id" type="hidden" /> 
 					    	<table class="edittable" cellspacing="0" cellpadding="0">
@@ -90,7 +90,7 @@
 													readonly: 'true'" /> 
 										</td>
 										<td colspan="2">
-											<input id="e-rep" name="rep" class="easyui-numberspinner" 
+											<input id="e-rep" name="rep" class="easyui-textbox" 
 												data-options="label:'Reputation', labelAlign: 'right',labelWidth: 80, width:210,readonly: 'true'" />
 										</td>
 									</tr>
@@ -324,7 +324,7 @@
 		$('#e-age').numberspinner('setValue', userage);
 		$('#e-email').textbox('setValue',userem);
 		$('#e-skill').textbox('setValue',userskill);
-		$('#e-rep').numberspinner('setValue', usersrep);
+		$('#e-rep').textbox('setValue', usersrep);
 	});
 </script>	
 	
