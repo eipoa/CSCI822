@@ -59,7 +59,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="/App/User/profile" target="_blank"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
@@ -80,7 +80,7 @@
 					<li>
 						<a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
-					<li>
+					<li th:if="${report_menu}">
 						<a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
@@ -131,11 +131,12 @@
 				<!-- user list row -->
 				<div class="row">
 					<div class="col-lg-12">
+					<div id="cc" class="easyui-tabs" option-data="" style="width:auto;height:500px;">
+						<div title="Sysytem notice">
 						<!-- easyui table for user list-->
-						<table id="dg" class="easyui-datagrid" title="Note list"
-							style="width: auto; height: 500px"
+						<table id="dg" class="easyui-datagrid" title=""
 							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
-									idField:'id',loadMsg:'',toolbar:'#tb', onSelect:dgNoteSelect">
+									idField:'id',loadMsg:'',fit:true,toolbar:'#tb', onSelect:dgNoteSelect">
 							<thead>
 								<tr>
 									<th data-options="field:'descp',width:500">Note</th>
@@ -179,6 +180,27 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+					<div title="Rules of reputation">
+						<table id="dg1" class="easyui-datagrid" title=""
+							data-options="rownumbers:true,singleSelect:true,pagination:true,border:false,
+									idField:'id',loadMsg:'',fit:true,toolbar:'#tb1', onSelect:dgRuSelect">
+							<thead>
+								<tr>
+									<th data-options="field:'action',width:150">Description</th>
+									<th data-options="field:'reputation',width:100">Reputation</th>
+								</tr>
+							</thead>
+						</table>
+						
+						<!-- table tool bar-->
+						<div id="tb1" style="padding: 2px 5px;">
+							<input id="e-rid" type="hidden" />
+							<input id="e-rep" class="easyui-textbox"
+									data-options="label:'Reputation',  labelWidth:90, labelAlign:'right',width:150"></input>
+							<a href="javascript:void(0)" class="easyui-linkbutton easyui-tooltip" title="modify existing roles" data-options="iconCls:'icon-edit', plain:true" onClick=modrepu()>Modify</a>
+						</div>
+					</div>
 					</div>
 				</div>
 				<!-- /.row -->
@@ -281,6 +303,26 @@
 		$('#s-end').datebox('setValue', row.expire);
 	}
 	
+	function dgRuSelect(index,row){
+		$('#e-rid').val(row.id);
+		$('#e-rep').textbox('setValue', row.reputation);
+	}
+	
+	function modrepu(){
+		var url = MODEL + '/saverepu'
+		var row = $('#dg1').datagrid('getSelected');
+		if(row==null || row==undefined){
+			alert_('Please select a row to edit.');
+			return;
+		}
+		var data={
+				id:row.id,
+				reputation:$('#e-rep').val()
+		}
+		var dg= $('#dg1');
+		action(url, data, dg, "POST");
+	}
+	
 	$(function() {
 		// dynamic bind datagrid
 		$('#dg').datagrid({
@@ -291,14 +333,29 @@
 				fullScreenMask('open');
 			},
 			onLoadSuccess : function() {
-				// Get this datagrid's panel object
-				$(this).datagrid('getPanel')
-				// for all easyui-linkbutton <a>'s make them a switchbutton
-				.find('input.easyui-switchbutton').switchbutton();
-				// bug!! to refreash the value of edit window 
 				var row = $('#dg').datagrid('getSelected');
 				if (row != null || row != undefined)
 					$('#dg').datagrid('selectRecord', row.id);
+				fullScreenMask('close');
+			},
+			onLoadError : function(XMLHttpRequest) {
+				fullScreenMask('close');
+				//console.log(XMLHttpRequest);
+				ajaxerror(XMLHttpRequest.responseText);
+			}
+		});
+		$('#dg1').datagrid({
+			url:'/Rest/sysrepulist',
+			method:'get',
+			onBeforeLoad : function() {
+				// show fullscreen modal windows
+				fullScreenMask('open');
+			},
+			onLoadSuccess : function() {
+				// bug!! to refreash the value of edit window 
+				var row = $('#dg1').datagrid('getSelected');
+				if (row != null || row != undefined)
+					$('#dg1').datagrid('selectRecord', row.id);
 				fullScreenMask('close');
 			},
 			onLoadError : function(XMLHttpRequest) {

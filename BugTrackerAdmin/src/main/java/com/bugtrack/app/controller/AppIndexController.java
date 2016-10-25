@@ -1,8 +1,16 @@
 package com.bugtrack.app.controller;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -17,12 +25,10 @@ import com.bugtrack.model.BugPriorityModel;
 import com.bugtrack.model.BugSeverityModel;
 import com.bugtrack.model.BugStatusModel;
 import com.bugtrack.model.BugsModel;
-import com.bugtrack.model.MessageModel;
 import com.bugtrack.model.ProductModel;
 import com.bugtrack.model.ProductNameModel;
 import com.bugtrack.model.ProductOsModel;
 import com.bugtrack.model.UserModel;
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 @RestController
 @RequestMapping("/App")
@@ -60,7 +66,6 @@ public class AppIndexController extends CommonController {
 		if (isLogin()) {
 			mv.addObject("fullname", this.getFullname());
 		}
-		// mv.addObject("productList", this.productNameRepo.findAll());
 		return mv;
 	}
 
@@ -68,7 +73,7 @@ public class AppIndexController extends CommonController {
 	@RequestMapping(value = "Bug/submit", method = RequestMethod.POST)
 	public String submitBug(HttpServletRequest req, HttpServletResponse rep,
 			@RequestParam(value = "product_name_id", required = true) Integer product_name_id,
-			@RequestParam(value = "product_version", required = true) String product_version,
+			@RequestParam(value = "product_version", required = false) String product_version,
 			@RequestParam(value = "product_os_id", required = false, defaultValue = "1") Integer product_os_id,
 			@RequestParam(value = "product_class_id", required = false, defaultValue = "6") Integer product_class_id,
 			@RequestParam(value = "title", required = false, defaultValue = "") String title,
@@ -128,4 +133,41 @@ public class AppIndexController extends CommonController {
 		bug = bugRepo.saveAndFlush(bug);
 		return ajaxReturn(true, bug.getVote().toString(), "OK");
 	}
+	
+	@RequestMapping(value = "User/profile", method = RequestMethod.GET)
+	public ModelAndView ModifyProfile(@RequestParam(value = "page", required = true, defaultValue = "0") Integer page,
+			@RequestParam(value = "rows", required = true, defaultValue = "20") Integer rows) {
+		ModelAndView mv = new ModelAndView("App/User/profile");
+		if (isLogin()) {
+			mv.addObject("fullname", this.getFullname());
+		}
+		List<Order> orders = new ArrayList<Order>();
+		orders.add(new Order(Direction.DESC, "creationts"));
+		Sort sort = new Sort(orders);
+		page = page - 1 < 0 ? 0 : page - 1;
+		Pageable pageable = new PageRequest(page, rows, sort);
+		Page<BugsModel> bugList01 = null;
+		bugList01 = bugRepo.findAllByReporter(this.getUser(), pageable);
+		if (bugList01 != null && bugList01.getTotalPages() > 0)
+			mv.addObject("pages", bugList01);
+		mv.addObject("user", this.getUser());
+		return mv;
+	}
+	
+	@Transactional(readOnly = false)
+	@RequestMapping(value = "User/save", method = RequestMethod.POST)
+	public String addUser(HttpServletRequest request, UserModel user) throws Exception {
+		UserModel tmpUser = userRepo.findByUsername(user.getUsername());
+		if(tmpUser==null)
+			 throw new Exception("cannot find the user");
+		user.setPassword(tmpUser.getPassword());
+		user.setCreate_ts(tmpUser.getCreate_ts());
+		user.setLogin_ts(tmpUser.getLogin_ts());
+		user.setStatus(tmpUser.getStatus());
+		user.setReputation(tmpUser.getReputation());
+		user.setRoles(tmpUser.getRoles());
+		user = userRepo.saveAndFlush(user);
+		return ajaxReturn(true, Integer.toString(user.getId()), "OK");
+	}
+	
 }

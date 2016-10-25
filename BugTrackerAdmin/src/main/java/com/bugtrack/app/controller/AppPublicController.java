@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.bugtrack.common.CommonController;
 import com.bugtrack.model.BugCommentModel;
+import com.bugtrack.model.BugPatchModel;
 import com.bugtrack.model.BugsModel;
 import com.bugtrack.model.SysNoteModel;
 import com.bugtrack.model.UserModel;
@@ -171,8 +172,76 @@ public class AppPublicController extends CommonController {
 		}
 		BugsModel bug = bugRepo.findById(id);
 		mv.addObject("bug", bug);
+		BugPatchModel patch = this.patchRepo.findOneByBugAndStatus(bug, 1);
+		mv.addObject("patch",patch);
 		return mv;
 	}
 	
+	@RequestMapping(value = "search", method = RequestMethod.GET)
+	public ModelAndView search01(@RequestParam(value = "page", required = true, defaultValue = "0") Integer page,
+			@RequestParam(value = "rows", required = true, defaultValue = "50") Integer rows,
+			@RequestParam(value = "f", required = false) Integer field,
+			@RequestParam(value = "q", required = false) String query) {
+		ModelAndView mv = new ModelAndView("App/Public/search");
+		if (this.isLogin()) {
+			Integer num = this.getCountTask();
+			if (num.intValue() > 0)
+				mv.addObject("tasks", this.getCountTask());
+			mv.addObject("fullname", this.getFullname());
+		}
+		mv.addObject("productList", this.productNameRepo.findProductList());
+		List<UserModel> topuse = userRepo.findTop10ByOrderByReputationDesc();
+		mv.addObject("topusers", topuse);
+		List<SysNoteModel> note = sysnRepo.findTop3ByExpireGreaterThan(getCurrentTime());
+		if (note != null)
+			mv.addObject("news", note);
+		List<Order> orders = new ArrayList<Order>();
+		orders.add(new Order(Direction.DESC, "creationts"));
+		Sort sort = new Sort(orders);
+		page = page - 1 < 0 ? 0 : page - 1;
+		Pageable pageable = new PageRequest(page, rows, sort);
+		Page<BugsModel> bugList01 = null;
+		System.out.println("/////////////////////////////"+query);
+//		if(field==1){
+			//title
+			String[] q = query.split(" ");
+			System.out.println("/////////////////////////////"+query);
+			//System.out.println(q.toString());
+			if(q.length==1){
+				bugList01 = bugRepo.findAllByTitleContainingIgnoreCase(q[0], pageable);
+			}else{
+				bugList01 = bugRepo.findAllByTitleContainingIgnoreCaseOrTitleContainingIgnoreCase(q[0], q[1], pageable);
+			}
+//			for(int i=0; i<bugList01.getContent().size();i++){
+//				String ss = bugList01.getContent().get(i).getTitle();
+//				if(ss.contains(q[0])){
+//					ss = ss.replaceAll(q[0], "<code>" + q[0] + "</code>");
+//					bugList01.getContent().get(i).setTitle(ss);
+//				}
+//				if(q.length>1){
+//					ss = ss.replaceAll(q[1], "<code>" + q[1] + "</code>");
+//					bugList01.getContent().get(i).setTitle(ss);
+//				}
+//			}
+//		}else if(field==2){
+//			//desc
+//			String[] q = query.split(" ");
+//			System.out.println("/////////////////////////////"+query);
+//			//System.out.println(q.toString());
+//			if(q.length==1){
+//				bugList01 = bugRepo.findAllByShortdescContainingIgnoreCase(q[0], pageable);
+//			}else{
+//				bugList01 = bugRepo.findAllByShortdescContainingIgnoreCaseOrShortdescContainingIgnoreCase(q[0], q[1], pageable);
+//			}
+//		}
+		
+		
+		
+		
+		if (bugList01 != null && bugList01.getTotalPages()>0)
+			mv.addObject("pages", bugList01);
+		mv.addObject("q", query);
+		return mv;
+	}
 
 }

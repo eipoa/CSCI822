@@ -65,7 +65,7 @@
 								class="fa fa-fw fa-envelope"></i> Inbox <span
 								class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i>
+						<li><a href="/App/User/profile" target="_blank"><i class="fa fa-fw fa-user"></i>
 								Profile</a></li>
 						<li><a href="javascript:changepassword()"><i
 								class="fa fa-fw fa-key"></i> Change Password</a></li>
@@ -84,7 +84,7 @@
 							Process Bugs</a></li>
 					<li><a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i>
 							Review Solutions</a></li>
-					<li><a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i>
+					<li th:if="${report_menu}"><a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i>
 							Bug Reports</a></li>
 					<li><a href="/Admin/Message/inbox"><i
 							class="fa fa-fw fa-envelope"></i> Inbox <span
@@ -535,7 +535,7 @@
 			}
 		});
 		$('#dgpn').datalist({
-			url:'/Rest/productnamelist',
+			url:'/Rest/productnamelistFull',
 			method:'get',
 			singleSelect:true
 		});

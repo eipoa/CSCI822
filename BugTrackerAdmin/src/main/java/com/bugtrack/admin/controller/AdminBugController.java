@@ -32,6 +32,7 @@ import com.bugtrack.model.BugStatusModel;
 import com.bugtrack.model.BugsModel;
 import com.bugtrack.model.MessageModel;
 import com.bugtrack.model.ProductModel;
+import com.bugtrack.model.SysReputationModel;
 import com.bugtrack.model.UserModel;
 import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -144,7 +145,7 @@ public class AdminBugController extends CommonController {
 		BugsModel bug = bugRepo.findById(new Integer(id));
 		patch.setBug(bug);
 		if(patch_desc!=null){
-			patch_desc = patch_desc.replace("href="," target='blank' href=");
+			patch_desc = patch_desc.replace("href="," target='_blank' href=");
 			patch_desc = patch_desc.replace("<p>", "");
 			patch_desc = patch_desc.replace("</p>", "");
 			patch_desc = patch_desc.replace("<br/>", "");
@@ -198,7 +199,7 @@ public class AdminBugController extends CommonController {
 			@RequestParam(value = "short_desc", required = false) String short_desc,
 			@RequestParam(value = "developer_id", required = false) String developer_id,
 			@RequestParam(value = "reviewer_id", required = false) String reviewer_id,
-			@RequestParam(value = "rank", required = false) String rank,
+			@RequestParam(value = "rank", required = false) Integer rank,
 			@RequestParam(value = "patch_desc", required = false) String patch_desc,
 			@RequestParam(value = "patch_url", required = false) String patch_url,
 			@RequestParam(value = "patch_status", required = false) Integer patch_status) throws Exception {
@@ -225,16 +226,29 @@ public class AdminBugController extends CommonController {
 		UserModel tmpReviewer = userRepo.findByUsername(reviewer_id);
 
 		// modifiy bugs
+		if(!rank.equals(bug.getRank())){
+			SysReputationModel oldrepurule= sysrRepo.findOne(bug.getRank());
+			SysReputationModel newrepurule= sysrRepo.findOne(rank);
+			Integer oldrepu = oldrepurule==null?0:oldrepurule.getReputation();
+			Integer newrepu = newrepurule==null?0:newrepurule.getReputation();
+			UserModel user = bug.getReporter();
+			Integer currepu = user.getReputation();
+			currepu = currepu - oldrepu + newrepu;
+			if(currepu<0) currepu=0;
+			user.setReputation(currepu);
+			user = userRepo.saveAndFlush(user);
+			bug.setReporter(user);
+		}
 		bug.setRank(new Integer(rank));
-		bug.setTitle(short_desc);
-		bug.setShortdesc(short_desc);
+		//bug.setTitle(short_desc);
+		//bug.setShortdesc(short_desc);
 		bug.setKeywords(keyword);
 		bug.setPriority(tmpPriority);
 		bug.setSeverity(tmpSeverity);
-		boolean mustHaveSolution = false;
-		if (bug.getStatus().getId().equals(2) && tmpStatus.getId().equals(3)) {
-			mustHaveSolution = true;
-		}
+//		boolean mustHaveSolution = false;
+//		if (bug.getStatus().getId().equals(2) && tmpStatus.getId().equals(3)) {
+//			mustHaveSolution = true;
+//		}
 		bug.setStatus(tmpStatus);
 		bug.setDeveloper(tmpDeveloper);
 		bug.setReviewer(tmpReviewer);

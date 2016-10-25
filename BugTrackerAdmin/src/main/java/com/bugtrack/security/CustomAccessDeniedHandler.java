@@ -50,8 +50,11 @@ public class CustomAccessDeniedHandler extends AccessDeniedHandlerImpl {
 		} else {
 			logger.info("------------------AccessDeniedHandler   ");
 			logger.info("------------------URI   " + request.getRequestURI());
-			
-			this.setErrorPage("/Admin/Public/403");//test parameter
+			String uri =  request.getRequestURI();
+			if(uri.substring(0, 4).equals("/App"))
+				this.setErrorPage("/App/Public/403");
+			else
+				this.setErrorPage("/Admin/Public/403");//test parameter
 			request.setAttribute("oriurl", request.getRequestURI());
 			super.handle(request, response, accessDeniedException);
 		}

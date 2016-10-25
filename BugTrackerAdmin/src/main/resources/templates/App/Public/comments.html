@@ -61,7 +61,7 @@
 						<ul class="dropdown-menu" role="menu">
 							<!-- <li><a href="/App/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 							<li class="divider"></li> -->
-							<li><a href="/App/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+							<li><a href="/App/User/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 							<li class="divider"></li>
 							<li><a href="/App/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
@@ -75,28 +75,6 @@
         	<div style="margin:auto;width:1060px">
 	            <div class="container-fluid">
 					 <!-- Page Heading -->
-	                <!-- <div class="row">
-	                    <div class="col-lg-12">
-							<ul class="nav nav-tabs" role="tablist">
-							  <li role="presentation" class="active"><a href="/">Find issues</a></li>
-							  <li role="presentation"><a href="/App/Bugs/report" th:if="${fullname!=null}">Report issues</a></li>
-							  <li role="presentation"><a href="/App/Public/login" th:if="${fullname==null}">Log in</a></li>
-							  <li role="presentation"><a href="/App/Public/signup" th:if="${fullname==null}">Sign up</a></li>
-							</ul>
-						</div>
-	                </div> -->
-	                <!-- /.row -->
-					<!-- Search Bar -->
-<!-- 	                <div class="row">	
-						<div id="searchformContainer">
-							<form id="search" role="form">
-								<div class="col-xs-10">
-									<input type="text" class="form-control" id="query1" placeholder="find solutions & issues">
-								</div>
-								<button type="submit" class="btn btn-primary bg-some">Search</button>					  	
-							</form>
-						</div>
-					</div> -->
 			        <!-- bug info -->
 			        <div class="row">
 			        	<div class="col-lg-9">
@@ -130,12 +108,16 @@
 								</td>
 							</tr>
 							<tr><td colspan="2">
-								<div class="patch" th:if="${patch}">
 								
-								</div>
 							</td></tr>
 							</table>
 							</div>
+							
+							<div class="patch" th:if="${bug.status.id==4 and patch!=null}" style="margin-top: 10px; ">
+								<div class="alert alert-info" role="alert" th:utext="${patch.description}"> </div>
+							</div>
+							
+							
 						</div>
 			        </div>
 			        
@@ -169,7 +151,7 @@
 																        submitted <span th:text="${c.creationts}" class="relativetime">creation_ts</span>
 																    </div>
 																    <div class="user-details">
-																        <a style="cursor:help" th:text="${c.submitter.first_name}" th:onclick="'javascript:alert(\''+${c.submitter.first_name}+'\')'">first_name</a>
+																        <a style="cursor:help" th:text="${c.submitter.first_name}" th:onclick="'javascript:void(0)'">first_name</a>
 																        <div class="-flair">
 																            <span class="reputation-score" title="reputation score " dir="ltr" th:text="${c.submitter.reputation}">reputation</span>
 																        </div>
@@ -184,21 +166,6 @@
 										</tbody>
 									</table>
 								</div>
-								<!-- <br style="clear:both"/>
-								<div class="page-sizer fr">
-									<ul class="pagination pd8">
-										<li th:class="${pages.size eq 5}?'active':''">
-											<a class="pagecur" th:onclick="|refcomments(1, 5)|" th:inline="text">5</a>
-										</li>
-										<li th:class="${pages.size eq 10}?'active':''">
-											<a class="pagecur" th:onclick="|refcomments(1, 10)|" th:inline="text">10</a>
-										</li>
-										<li th:class="${pages.size eq 20}?'active':''">
-											<a class="pagecur" th:onclick="|refcomments(1, 20)|" th:inline="text">20</a><span class="page-numbers desc">per page</span>
-										</li>
-									</ul>
-									
-								</div> -->
 								<div calss="pager fl">
 									<ul th:fragment="pagination" class="pagination pd8">
 									    <li th:class="${pages.number eq 0}?'disabled':'pagecur'">
@@ -250,7 +217,7 @@
 								<ul class="list-group" th:if="${news}">
 								  <li class="list-group-item active">
 								    <span class="badge"></span>
-								    <strong><h4 style="margin:0px">Important update</h4></strong>
+								    <strong><h4 style="margin:0px">Important notice</h4></strong>
 								  </li>
 								  <li class="list-group-item" th:each="n,iterStat:${news}">
 								    <span th:utext="${n.descp}">name</span>

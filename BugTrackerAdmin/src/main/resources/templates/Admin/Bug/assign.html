@@ -60,7 +60,7 @@
 					<ul class="dropdown-menu" role="menu">
 						<li><a href="/Admin/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
 						<li class="divider"></li>
-						<li><a href="/Admin/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+						<li><a href="/App/User/profile" target="_blank"><i class="fa fa-fw fa-user"></i> Profile</a></li>
 						<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
 						<li class="divider"></li>
 						<li><a href="/Admin/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
@@ -81,7 +81,7 @@
 					<li>
 						<a href="/Admin/Bug/review"><i class="fa fa-fw fa-refresh"></i> Review Solutions</a>
 					</li>
-					<li>
+					<li th:if="${report_menu}">
 						<a href="/Admin/Bug/report"><i class="fa fa-fw fa-bar-chart"></i> Bug Reports</a>
 					</li>
 					<li>
@@ -470,6 +470,7 @@
 										labelAlign: 'right',
 										width:640,
 										multiline:true,
+										readonly:true,
 										onClickButton:search"></input>
 							</td>
 						</tr>
@@ -499,7 +500,7 @@
 					                        }
 					                    }]"></input>
 							</td>
-							<td colspan="2">
+							<td><!-- colspan="2"> --> 
 								<input id="e-review" class="easyui-textbox"
 									data-options="
 					                    label:'Reviewer',
@@ -512,6 +513,10 @@
 					                            findStaff(1);
 					                        }
 					                    }]"></input>
+							</td>
+							<td align="right">
+								<a id="btn" href="#" class="easyui-linkbutton" 
+									data-options="iconCls:'icon-search'" onClick=opencomments()>View Comments</a>
 							</td>
 						</tr>
 						<tr>
@@ -562,11 +567,11 @@
 					</tbody>
 				</table>
 			</div>
-			<div title="View comments">
-				<div id="e-comment-list" class="easyui-panel" data-options="border:false,height:348,width:'auto'">
+<!-- 			<div title="View comments"> -->
+<!-- 				<div id="e-comment-list" class="easyui-panel" data-options="border:false,height:348,width:'auto'"> -->
 		    	
-		    	</div>
-			</div>
+<!-- 		    	</div> -->
+<!-- 			</div> -->
 		</div>
     </div>
     <!-- staff list window -->
@@ -660,7 +665,7 @@
 				product_os_id : $('#e-pos').combobox('getValue'),
 				status_id : $('#e-status').combobox('getValue'),
 				keyword : $('#e-key').textbox('getValue'),
-				short_desc : $('#e-desc').textbox('getValue'),
+				//short_desc : $('#e-desc').textbox('getValue'),
 				//reporter_id : 
 				//creation_ts :
 				developer_id : $('#e-develop').textbox('getValue'),
@@ -724,10 +729,11 @@
 			modal:true,
 			shadow:false,
 			closable:true,
-			draggable:true,
-			onBeforeOpen:function(){
-				$('#e-comment-list').panel('refresh', MODEL + 'commentlist?page=1&rows=5&id=' + $('#e-bid').textbox('getValue'));
-			}
+			draggable:true
+// 			,
+// 			onBeforeOpen:function(){
+// 				$('#e-comment-list').panel('refresh', MODEL + 'commentlist?page=1&rows=5&id=' + $('#e-bid').textbox('getValue'));
+// 			}
 		});
 		//$("#e-rank").rating();
 		// dynamic bind datagrid

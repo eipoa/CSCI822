@@ -33,6 +33,7 @@ import com.bugtrack.dao.ProductRepository;
 import com.bugtrack.dao.ResourceRepository;
 import com.bugtrack.dao.RoleRepository;
 import com.bugtrack.dao.SysNoteRepository;
+import com.bugtrack.dao.SysReputationRepository;
 import com.bugtrack.dao.UserRepository;
 import com.bugtrack.model.UserModel;
 import com.bugtrack.util.BugTrackerProperty;
@@ -116,6 +117,10 @@ public class CommonController{
 	@Autowired
 	protected
 	SysNoteRepository sysnRepo;
+	
+	@Autowired
+	protected
+	SysReputationRepository sysrRepo;
 	
 	public String ajaxReturn(boolean statue, String data, String info) throws JsonProcessingException {
 		Map<String, Object> map = new HashMap<String, Object>();

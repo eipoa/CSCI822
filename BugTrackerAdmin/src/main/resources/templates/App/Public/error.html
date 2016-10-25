@@ -9,15 +9,18 @@
     <meta name="description" content="index">
     <meta name="author" content="Li baoxing">
 
-	<title>Bugs Admin - Error</title>
+	<title>Bugs Admin - Index</title>
 	
 	<!-- Bootstrap Core CSS -->
 	<link href="/css/bootstrap.min.css" rel="stylesheet">
 	
 	<!-- Custom CSS -->
 	<link href="/css/sb-admin.css" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="/css/backend.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/material/easyui.css" />
+	<link rel="stylesheet" type="text/css" href="/scripts/jqeasyui/themes/icon.css" />
+	<!-- <link rel="stylesheet" type="text/css" href="/css/backend.css" /> -->
+	<link rel="stylesheet" type="text/css" href="/css/frontend.css" />
+	<link rel="shortcut icon" type="image/x-icon" href="/images/favicon.ico" />
     
     <!-- Custom Fonts -->
 	<link href="/fonts/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -30,21 +33,41 @@
     <![endif]-->
 </head>
 <body>
-<div id="wrapper" style="padding-left:0px">
-
+	<div id="wrapper" style="padding-left:0px">
         <!-- Navigation -->
+        
 		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-					<span class="sr-only">Toggle navigation</span> <span
-						class="icon-bar"></span> <span class="icon-bar"></span> <span
-						class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand" href="/">Bug Tracker Admin</a>
+			<div style="margin:auto;width:1060px">
+				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+						<span class="sr-only">Toggle navigation</span> <span
+							class="icon-bar"></span> <span class="icon-bar"></span> <span
+							class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/Admin/">Bug Tracker</a>
+				</div>
+			
+			<!-- Top Menu Items -->
+				<ul class="nav navbar-right top-nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" th:if="${fullname}">
+							<i class="fa fa-user"></i> 
+							<span th:text="${fullname}">Fullname</span> <!-- <span class="label label-primary" th:text="${tasks}">tasks</span> -->
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu" role="menu">
+							<!-- <li><a href="/App/Message/inbox"><i class="fa fa-fw fa-envelope"></i> Inbox <span class="label label-primary" th:text="${tasks}">tasks</span></a></li>
+							<li class="divider"></li> -->
+							<li><a href="/App/Auth/profile"><i class="fa fa-fw fa-user"></i> Profile</a></li>
+							<li><a href="javascript:changepassword()"><i class="fa fa-fw fa-key"></i> Change Password</a></li>
+							<li class="divider"></li>
+							<li><a href="/App/j_spring_security_logout"><i class="fa fa-fw fa-power-off"></i> Log Out</a></li>
+						</ul>
+					</li>
+				</ul>
 			</div>
 		</nav>
-
         <div id="page-wrapper" style="background-color:#222">
             <div class="container-fluid">
 				 <!-- Page Heading -->

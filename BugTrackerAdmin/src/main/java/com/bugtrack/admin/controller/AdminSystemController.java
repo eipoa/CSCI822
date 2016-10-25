@@ -11,6 +11,7 @@ import com.bugtrack.model.BugClassModel;
 import com.bugtrack.model.BugPriorityModel;
 import com.bugtrack.model.BugSeverityModel;
 import com.bugtrack.model.SysNoteModel;
+import com.bugtrack.model.SysReputationModel;
 
 @RestController
 @RequestMapping("/Admin/System")
@@ -92,5 +93,22 @@ public class AdminSystemController  extends CommonController {
 	public String saveParameter(SysNoteModel note) throws Exception {
 		note = sysnRepo.saveAndFlush(note);
 		return ajaxReturn(true, note.getId().toString(), "OK");
+	}
+	
+	@RequestMapping(value = "saverepu", method = RequestMethod.POST)
+	public String saveParameter01(SysReputationModel repu) throws Exception {
+		if(repu.getId().equals(1))
+			repu.setAction("★☆☆☆☆");
+		if(repu.getId().equals(2))
+			repu.setAction("★★☆☆☆");
+		if(repu.getId().equals(3))
+			repu.setAction("★★★☆☆");
+		if(repu.getId().equals(4))
+			repu.setAction("★★★★☆");
+		if(repu.getId().equals(5))
+			repu.setAction("★★★★★");
+		
+		repu = sysrRepo.saveAndFlush(repu);
+		return ajaxReturn(true, repu.getId().toString(), "OK");
 	}
 }

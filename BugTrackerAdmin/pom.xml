@@ -5,10 +5,10 @@
 
 	<groupId>com.group15.bugtracker.admin</groupId>
 	<artifactId>BugTrackerAdmin</artifactId>
-	<version>0.0.4-SNAPSHOT</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>BugTrackerAdmin</name>
+	<name>BugTrackingSystem</name>
 	<description>Project for Bug Tracking System designed by group 15(Admin)</description>
 
 	<parent>

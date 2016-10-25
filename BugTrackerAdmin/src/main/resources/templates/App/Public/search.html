@@ -104,26 +104,7 @@
 							</form>
 						</div>
 					</div>
-							<!-- Issues catagory -->
-					<div class="row">
-						<div class="col-lg-12">
-							<div id="issueContainer">
-								<ul class="nav  nav-pills" role="tablist">
-								  <li role="presentation" th:class="${idx==1}?'active':''"><a href="/">Newest</a></li>
-								  <li role="presentation" th:class="${idx==2}?'active':''"><a href="/?idx=2">Votes</a></li>
-								  <li role="presentation" th:class="${idx==3}?'dropdown active':'dropdown'">
-								  	  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Products<span class="caret"></span></a>
-								  	  <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
-								  	  	<!-- looply add menu -->
-									    <li role="presentation"  th:each="p,iterStat:${productList}">
-									    	<a role="menuitem" tabindex="-1" th:href="@{/(idx=3, pn=${p.id})}" th:text="${p.name}">pname</a>
-									    </li>
-									  </ul>
-								  </li>
-								</ul>
-							</div>
-						</div>					
-			        </div>	
+			        
 			        <!-- bug list -->
 			        <div class="row">
 			        	<div class="col-lg-9" style="padding-right: 0px;">
@@ -143,7 +124,7 @@
 							        </div> -->
 				        		</div>
 				        		<div class="summary">
-							        <h4><a th:href="@{/App/Public/comments(id=${b.id},page=0,rows=50)}" target="blank" class="question-hyperlink" th:text="${b.title}"></a></h4>
+							        <h4><a th:href="@{/App/Public/comments(id=${b.id},page=0,rows=50)}" target="blank" class="question-hyperlink" th:utext="${b.title}"></a></h4>
 							        <div class="tags t-javascript t-jquery t-gulp t-requirejs">
 							            <code th:text="${b.product.name.name}">pname</code>
 							            <code th:text="${b.product.version}">pname</code>
@@ -159,21 +140,21 @@
 							    </div>
 				        	</div>
 				        	
-							<div calss="pager fl" th:if="${pages.totalPages gt 1}" >
+							<div calss="pager fl" th:if="${pages!=null and pages.totalPages gt 1}" >
 								<ul th:fragment="pagination" class="pagination pd8">
 								    <li th:class="${!pages.hasPrevious()}?'disabled':'pagecur'">
 								        <a th:if="${pages.number eq 0}" href="javascript:void(0)" aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
-								        <a th:unless="${pages.number eq 0}" th:href="@{/(pn=${pn},idx=${idx},page=${pages.number}, rows=${pages.size})}"  aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
+								        <a th:unless="${pages.number eq 0}" th:href="@{/App/Public/search(q=${q},page=${pages.number}, rows=${pages.size})}"  aria-label='Previous'><span aria-hidden='true'>&laquo;</span></a>
 								    </li>
 								
 								    <li th:each="no:${#numbers.sequence(0, pages.totalPages-1)}" th:class="${pages.number eq no}?'active':''">
-								    	<a class="pagecur" th:if="${no lt 5 or no eq pages.totalPages-1}" th:href="@{/(pn=${pn},idx=${idx}, page=${no+1}, rows=${pages.size})}" th:inline="text">[[${no+1}]]</a>
+								    	<a class="pagecur" th:if="${no lt 5 or no eq pages.totalPages-1}" th:href="@{/App/Public/search(q=${q},page=${no+1}, rows=${pages.size})}" th:inline="text">[[${no+1}]]</a>
 								    	<span th:if="${no eq 5 and pages.totalPages gt 5}" th:inline="text" class="page-numbers dots">…</span>
 								    </li>
 								
 								    <li th:class="${!pages.hasNext()}?'disabled':'pagecur'">
 								        <a th:if="${pages.number+1 ge pages.totalPages}" href="javascript:void(0)"   aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
-								        <a th:unless="${pages.number+1 ge pages.totalPages}" th:href="@{/(pn=${pn},idx=${idx},page=${pages.number+2}, rows=${pages.size})}"  aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
+								        <a th:unless="${pages.number+1 ge pages.totalPages}" th:href="@{/App/Public/search(q=${q},page=${pages.number+2}, rows=${pages.size})}"  aria-label='Next'><span aria-hidden='true'>&raquo;</span></a>
 								    </li>
 								</ul>
 							</div>
@@ -275,12 +256,48 @@
 	var MODEL = '/App/';
 	var ue;
 	
-	function searchBugs(){
-
-	}
-	
 	$(function() {	
-
+/* 		// init Baidu Ueditor
+		ue = UE.getEditor('editor', {
+	    	toolbars: [
+	    		['fullscreen', 'source', '|' ,'fontsize', 'forecolor',
+	    		 'bold', 'italic', 'insertorderedlist', 'insertunorderedlist','insertcode']//, 'attachment'
+	    	],
+	    	autotypeset:{
+		    	mergeEmptyline: true,
+		        removeClass: true,
+		        removeEmptyline: false,
+		        clearFontSize: false,
+		        clearFontFamily: false
+	    	},
+	    	zIndex:10000,
+	    	allowDivTransToP: false,
+	        autoHeightEnabled: true,
+	        autoFloatEnabled: true,
+		    serverUrl: "/Upload/init/", 
+		    UEDITOR_HOME_URL: "/scripts/ueditor/"
+		});
+		ue.ready(function() {
+			console.log('ueditor is ready');
+			this.setContent('');
+			this.execCommand( 'rowspacing', '5', 'top' );
+			this.execCommand( 'fontsize', '12px' );
+			this.addListener('afterExecCommand' , function (){
+				var files, item, i, urls = "";
+				if(arguments.length==3 && arguments[0]=='afterexeccommand' && arguments[1]=='insertfile'){
+					files = arguments[2][1];
+					if(files.length>0){
+						// write database;item.title/item.url
+						files.forEach(function(f){
+							urls = urls==""?"{{title:"+f.title+",url:"+f.url+"}":urls + ",{title:"+f.title+",url:"+f.url+"}";
+						})
+					}
+				}
+				urls = urls +"}";
+				//console.log(urls);
+				$('#e-url').textbox('setValue', urls);
+			});
+		}); */
 	});
 </script>	
 	

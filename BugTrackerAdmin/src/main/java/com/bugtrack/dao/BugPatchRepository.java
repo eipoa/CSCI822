@@ -20,5 +20,7 @@ public interface BugPatchRepository  extends JpaRepository<BugPatchModel, Intege
 
 	BugPatchModel findTop1ByBugOrderByCreationtsDesc(BugsModel bug);
 
+	BugPatchModel findOneByBugAndStatus(BugsModel bug, int i);
+
 
 }

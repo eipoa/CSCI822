@@ -30,6 +30,7 @@ import com.bugtrack.model.ProductOsModel;
 import com.bugtrack.model.ResourceModel;
 import com.bugtrack.model.RoleModel;
 import com.bugtrack.model.SysNoteModel;
+import com.bugtrack.model.SysReputationModel;
 import com.bugtrack.model.UserModel;
 import com.bugtrack.util.PageContent;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +51,7 @@ public class WebRestController extends CommonController {
 				mv.addObject("tasks", this.getCountTask());
 			mv.addObject("fullname", this.getFullname());
 		}
-		mv.addObject("productList", this.productNameRepo.findAll());
+		mv.addObject("productList", this.productNameRepo.findProductList());
 		List<UserModel> topuse = userRepo.findTop10ByOrderByReputationDesc();
 		mv.addObject("topusers", topuse);
 		List<SysNoteModel> note = sysnRepo.findTop3ByExpireGreaterThan(getCurrentTime());
@@ -66,37 +67,18 @@ public class WebRestController extends CommonController {
 		page = page - 1 < 0 ? 0 : page - 1;
 		Pageable pageable = new PageRequest(page, rows, sort);
 		Page<BugsModel> bugList01 = null;
+
 		if (idx == 1 || idx == 2)
 			bugList01 = bugRepo.findAll(pageable);
 		else
 			bugList01 = bugRepo.findAllByProductIn(productRepo.findAllByName(productNameRepo.findOne(pn)), pageable);
-		
-		if (bugList01 != null && bugList01.getTotalPages()>0)
+
+		if (bugList01 != null && bugList01.getTotalPages() > 0)
 			mv.addObject("pages", bugList01);
 		mv.addObject("idx", idx);
+		mv.addObject("pn", pn);
 		return mv;
 	}
-
-	// @RequestMapping(value="Public/login", method=RequestMethod.GET)
-	// public void defaultLogin(HttpServletRequest request, HttpServletResponse
-	// response) throws IOException{
-	// System.out.println(request.getHeader("method"));
-	// Enumeration e = request.getHeaderNames();
-	// while(e.hasMoreElements()){
-	// String name = (String)e.nextElement();
-	// String value = request.getHeader(name);
-	// System.out.println(name+":"+value);
-	// }
-	//
-	// String path = "App/login";
-	// String ref = request.getHeader("referer").trim().toLowerCase();
-	// if(ref.indexOf("/admin")!=-1){
-	// path = "Admin/login";
-	// }else if(ref.indexOf("/app")!=-11){
-	// path = "App/login";
-	// }
-	// response.sendRedirect(path);
-	// }
 
 	// all rest services
 	/* for user admin */
@@ -187,19 +169,6 @@ public class WebRestController extends CommonController {
 	public List<ProductOsModel> getOsList001(HttpServletRequest request,
 			@RequestParam(value = "id", required = false) Integer id,
 			@RequestParam(value = "ver", required = false) String ver) {
-		// List<ProductModel> product =
-		// productRepo.findByNameAndVersion(this.getNameById(request, id), ver);
-		// List<ProductModel> product =
-		// productRepo.findAllByName_idAndVersion(id, ver);
-		// Map<Integer, String> x = new HashMap<Integer, String>();
-		// List<ProductOsModel> ret = new ArrayList<ProductOsModel>();
-		// for (ProductModel tmp : product) {
-		// ProductOsModel os = tmp.getOs();
-		// if (!x.containsKey(os.getOsname())) {
-		// x.put(os.getId(), os.getOsname());
-		// ret.add(os);
-		// }
-		// }
 		List<ProductOsModel> ret = this.productOsRepo.findAll();
 		return ret;
 	}
@@ -229,6 +198,11 @@ public class WebRestController extends CommonController {
 
 	@RequestMapping(value = "Rest/productnamelist", method = RequestMethod.GET)
 	public List<ProductNameModel> getNameList() {
+		return productNameRepo.findProductList();
+	}
+
+	@RequestMapping(value = "Rest/productnamelistFull", method = RequestMethod.GET)
+	public List<ProductNameModel> getNameListFull() {
 		return productNameRepo.findAll();
 	}
 
@@ -271,6 +245,11 @@ public class WebRestController extends CommonController {
 	@RequestMapping(value = "Rest/sysnotelist", method = RequestMethod.GET)
 	public List<SysNoteModel> getSysNoteList(HttpServletRequest request) {
 		return sysnRepo.findAllByOrderByExpireDesc();
+	}
+	
+	@RequestMapping(value = "Rest/sysrepulist", method = RequestMethod.GET)
+	public List<SysReputationModel> getSysRepuList(HttpServletRequest request) {
+		return sysrRepo.findAll();
 	}
 
 	//
