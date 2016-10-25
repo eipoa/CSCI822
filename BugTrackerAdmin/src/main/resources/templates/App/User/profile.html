@@ -317,13 +317,13 @@
 	var userskill = /*[[${user.skill}]]*/;
 	var usersrep = /*[[${user.reputation}]]*/;
 	$(function() {	
-		id:$('#e-id').textbox('setValue',id);
-		username:$('#e-username').textbox('setValue',userid);
-		first_name:$('#e-firstname').textbox('setValue', userfn);
-		last_name:$('#e-lastname').textbox('setValue', userln);
-		age:$('#e-age').numberspinner('setValue', userage);
-		email:$('#e-email').textbox('setValue',userem);
-		skill:$('#e-skill').textbox('setValue',userskill);
+		$('#e-id').textbox('setValue',id);
+		$('#e-username').textbox('setValue',userid);
+		$('#e-firstname').textbox('setValue', userfn);
+		$('#e-lastname').textbox('setValue', userln);
+		$('#e-age').numberspinner('setValue', userage);
+		$('#e-email').textbox('setValue',userem);
+		$('#e-skill').textbox('setValue',userskill);
 		$('#e-rep').numberspinner('setValue', usersrep);
 	});
 </script>	
