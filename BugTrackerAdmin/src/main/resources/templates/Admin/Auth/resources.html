@@ -348,7 +348,7 @@
 	   		if(node.status==1)
 	   			$('#e-status').switchbutton('check');
 	   		else
-	   			$('#e-status').switchbutton('checked');
+	   			$('#e-status').switchbutton('uncheck');
             var pnode = $("#dgt").treegrid("getParent", node.id);
             if (pnode) {
         		$('#e-parent').combobox('setValue', pnode.id);
